@@ -1,10 +1,9 @@
 package com.example.ecommerce
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.fragment.findNavController
 import com.example.ecommerce.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {

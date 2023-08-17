@@ -14,7 +14,6 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:fontFamily="@font/poppins_regular"
             android:gravity="center"
             android:text="Masuk"
             android:textColor="?attr/colorOnSurface"
@@ -35,7 +34,6 @@
         android:layout_marginTop="16dp"
         app:helperTextEnabled="true"
         app:helperText="Contoh: test@gmail.com"
-        app:helperTextTextAppearance="@font/poppins_regular"
         app:errorEnabled="true"
         android:layout_marginEnd="16dp">
 
@@ -43,7 +41,6 @@
             android:id="@+id/tieEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
             android:hint="Email" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -58,7 +55,6 @@
         android:layout_marginEnd="16dp"
         app:helperTextEnabled="true"
         app:helperText="Minimal 8 karakter"
-        app:helperTextTextAppearance="@font/poppins_regular"
         app:errorEnabled="true"
         app:endIconMode="password_toggle">
 
@@ -66,7 +62,6 @@
             android:id="@+id/tiePassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_regular"
             android:inputType="textPassword"
             android:hint="Password" />
 
@@ -81,7 +76,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:textSize="14sp"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/poppins_medium"
         android:text="Masuk" />
 
     <LinearLayout
@@ -104,7 +99,6 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:textSize="12sp"
-            android:fontFamily="@font/poppins_regular"
             android:text="atau daftar dengan" />
 
         <com.google.android.material.divider.MaterialDivider
@@ -124,9 +118,9 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/poppins_regular"
-        android:textSize="14sp"
-        android:text="Daftar" />
+        android:fontFamily="@font/poppins_medium"
+        android:text="Daftar"
+        android:textSize="14sp" />
 
     <TextView
         android:id="@+id/tvPolicy"

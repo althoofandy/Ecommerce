@@ -32,9 +32,17 @@
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:backgroundTint="?attr/colorPrimary"
-        app:cardCornerRadius="100dp">
+        app:cardCornerRadius="65dp">
         <ImageView
             android:id="@+id/ivPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:scaleType="centerCrop"
+             />
+
+        <ImageView
+            android:id="@+id/vectorImg"
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:layout_gravity="center"
@@ -70,6 +78,7 @@
         android:text="Selesai" />
 
     <TextView
+        android:id="@+id/tvPolicy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_regular"
@@ -78,7 +87,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginTop="16dp"
-        android:text="Dengan masuk disini, kamu menyetujui Syarat dan Ketentuan serta Kebijakan Privasi TokoPhincon."
         />
 
 </LinearLayout>

@@ -35,7 +35,6 @@
         android:layout_marginTop="16dp"
         app:helperTextEnabled="true"
         app:helperText="Contoh: test@gmail.com"
-        app:helperTextTextAppearance="@font/poppins_regular"
         app:errorEnabled="true"
         android:layout_marginEnd="16dp">
 
@@ -58,7 +57,6 @@
         android:layout_marginEnd="16dp"
         app:helperTextEnabled="true"
         app:helperText="Minimal 8 karakter"
-        app:helperTextTextAppearance="@font/poppins_regular"
         app:errorEnabled="true"
         app:endIconMode="password_toggle">
 
@@ -81,7 +79,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:textSize="14sp"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/poppins_medium"
         android:text="Daftar" />
 
     <LinearLayout
@@ -124,7 +122,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/poppins_regular"
+        android:fontFamily="@font/poppins_medium"
         android:textSize="14sp"
         android:text="Masuk" />
 
