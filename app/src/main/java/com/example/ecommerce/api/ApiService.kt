@@ -7,6 +7,7 @@ import com.example.ecommerce.model.RefreshResponse
 import com.example.ecommerce.model.TokenRequest
 import okhttp3.MultipartBody
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -38,9 +39,10 @@ interface ApiService {
     ): Call<ProfileResponse>
 
     @POST("refresh")
-    fun refreshToken(
+    suspend fun refreshToken(
+        @Header("API_KEY") auth: String,
         @Body token: TokenRequest
-    ): Call<RefreshResponse>
+    ): Response<RefreshResponse>
 
 
 

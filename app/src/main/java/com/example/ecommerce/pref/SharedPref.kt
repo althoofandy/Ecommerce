@@ -54,6 +54,13 @@ class SharedPref(private val context: Context) {
         editor.remove(ID_NAME)
         editor.apply()
     }
+
+    fun clearToken() {
+        val editor = sharedPreferences.edit()
+        editor.remove(ID_TOKEN)
+        editor.remove(ID_TOKEN_REFRESH)
+        editor.apply()
+    }
     companion object {
         private const val ID_TOKEN = "id"
         private const val ID_FIRST_INSTALL = "id_first_install"

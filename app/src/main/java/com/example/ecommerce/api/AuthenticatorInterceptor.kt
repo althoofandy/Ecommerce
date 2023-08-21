@@ -2,6 +2,7 @@ package com.example.ecommerce.api
 
 import android.content.ContentValues
 import android.util.Log
+import com.example.ecommerce.MainActivity
 import com.example.ecommerce.model.DataResponse
 import com.example.ecommerce.model.RefreshResponse
 import com.example.ecommerce.model.TokenRequest
@@ -19,50 +20,37 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class AuthenticatorInterceptor(private val pref: SharedPref) : Authenticator {
-//    override fun authenticate(route: Route?, response: Response): Request? {
-//        val newAccessToken = pref.getRefreshToken()
-//        return runBlocking {
-//            val newToken = getToken(newAccessToken)
-//            newToken.enqueue(object : Callback<RefreshResponse>{
-//                override fun onResponse(
-//                    call: Call<RefreshResponse>,
-//                    response: retrofit2.Response<RefreshResponse>
-//                ) {
-//
-//                }
-//
-//                override fun onFailure(call: Call<RefreshResponse>, t: Throwable) {
-//
-//                }
-//
-//
-//            }            })
-//
-//        if (newAccessToken != null) {
-//            val updatedRequest = response.request.newBuilder()
-//                .header("Authorization", "Bearer $newAccessToken")
-//                .build()
-//
-//            pref.saveAccessToken(newAccessToken, pref.getRefreshToken() ?: "")
-//            return updatedRequest
-//        }
-//        return null
-//    }
-//
-//        fun getToken(token : String): Call<RefreshResponse> {
-//            val loggingInterceptor =
-//                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-//            val client = OkHttpClient.Builder()
-//                .addInterceptor(loggingInterceptor)
-//                .build()
-//            val retrofit = Retrofit.Builder()
-//                .baseUrl("http://172.17.20.217:5000/")
-//                .addConverterFactory(GsonConverterFactory.create())
-//                .client(client)
-//                .build()
-//            val service = retrofit.create(ApiService::class.java)
-//            val tokenReq = TokenRequest(token)
-//            return service.refreshToken(tokenReq)
-//        }
+    override fun authenticate(route: Route?, response: Response): Request? {
+        val newAccessToken = pref.getRefreshToken()
+
+        return runBlocking {
+            val newToken = getToken(newAccessToken!!)
+
+            if(!newToken.isSuccessful || newToken.body()==null){
+                pref.clearToken()
+            }
+            newToken.body().let {
+                pref.saveAccessToken(it?.data!!.accessToken, it.data.refreshToken ?: "")
+                response.request.newBuilder()
+                    .header("Authorization", "Bearer $newAccessToken")
+                    .build()
+            }
+        }
+    }
+        suspend fun getToken(token : String): retrofit2.Response<RefreshResponse> {
+            val loggingInterceptor =
+                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+            val client = OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .build()
+            val retrofit = Retrofit.Builder()
+                .baseUrl("http://172.17.20.217:5000/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(client)
+                .build()
+            val service = retrofit.create(ApiService::class.java)
+            val tokenReq = TokenRequest(token)
+            return service.refreshToken("6f8856ed-9189-488f-9011-0ff4b6c08edc",tokenReq)
+        }
 
 }
