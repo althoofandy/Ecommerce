@@ -1,4 +1,4 @@
-package com.example.ecommerce.wishlist
+package com.example.ecommerce.ui.main.wishlist
 
 import android.os.Bundle
 import android.view.LayoutInflater

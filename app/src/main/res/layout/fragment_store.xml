@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:layout_height="match_parent"
-    tools:context=".store.StoreFragment">
+    tools:context=".ui.main.store.StoreFragment">
 
     <TextView
         android:layout_width="wrap_content"

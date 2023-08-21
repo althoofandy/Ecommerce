@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/prelogin_navigation"
-    app:startDestination="@id/onboardingFragment">
+    app:startDestination="@id/loginFragment">
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.example.ecommerce.prelogin.LoginFragment"
+        android:name="com.example.ecommerce.ui.prelogin.login.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -15,11 +15,15 @@
             app:popUpTo="@id/loginFragment"
             app:popUpToInclusive="true"
             app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_onboardingFragment"
+            app:destination="@id/onboardingFragment" />
+
     </fragment>
 
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.example.ecommerce.prelogin.RegisterFragment"
+        android:name="com.example.ecommerce.ui.prelogin.register.RegisterFragment"
         android:label="fragment_register"
         tools:layout="@layout/fragment_register" >
         <action
@@ -27,18 +31,11 @@
             app:popUpTo="@id/registerFragment"
             app:popUpToInclusive="true"
             app:destination="@id/loginFragment" />
-        <action
-            android:id="@+id/action_registerFragment_to_addProfileFragment"
-            app:destination="@id/addProfileFragment" />
+
     </fragment>
     <fragment
-        android:id="@+id/addProfileFragment"
-        android:name="com.example.ecommerce.prelogin.AddProfileFragment"
-        android:label="fragment_add_profile"
-        tools:layout="@layout/fragment_add_profile" />
-    <fragment
         android:id="@+id/onboardingFragment"
-        android:name="com.example.ecommerce.onboarding.OnboardingFragment"
+        android:name="com.example.ecommerce.ui.onboarding.OnboardingFragment"
         android:label="OnboardingFragment" >
         <action
             android:id="@+id/action_onboardingFragment_to_registerFragment"

@@ -1,4 +1,4 @@
-package com.example.ecommerce.onboarding
+package com.example.ecommerce.ui.onboarding
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

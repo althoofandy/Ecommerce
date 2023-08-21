@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation"
     app:startDestination="@id/prelogin_navigation">
 
@@ -8,10 +9,32 @@
 
     <include app:graph="@navigation/main_navigation" />
 
+    <fragment
+        android:id="@+id/addProfileFragment"
+        android:name="com.example.ecommerce.ui.prelogin.profile.AddProfileFragment"
+        android:label="fragment_add_profile"
+        tools:layout="@layout/fragment_add_profile" >
+        <action
+            android:id="@+id/action_addProfileFragment_to_main_navigation"
+            app:destination="@id/main_navigation" />
+    </fragment>
+
     <action
-        android:id="@+id/action_addProf_to_mainFragment"
+        android:id="@+id/action_prelog_to_mainFragment"
         app:popUpTo="@id/app_navigation"
         app:popUpToInclusive="true"
         app:destination="@id/main_navigation" />
+
+    <action
+        android:id="@+id/action_main_to_profileFragment"
+        app:popUpTo="@id/app_navigation"
+        app:popUpToInclusive="true"
+        app:destination="@id/addProfileFragment" />
+    <action
+        android:id="@+id/action_prelog_to_profileFragment"
+        app:popUpTo="@id/app_navigation"
+        app:popUpToInclusive="true"
+        app:destination="@id/addProfileFragment" />
+
 
 </navigation>

@@ -25,9 +25,10 @@
                 app:menu="@menu/top_app_bar"
                 app:navigationIcon="@drawable/outline_account_circle_24">
                 <TextView
+                    android:id="@+id/tvUserName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="John Doe"
+                    android:hint="John Doe"
                     android:fontFamily="@font/poppins_regular"
                     android:textSize="22sp"
                     android:paddingTop="5dp"

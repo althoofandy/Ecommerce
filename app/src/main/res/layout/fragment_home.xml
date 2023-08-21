@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".home.HomeFragment">
+    tools:context=".ui.main.home.HomeFragment">
 
 
     <LinearLayout
@@ -21,9 +21,12 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Logout"/>
+        <TextView
+            android:id="@+id/tvAccessToken"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="LIHAT ACCESS TOKEN"/>
 
     </LinearLayout>
-
-
-
 </LinearLayout>

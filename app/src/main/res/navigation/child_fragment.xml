@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.ecommerce.home.HomeFragment"
+        android:name="com.example.ecommerce.ui.main.home.HomeFragment"
         android:label="fragment_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/storeFragment"
-        android:name="com.example.ecommerce.store.StoreFragment"
+        android:name="com.example.ecommerce.ui.main.store.StoreFragment"
         android:label="fragment_store"
         tools:layout="@layout/fragment_store" />
 
     <fragment
         android:id="@+id/wishlistFragment"
-        android:name="com.example.ecommerce.wishlist.WishlistFragment"
+        android:name="com.example.ecommerce.ui.main.wishlist.WishlistFragment"
         android:label="fragment_wishlist"
         tools:layout="@layout/fragment_store" />
 
     <fragment
         android:id="@+id/transactionFragment"
-        android:name="com.example.ecommerce.transaction.TransactionFragment"
+        android:name="com.example.ecommerce.ui.main.transaction.TransactionFragment"
         android:label="fragment_transaction"
         tools:layout="@layout/fragment_store" />
 </navigation>

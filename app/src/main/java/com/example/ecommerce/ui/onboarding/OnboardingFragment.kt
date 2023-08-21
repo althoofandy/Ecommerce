@@ -1,7 +1,6 @@
-package com.example.ecommerce.onboarding
+package com.example.ecommerce.ui.onboarding
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,16 @@ import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.FragmentOnboardingBinding
+import com.example.ecommerce.pref.SharedPref
 import com.google.android.material.tabs.TabLayoutMediator
 
 class OnboardingFragment : Fragment() {
     private var _binding: FragmentOnboardingBinding? = null
     private val binding get() = _binding!!
+    private lateinit var sharedPref: SharedPref
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        sharedPref = SharedPref(requireContext())
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,12 +77,14 @@ class OnboardingFragment : Fragment() {
     private fun toRegister() {
         binding.btnJoinNow.setOnClickListener {
             findNavController().navigate(R.id.action_onboardingFragment_to_registerFragment)
+            sharedPref.saveFirstInstall(false)
         }
     }
 
     private fun toLogin() {
         binding.btnSkipOnBoarding.setOnClickListener {
             findNavController().navigate(R.id.action_onboardingFragment_to_loginFragment)
+            sharedPref.saveFirstInstall(false)
         }
     }
 

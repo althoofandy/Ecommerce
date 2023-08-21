@@ -10,6 +10,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ecommerce.databinding.FragmentMainBinding
+import com.example.ecommerce.pref.SharedPref
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
@@ -22,6 +23,9 @@ class MainFragment : Fragment() {
     private val navController by lazy {
         navHost.findNavController()
     }
+    private val sharedPref by lazy {
+        SharedPref(requireContext())
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,17 +34,21 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        checkSession()
+        checkUserNameExist()
         binding.apply {
             topAppBar.setOnMenuItemClickListener {
-                when(it.itemId) {
+                when (it.itemId) {
                     R.id.notification -> {
-                        Toast.makeText(requireContext(),"Notif", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "Notif", Toast.LENGTH_SHORT).show()
                     }
+
                     R.id.chart -> {
-                        Toast.makeText(requireContext(),"chart", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "chart", Toast.LENGTH_SHORT).show()
                     }
+
                     R.id.filter -> {
-                        Toast.makeText(requireContext(),"filter", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(requireContext(), "filter", Toast.LENGTH_SHORT).show()
                     }
                 }
                 true
@@ -57,6 +65,21 @@ class MainFragment : Fragment() {
     ): View? {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    fun checkSession() {
+        val session = sharedPref.getAccessToken()
+        if (session.isNullOrEmpty()) {
+            (requireActivity() as MainActivity).logOut()
+        }
+    }
+    fun checkUserNameExist() {
+        val userName = sharedPref.getNameProfile()
+        if(userName.isNullOrEmpty()){
+            (requireActivity() as MainActivity).checkUsernameExist()
+        }else{
+            binding.tvUserName.text = userName
+        }
     }
 
 

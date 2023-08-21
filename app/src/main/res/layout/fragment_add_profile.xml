@@ -5,7 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context=".prelogin.AddProfileFragment">
+    tools:context=".ui.prelogin.profile.AddProfileFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -58,7 +58,7 @@
         android:padding="16dp">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/tieEmail"
+            android:id="@+id/tieNama"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
