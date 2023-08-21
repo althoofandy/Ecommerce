@@ -27,7 +27,8 @@ class AuthenticatorInterceptor(private val pref: SharedPref) : Authenticator {
             val newToken = getToken(newAccessToken!!)
 
             if(!newToken.isSuccessful || newToken.body()==null){
-                pref.clearToken()
+                pref.logout()
+                Log.d("refresh","${pref.getRefreshToken().toString()} + ${pref.getAccessToken().toString()}" )
             }
             newToken.body().let {
                 pref.saveAccessToken(it?.data!!.accessToken, it.data.refreshToken ?: "")

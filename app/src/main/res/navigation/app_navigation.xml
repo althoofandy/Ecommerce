@@ -17,6 +17,9 @@
         <action
             android:id="@+id/action_addProfileFragment_to_main_navigation"
             app:destination="@id/main_navigation" />
+        <action
+            android:id="@+id/action_addProfileFragment_to_prelogin_navigation"
+            app:destination="@id/prelogin_navigation" />
     </fragment>
 
     <action

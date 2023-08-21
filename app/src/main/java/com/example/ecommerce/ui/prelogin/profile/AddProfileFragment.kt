@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.ViewModelFactory
 import com.example.ecommerce.api.Retrofit
@@ -41,7 +42,7 @@ class AddProfileFragment : Fragment() {
     private var _binding: FragmentAddProfileBinding? = null
     private val binding get() = _binding!!
     private var uri : Uri? = null
-    private val sharedPref by lazy {
+    private val pref by lazy {
         SharedPref(requireContext())
     }
     private val repository by lazy {
@@ -110,6 +111,7 @@ class AddProfileFragment : Fragment() {
         spannable()
         btnEnable()
         choosePhoto()
+        checkUserSession()
 
     }
     private fun setProfile(file: File){
@@ -118,7 +120,7 @@ class AddProfileFragment : Fragment() {
                 val requestUser =
                     MultipartBody.Part.createFormData("userName", binding.tieNama.text.toString())
                 val requestImage = MultipartBody.Part.createFormData("userImage", file.name, file.asRequestBody("image/jpeg".toMediaTypeOrNull()))
-                val token = sharedPref.getAccessToken()
+                val token = pref.getAccessToken()
                 viewModel.doProfile(token!!,requestUser,requestImage)
                 viewModel.profileResponse.observe(viewLifecycleOwner){
                     if(it!=null){
@@ -221,6 +223,13 @@ class AddProfileFragment : Fragment() {
     companion object{
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10
+    }
+
+    private fun checkUserSession(){
+        val token = pref.getAccessToken()
+        if(token==null){
+            findNavController().navigate(R.id.action_addProfileFragment_to_prelogin_navigation)
+        }
     }
 
     override fun onDestroy() {
