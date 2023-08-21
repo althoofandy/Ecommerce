@@ -11,18 +11,18 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.ecommerce.R
 import com.example.ecommerce.ViewModelFactory
+import com.example.ecommerce.api.Result
 import com.example.ecommerce.api.Retrofit
 import com.example.ecommerce.databinding.FragmentLoginBinding
 import com.example.ecommerce.model.Auth
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
-import kotlinx.coroutines.launch
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -63,21 +63,32 @@ class LoginFragment : Fragment() {
     private fun doLogin() {
         binding.apply {
             btnLogin.setOnClickListener {
+                progressCircular.visibility = View.VISIBLE
                 val email = binding.tieEmail.text.toString()
                 val password = binding.tiePassword.text.toString()
-                viewLifecycleOwner.lifecycleScope.launch {
-                    viewModel.doLogin("6f8856ed-9189-488f-9011-0ff4b6c08edc", Auth(email, password, ""))
-                }
-                viewModel.loginResponse.observe(viewLifecycleOwner) {
-                    if (it != null) {
-                        findNavController().navigate(R.id.action_prelog_to_mainFragment)
-                    }
-                }
+                viewModel.doLogin("6f8856ed-9189-488f-9011-0ff4b6c08edc", Auth(email, password, ""))
+                    .observe(viewLifecycleOwner) {
+                        when (it) {
+                            is Result.Success -> {
+                                progressCircular.hide()
+                                findNavController().navigate(R.id.action_prelog_to_mainFragment)
+                            }
 
+                            is Result.Error -> {
+                                progressCircular.hide()
+                                Toast.makeText(requireContext(), "Invalid email or password!", Toast.LENGTH_SHORT).show()
+
+                            }
+
+                            is Result.Loading -> {
+                                progressCircular.show()
+                            }
+                        }
+
+                    }
             }
         }
     }
-
     private fun doRegister() {
         binding.apply {
             btnRegister.setOnClickListener {

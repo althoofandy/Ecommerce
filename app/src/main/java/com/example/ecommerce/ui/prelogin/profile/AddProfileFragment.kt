@@ -24,9 +24,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.ViewModelFactory
+import com.example.ecommerce.api.Result
 import com.example.ecommerce.api.Retrofit
 import com.example.ecommerce.databinding.FragmentAddProfileBinding
 import com.example.ecommerce.pref.SharedPref
@@ -117,16 +117,26 @@ class AddProfileFragment : Fragment() {
     private fun setProfile(file: File){
         binding.apply {
             btnDone.setOnClickListener {
+                progressCircular.visibility = View.VISIBLE
                 val requestUser =
                     MultipartBody.Part.createFormData("userName", binding.tieNama.text.toString())
                 val requestImage = MultipartBody.Part.createFormData("userImage", file.name, file.asRequestBody("image/jpeg".toMediaTypeOrNull()))
                 val token = pref.getAccessToken()
-                viewModel.doProfile(token!!,requestUser,requestImage)
-                viewModel.profileResponse.observe(viewLifecycleOwner){
-                    if(it!=null){
-                        findNavController().navigate(R.id.action_addProfileFragment_to_main_navigation)
-                    }else{
-                        Toast.makeText(requireContext(), "Gagal", Toast.LENGTH_SHORT).show()
+                viewModel.doProfile(token!!,requestUser,requestImage).observe(viewLifecycleOwner){
+                    when (it) {
+                        is Result.Success -> {
+                            progressCircular.hide()
+                            findNavController().navigate(R.id.action_addProfileFragment_to_main_navigation)
+                        }
+
+                        is Result.Error -> {
+                            progressCircular.hide()
+                            Toast.makeText(requireContext(), "Sesi anda telah berakhir!", Toast.LENGTH_SHORT).show()
+                        }
+
+                        is Result.Loading -> {
+                            progressCircular.show()
+                        }
                     }
                 }
             }

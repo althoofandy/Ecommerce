@@ -1,92 +1,72 @@
 package com.example.ecommerce.repos
 
-import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.liveData
 import com.example.ecommerce.api.ApiService
+import com.example.ecommerce.api.Result
 import com.example.ecommerce.model.Auth
-import com.example.ecommerce.model.DataResponse
-import com.example.ecommerce.model.ProfileResponse
+import com.example.ecommerce.model.ProfileResultResponse
+import com.example.ecommerce.model.ResultResponse
 import com.example.ecommerce.pref.SharedPref
 import okhttp3.MultipartBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
-class EcommerceRepository(private val apiService: ApiService,
-    private val pref: SharedPref) {
+class EcommerceRepository(
+    private val apiService: ApiService,
+    private val pref: SharedPref
+) {
 
-    private val _login = MutableLiveData<DataResponse?>()
-    val login: LiveData<DataResponse?> = _login!!
-
-     fun doLogin(token : String, user : Auth){
-        apiService.doLogin(token,user).enqueue(object : Callback<DataResponse> {
-            override fun onResponse(
-                call: Call<DataResponse>,
-                response: Response<DataResponse>
-            ) {
-                if (response.isSuccessful && response.body() != null) {
-                    Log.d(TAG, "Response : ${response.body()}}")
-                    pref.saveAccessToken(response.body()!!.data!!.accessToken, response.body()!!.data!!.refreshToken)
-                    pref.saveNameProfile(response.body()!!.data!!.userName)
-                    _login.value = response.body()
-                }else{
-                    _login.value = null
-                }
-            }
-            override fun onFailure(call: Call<DataResponse>, t: Throwable) {
-                Log.d(TAG, "error : ${t.message.toString()}")
-                _login.value = null
-            }
-        })
+    fun doLogin(token: String, auth: Auth): LiveData<Result<ResultResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.doLogin(token, auth)
+            val resultResponse = response.data
+            pref.saveAccessToken(
+                resultResponse!!.accessToken,
+                resultResponse!!.refreshToken
+            )
+            pref.saveNameProfile(resultResponse!!.userName)
+            emit(Result.Success(resultResponse))
+        } catch (e: Exception) {
+            emit(Result.Error(e))
+        }
     }
-    private val _register = MutableLiveData<DataResponse?>()
-    val register: LiveData<DataResponse?> = _register
-     fun doRegister(token : String,user : Auth){
-        apiService.doRegister(token,user).enqueue(object : Callback<DataResponse> {
-            override fun onResponse(
-                call: Call<DataResponse>,
-                response: Response<DataResponse>
-            ) {
-                if (response.isSuccessful && response.body() != null) {
-                    Log.d(TAG, "Response : ${response.body()}}")
-                    pref.saveAccessToken(response.body()!!.data!!.accessToken, response.body()!!.data!!.refreshToken)
-                    _register.value = response.body()
-                }else{
-                    _register.value = null
-                }
-            }
 
-            override fun onFailure(call: Call<DataResponse>, t: Throwable) {
-                Log.d(TAG, "error : ${t.message.toString()}")
-                _register.value = null
+    fun doRegister(token: String, auth: Auth): LiveData<Result<ResultResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.doRegister(token, auth)
+            if (response != null) {
+                val resultResponse = response.data
+                pref.saveAccessToken(
+                    resultResponse!!.accessToken,
+                    resultResponse!!.refreshToken
+                )
+                emit(Result.Success(resultResponse))
+            } else {
+                Log.d("GAGAL MANING", "HEHE")
             }
-        })
-
+        } catch (e: Exception) {
+            emit(Result.Error(e))
+        }
     }
-    private val _profile = MutableLiveData<ProfileResponse?>()
-    val profile: LiveData<ProfileResponse?> = _profile
-     fun saveToProfile(bearer: String, name: MultipartBody.Part, image:MultipartBody.Part){
-        apiService.saveToProfile("Bearer $bearer",name,image).enqueue(object : Callback<ProfileResponse> {
-            override fun onResponse(
-                call: Call<ProfileResponse>,
-                response: Response<ProfileResponse>
-            ) {
-                if (response.isSuccessful && response.body() != null) {
-                    pref.saveNameProfile(response.body()!!.data!!.userName)
-                    _profile.value = response.body()
-                }else{
-                    _profile.value = null
-                }
-            }
 
-            override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
-                Log.d(TAG, "Response : ${t.message.toString()}")
-                _profile.value = null
+    fun saveToProfile(
+        bearer: String,
+        name: MultipartBody.Part,
+        image: MultipartBody.Part
+    ): LiveData<Result<ProfileResultResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.saveToProfile("Bearer $bearer", name, image)
+            if (response != null) {
+                val resultResponse = response.data
+                pref.saveNameProfile(resultResponse!!.userName)
+                emit(Result.Success(resultResponse))
             }
-        })
-
+        } catch (e: Exception) {
+            emit(Result.Error(e))
+        }
     }
 
 }

@@ -1,9 +1,5 @@
 package com.example.ecommerce.api
 
-import android.content.ContentValues
-import android.util.Log
-import com.example.ecommerce.MainActivity
-import com.example.ecommerce.model.DataResponse
 import com.example.ecommerce.model.RefreshResponse
 import com.example.ecommerce.model.TokenRequest
 import com.example.ecommerce.pref.SharedPref
@@ -14,27 +10,25 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.Route
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Callback
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class AuthenticatorInterceptor(private val pref: SharedPref) : Authenticator {
     override fun authenticate(route: Route?, response: Response): Request? {
         val newAccessToken = pref.getRefreshToken()
-
-        return runBlocking {
-            val newToken = getToken(newAccessToken!!)
-
-            if(!newToken.isSuccessful || newToken.body()==null){
-                pref.logout()
-                Log.d("refresh","${pref.getRefreshToken().toString()} + ${pref.getAccessToken().toString()}" )
-            }
-            newToken.body().let {
-                pref.saveAccessToken(it?.data!!.accessToken, it.data.refreshToken ?: "")
-                response.request.newBuilder()
-                    .header("Authorization", "Bearer $newAccessToken")
-                    .build()
+        synchronized(this)
+        {
+            return runBlocking {
+                val newToken = getToken(newAccessToken!!)
+                if (!newToken.isSuccessful || newToken.body() == null) {
+                    pref.logout()
+                }
+                newToken.body().let {
+                    pref.saveAccessToken(it?.data!!.accessToken, it.data.refreshToken ?: "")
+                    response.request.newBuilder()
+                        .header("Authorization", "Bearer $newAccessToken")
+                        .build()
+                }
             }
         }
     }
