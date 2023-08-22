@@ -1,6 +1,7 @@
 package com.example.ecommerce.api
 
 import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.ecommerce.pref.SharedPref
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -13,10 +14,13 @@ class Retrofit(private val context: Context) {
     fun getApiService(): ApiService {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+
         val client = OkHttpClient.Builder()
-            .addInterceptor(ChuckerUtils.getChuckerInterceptor(context))
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(ChuckerInterceptor(context))
             .authenticator(authenticatorInterceptor)
             .build()
+
         val retrofit = Retrofit.Builder()
             .baseUrl("http://172.17.20.217:5000/")
             .addConverterFactory(GsonConverterFactory.create())

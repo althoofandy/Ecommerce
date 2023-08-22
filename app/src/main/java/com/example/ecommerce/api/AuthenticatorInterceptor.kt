@@ -32,20 +32,21 @@ class AuthenticatorInterceptor(private val pref: SharedPref) : Authenticator {
             }
         }
     }
-        suspend fun getToken(token : String): retrofit2.Response<RefreshResponse> {
-            val loggingInterceptor =
-                HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
-            val client = OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .build()
-            val retrofit = Retrofit.Builder()
-                .baseUrl("http://172.17.20.217:5000/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(client)
-                .build()
-            val service = retrofit.create(ApiService::class.java)
-            val tokenReq = TokenRequest(token)
-            return service.refreshToken("6f8856ed-9189-488f-9011-0ff4b6c08edc",tokenReq)
-        }
+
+    suspend fun getToken(token: String): retrofit2.Response<RefreshResponse> {
+        val loggingInterceptor =
+            HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        val client = OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
+        val retrofit = Retrofit.Builder()
+            .baseUrl("http://172.17.20.217:5000/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(client)
+            .build()
+        val service = retrofit.create(ApiService::class.java)
+        val tokenReq = TokenRequest(token)
+        return service.refreshToken("6f8856ed-9189-488f-9011-0ff4b6c08edc", tokenReq)
+    }
 
 }

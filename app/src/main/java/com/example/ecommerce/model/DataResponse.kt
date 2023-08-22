@@ -57,7 +57,7 @@ data class ProfileResultResponse(
     val userName: String,
 
     @SerializedName("userImage")
-    val userImage: String
+    val userImage: String? = null
 )
 
 data class TokenRequest(

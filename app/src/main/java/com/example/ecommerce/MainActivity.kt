@@ -24,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         sharedPref = SharedPref(this)
         checkSession()
         checkFirstInstall()
+
+
     }
      fun logOut(){
         navController.navigate(R.id.action_mainNav_to_preLogNav)

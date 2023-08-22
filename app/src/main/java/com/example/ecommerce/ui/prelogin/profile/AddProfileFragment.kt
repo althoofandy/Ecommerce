@@ -122,7 +122,7 @@ class AddProfileFragment : Fragment() {
                     MultipartBody.Part.createFormData("userName", binding.tieNama.text.toString())
                 val requestImage = MultipartBody.Part.createFormData("userImage", file.name, file.asRequestBody("image/jpeg".toMediaTypeOrNull()))
                 val token = pref.getAccessToken()
-                viewModel.doProfile(token!!,requestUser,requestImage).observe(viewLifecycleOwner){
+                viewModel.doProfile(token!!,requestUser, requestImage).observe(viewLifecycleOwner){
                     when (it) {
                         is Result.Success -> {
                             progressCircular.hide()
