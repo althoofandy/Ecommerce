@@ -14,11 +14,11 @@ class Retrofit(private val context: Context) {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
         val client = OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
+            .addInterceptor(ChuckerUtils.getChuckerInterceptor(context))
             .authenticator(authenticatorInterceptor)
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.13:5000/")
+            .baseUrl("http://172.17.20.217:5000/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
