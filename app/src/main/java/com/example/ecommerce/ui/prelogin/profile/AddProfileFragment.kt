@@ -37,14 +37,17 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import java.io.File
 
-
 class AddProfileFragment : Fragment() {
+
     private var _binding: FragmentAddProfileBinding? = null
     private val binding get() = _binding!!
-    private var uri : Uri? = null
+
+    private var uri: Uri? = null
+
     private val pref by lazy {
         SharedPref(requireContext())
     }
+
     private val repository by lazy {
         val apiService = Retrofit(requireContext()).getApiService()
         val sharedPref = SharedPref(requireContext())
@@ -54,8 +57,11 @@ class AddProfileFragment : Fragment() {
     private val factory by lazy {
         ViewModelFactory(repository)
     }
+
     private val viewModel: ProfileViewModel by viewModels { factory }
+
     private fun generateFilename() = "photos-${System.currentTimeMillis()}.jpg"
+
     private fun buildNewUri(): Uri {
         val photosDir = File(requireContext().cacheDir, "photos")
         photosDir.mkdirs()
@@ -63,31 +69,35 @@ class AddProfileFragment : Fragment() {
         val authority = "${requireContext().packageName}.fileprovider"
         return FileProvider.getUriForFile(requireContext(), authority, photoFile)
     }
-    val startGallery = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        if (uri != null) {
-            val file = uriToFile(uri, requireContext())
-            val reducedFile = reduceFileImage(file)
-            setProfile(reducedFile)
-            binding.vectorImg.visibility = View.GONE
-            Glide.with(binding.root.context)
-                .load(uri)
-                .into(binding.ivPhoto)
-            Log.d("CEK URI",uri.toString())
-        } else {
-            Log.d("PhotoPicker", "No media selected")
+
+    val startGallery =
+        registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+            if (uri != null) {
+                val file = uriToFile(uri, requireContext())
+                val reducedFile = reduceFileImage(file)
+                setProfile(reducedFile)
+                binding.vectorImg.visibility = View.GONE
+                Glide.with(binding.root.context)
+                    .load(uri)
+                    .into(binding.ivPhoto)
+            } else {
+                Log.d("PhotoPicker", "No media selected")
+            }
         }
-    }
-    val startCamera = registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess: Boolean? ->
-        if (isSuccess == true) {
-            binding.vectorImg.visibility = View.GONE
-            Glide.with(binding.root.context)
-                .load(uri)
-                .into(binding.ivPhoto)
-            val file = uriToFile(uri!!, requireContext())
-            val reducedFile = reduceFileImage(file)
-            setProfile(reducedFile)
+
+    val startCamera =
+        registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess: Boolean? ->
+            if (isSuccess == true) {
+                binding.vectorImg.visibility = View.GONE
+                Glide.with(binding.root.context)
+                    .load(uri)
+                    .into(binding.ivPhoto)
+                val file = uriToFile(uri!!, requireContext())
+                val reducedFile = reduceFileImage(file)
+                setProfile(reducedFile)
+            }
         }
-    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -99,50 +109,63 @@ class AddProfileFragment : Fragment() {
             )
         }
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAddProfileBinding.inflate(inflater, container, false)
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         spannable()
         btnEnable()
         choosePhoto()
         checkUserSession()
-
     }
-    private fun setProfile(file: File){
+
+    private fun setProfile(file: File) {
         binding.apply {
             btnDone.setOnClickListener {
                 progressCircular.visibility = View.VISIBLE
                 val requestUser =
                     MultipartBody.Part.createFormData("userName", binding.tieNama.text.toString())
-                val requestImage = MultipartBody.Part.createFormData("userImage", file.name, file.asRequestBody("image/jpeg".toMediaTypeOrNull()))
+                val requestImage = MultipartBody.Part.createFormData(
+                    "userImage",
+                    file.name,
+                    file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                )
                 val token = pref.getAccessToken()
-                viewModel.doProfile(token!!,requestUser, requestImage).observe(viewLifecycleOwner){
-                    when (it) {
-                        is Result.Success -> {
-                            progressCircular.hide()
-                            findNavController().navigate(R.id.action_addProfileFragment_to_main_navigation)
-                        }
+                viewModel.doProfile(token!!, requestUser, requestImage)
+                    .observe(viewLifecycleOwner) {
+                        when (it) {
+                            is Result.Success -> {
+                                progressCircular.hide()
+                                findNavController().navigate(R.id.action_addProfileFragment_to_main_navigation)
+                            }
 
-                        is Result.Error -> {
-                            progressCircular.hide()
-                            Toast.makeText(requireContext(), "Sesi anda telah berakhir!", Toast.LENGTH_SHORT).show()
-                        }
+                            is Result.Error -> {
+                                progressCircular.hide()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Sesi anda telah berakhir!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
 
-                        is Result.Loading -> {
-                            progressCircular.show()
+                            is Result.Loading -> {
+                                progressCircular.show()
+                            }
                         }
                     }
-                }
             }
         }
     }
-    private fun choosePhoto(){
+
+    private fun choosePhoto() {
         binding.apply {
             cvPhoto.setOnClickListener {
                 MaterialAlertDialogBuilder(requireContext())
@@ -152,6 +175,7 @@ class AddProfileFragment : Fragment() {
                             0 -> {
                                 startCamera()
                             }
+
                             1 -> {
                                 startGallery()
                             }
@@ -161,15 +185,12 @@ class AddProfileFragment : Fragment() {
             }
         }
     }
-    private fun btnEnable(){
-        binding.btnDone.setEnabled(false)
+
+    private fun btnEnable() {
+        binding.btnDone.isEnabled = false
         binding.tieNama.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {
-                if(s.isEmpty()){
-                    binding.btnDone.setEnabled(false)
-                }else{
-                    binding.btnDone.setEnabled(true)
-                }
+                binding.btnDone.isEnabled = s.isNotEmpty()
             }
 
             override fun beforeTextChanged(
@@ -184,20 +205,24 @@ class AddProfileFragment : Fragment() {
         })
 
     }
-    @SuppressLint("QueryPermissionsNeeded")
+
     private fun startCamera() {
         uri = buildNewUri()
         startCamera.launch(uri)
     }
-    private fun startGallery(){
+
+    private fun startGallery() {
         startGallery.launch("image/*")
     }
+
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
     }
+
     @SuppressLint("ResourceAsColor")
-    private fun spannable(){
-        val text = "Dengan daftar disini, kamu menyetujui Syarat dan Ketentuan serta Kebijakan Privasi TokoPhincon."
+    private fun spannable() {
+        val text =
+            "Dengan daftar disini, kamu menyetujui Syarat dan Ketentuan serta Kebijakan Privasi TokoPhincon."
         val spannableString = SpannableString(text)
         val color1 = ForegroundColorSpan(R.color.primary)
         spannableString.setSpan(
@@ -211,6 +236,7 @@ class AddProfileFragment : Fragment() {
         )
         binding.tvPolicy.text = spannableString
     }
+
     @Deprecated("Deprecated in Java")
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -230,14 +256,14 @@ class AddProfileFragment : Fragment() {
         }
     }
 
-    companion object{
+    companion object {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10
     }
 
-    private fun checkUserSession(){
+    private fun checkUserSession() {
         val token = pref.getAccessToken()
-        if(token==null){
+        if (token == null) {
             findNavController().navigate(R.id.action_addProfileFragment_to_prelogin_navigation)
         }
     }
@@ -246,6 +272,4 @@ class AddProfileFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
-
-
 }

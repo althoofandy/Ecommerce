@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MainFragment">
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -24,16 +24,17 @@
                 android:layout_height="?attr/actionBarSize"
                 app:menu="@menu/top_app_bar"
                 app:navigationIcon="@drawable/outline_account_circle_24">
+
                 <TextView
                     android:id="@+id/tvUserName"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="John Doe"
                     android:fontFamily="@font/poppins_regular"
-                    android:textSize="22sp"
-                    android:paddingTop="5dp"
                     android:gravity="center_vertical"
-                    android:textColor="?attr/colorOnSurface"/>
+                    android:hint="John Doe"
+                    android:paddingTop="5dp"
+                    android:textColor="?attr/colorOnSurface"
+                    android:textSize="22sp" />
             </com.google.android.material.appbar.MaterialToolbar>
 
             <com.google.android.material.divider.MaterialDivider
@@ -45,19 +46,20 @@
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/navview"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="65dp"
         android:layout_marginBottom="80dp"
-        android:name="androidx.navigation.fragment.NavHostFragment"
         app:defaultNavHost="true"
-        app:navGraph="@navigation/child_fragment"/>
+        app:navGraph="@navigation/child_fragment" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_nav"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
+        app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />
 
 </FrameLayout>

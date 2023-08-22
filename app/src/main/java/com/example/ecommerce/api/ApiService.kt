@@ -9,20 +9,18 @@ import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Header
-import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
 
 interface ApiService {
-    @Headers("Content-type:application/json; charset=utf-8")
+
     @POST("login")
     suspend fun doLogin(
         @Header("API_KEY") auth: String,
         @Body user: Auth
     ): DataResponse
 
-    @Headers("Content-type:application/json; charset=utf-8")
     @POST("register")
     suspend fun doRegister(
         @Header("API_KEY") auth: String,
@@ -42,6 +40,4 @@ interface ApiService {
         @Header("API_KEY") auth: String,
         @Body token: TokenRequest
     ): Response<RefreshResponse>
-
-
 }

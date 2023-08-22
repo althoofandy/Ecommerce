@@ -1,13 +1,17 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.Ecommerce" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="android:statusBarColor">?attr/colorSurfaceContainerLowest</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">?attr/colorSurfaceContainerLowest</item>
     </style>
 
-    <style name="Theme.Ecommerce" parent="Base.Theme.Ecommerce" >
+    <style name="Theme.Ecommerce" parent="Base.Theme.Ecommerce">
         <item name="fontFamily">@font/poppins_regular</item>
     </style>
+
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_screen</item>
         <item name="postSplashScreenTheme">@style/Theme.Ecommerce</item>

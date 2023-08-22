@@ -6,5 +6,5 @@ import com.example.ecommerce.repos.EcommerceRepository
 
 
 class LoginViewModel(private val repository: EcommerceRepository) : ViewModel() {
-     fun doLogin(token: String, auth: Auth) = repository.doLogin(token,auth)
+    fun doLogin(token: String, auth: Auth) = repository.doLogin(token, auth)
 }

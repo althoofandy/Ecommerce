@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -25,11 +26,10 @@ import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 
 class RegisterFragment : Fragment() {
+
     private var _binding: FragmentRegisterBinding? = null
     private val binding get() = _binding!!
-    private val userPreference by lazy {
-        SharedPref(requireContext())
-    }
+
     private val repository by lazy {
         val apiService = Retrofit(requireContext()).getApiService()
         val sharedPref = SharedPref(requireContext())
@@ -44,7 +44,7 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnRegister.setEnabled(false)
+        binding.btnRegister.isEnabled = false
         doLogin()
         doRegister()
         spannable()
@@ -54,7 +54,7 @@ class RegisterFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -81,7 +81,7 @@ class RegisterFragment : Fragment() {
                 viewModel.doRegister(
                     "6f8856ed-9189-488f-9011-0ff4b6c08edc",
                     Auth(email, password, "")
-                ).observe(viewLifecycleOwner){
+                ).observe(viewLifecycleOwner) {
                     when (it) {
                         is Result.Success -> {
                             progressCircular.hide()
@@ -90,7 +90,11 @@ class RegisterFragment : Fragment() {
 
                         is Result.Error -> {
                             progressCircular.hide()
-                            Toast.makeText(requireContext(), "Email already taken!", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Email already taken!",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
 
                         is Result.Loading -> {
@@ -159,6 +163,7 @@ class RegisterFragment : Fragment() {
                     }
                 }
             })
+
             binding.tieEmail.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable) {
                     if (!isValidEmail(s)) {
@@ -182,13 +187,12 @@ class RegisterFragment : Fragment() {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             })
 
-            val email: String = binding.tieEmail.getText().toString()
-            val password: String = binding.tiePassword.getText().toString()
-            binding.btnRegister.setEnabled(email.isNotEmpty() && isValidEmail(email) && password.length >= 8)
+            val email: String = binding.tieEmail.text.toString()
+            val password: String = binding.tiePassword.text.toString()
+            binding.btnRegister.isEnabled =
+                email.isNotEmpty() && isValidEmail(email) && password.length >= 8
         }
 
         override fun afterTextChanged(editable: Editable) {}
     }
-
-
 }

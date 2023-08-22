@@ -5,16 +5,16 @@
         android:id="@+id/notification"
         android:icon="@drawable/baseline_notifications_24"
         android:title="Notification"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
     <item
         android:id="@+id/chart"
         android:icon="@drawable/baseline_shopping_cart_24"
         android:title="Chart"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
     <item
         android:id="@+id/filter"
         android:icon="@drawable/baseline_format_list_bulleted_24"
         android:title="Filter"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 
 </menu>

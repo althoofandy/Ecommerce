@@ -9,12 +9,12 @@
         android:id="@+id/loginFragment"
         android:name="com.example.ecommerce.ui.prelogin.login.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment"
             app:popUpTo="@id/loginFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/registerFragment" />
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginFragment_to_onboardingFragment"
             app:destination="@id/onboardingFragment" />
@@ -25,27 +25,27 @@
         android:id="@+id/registerFragment"
         android:name="com.example.ecommerce.ui.prelogin.register.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" >
+        tools:layout="@layout/fragment_register">
         <action
             android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
             app:popUpTo="@id/registerFragment"
-            app:popUpToInclusive="true"
-            app:destination="@id/loginFragment" />
+            app:popUpToInclusive="true" />
 
     </fragment>
     <fragment
         android:id="@+id/onboardingFragment"
         android:name="com.example.ecommerce.ui.onboarding.OnboardingFragment"
-        android:label="OnboardingFragment" >
+        android:label="OnboardingFragment">
         <action
             android:id="@+id/action_onboardingFragment_to_registerFragment"
             app:destination="@id/registerFragment"
             app:popUpTo="@id/onboardingFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_onboardingFragment_to_loginFragment"
             app:destination="@id/loginFragment"
             app:popUpTo="@id/onboardingFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

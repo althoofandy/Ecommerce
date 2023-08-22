@@ -13,7 +13,7 @@
         android:id="@+id/addProfileFragment"
         android:name="com.example.ecommerce.ui.prelogin.profile.AddProfileFragment"
         android:label="fragment_add_profile"
-        tools:layout="@layout/fragment_add_profile" >
+        tools:layout="@layout/fragment_add_profile">
         <action
             android:id="@+id/action_addProfileFragment_to_main_navigation"
             app:destination="@id/main_navigation" />
@@ -24,20 +24,20 @@
 
     <action
         android:id="@+id/action_prelog_to_mainFragment"
+        app:destination="@id/main_navigation"
         app:popUpTo="@id/app_navigation"
-        app:popUpToInclusive="true"
-        app:destination="@id/main_navigation" />
+        app:popUpToInclusive="true" />
 
     <action
         android:id="@+id/action_main_to_profileFragment"
+        app:destination="@id/addProfileFragment"
         app:popUpTo="@id/app_navigation"
-        app:popUpToInclusive="true"
-        app:destination="@id/addProfileFragment" />
+        app:popUpToInclusive="true" />
     <action
         android:id="@+id/action_prelog_to_profileFragment"
+        app:destination="@id/addProfileFragment"
         app:popUpTo="@id/app_navigation"
-        app:popUpToInclusive="true"
-        app:destination="@id/addProfileFragment" />
+        app:popUpToInclusive="true" />
 
 
 </navigation>

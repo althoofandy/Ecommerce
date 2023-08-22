@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".ui.prelogin.profile.AddProfileFragment">
 
     <LinearLayout
@@ -19,11 +19,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:gravity="center"
-                android:textSize="22sp"
-                android:textColor="?attr/colorOnSurface"
                 android:fontFamily="@font/poppins_regular"
-                android:text="Profil"/>
+                android:gravity="center"
+                android:text="Profil"
+                android:textColor="?attr/colorOnSurface"
+                android:textSize="22sp" />
         </com.google.android.material.appbar.AppBarLayout>
 
         <com.google.android.material.divider.MaterialDivider
@@ -38,13 +38,13 @@
             android:layout_marginTop="16dp"
             android:backgroundTint="?attr/colorPrimary"
             app:cardCornerRadius="65dp">
+
             <ImageView
                 android:id="@+id/ivPhoto"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:scaleType="centerCrop"
-                />
+                android:scaleType="centerCrop" />
 
             <ImageView
                 android:id="@+id/vectorImg"
@@ -79,20 +79,19 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_regular"
-            android:textSize="14sp"
-            android:text="Selesai" />
+            android:text="Selesai"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/tvPolicy"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
-            android:textSize="12sp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            />
+            android:textSize="12sp" />
 
     </LinearLayout>
 
@@ -102,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:indeterminate="true"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 
 </FrameLayout>

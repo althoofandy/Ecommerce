@@ -13,9 +13,12 @@ import com.example.ecommerce.pref.SharedPref
 import com.google.android.material.tabs.TabLayoutMediator
 
 class OnboardingFragment : Fragment() {
+
     private var _binding: FragmentOnboardingBinding? = null
     private val binding get() = _binding!!
+
     private lateinit var sharedPref: SharedPref
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         sharedPref = SharedPref(requireContext())
@@ -31,7 +34,7 @@ class OnboardingFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentOnboardingBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -46,32 +49,32 @@ class OnboardingFragment : Fragment() {
         val pagerAdapter = MyPagerAdapter(items)
         binding.apply {
             viewPager.adapter = pagerAdapter
-            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                binding.btnNextOnBoarding.setOnClickListener {
-                    val currentItem = binding.viewPager.currentItem
-                    val nextItem = currentItem + 1
+            TabLayoutMediator(tabLayout, viewPager) { _, _ -> }.attach()
 
-                    if (nextItem < items.size) {
-                        binding.viewPager.setCurrentItem(nextItem, true)
-                    }
+            binding.btnNextOnBoarding.setOnClickListener {
+                val currentItem = binding.viewPager.currentItem
+                val nextItem = currentItem + 1
 
-                    if (nextItem == items.size - 1) {
+                if (nextItem < items.size) {
+                    binding.viewPager.setCurrentItem(nextItem, true)
+                }
+
+                if (nextItem == items.size - 1) {
+                    binding.btnNextOnBoarding.visibility = View.GONE
+                }
+            }
+
+            binding.viewPager.registerOnPageChangeCallback(object :
+                ViewPager2.OnPageChangeCallback() {
+                override fun onPageSelected(position: Int) {
+                    if (position < items.size - 1) {
+                        binding.btnNextOnBoarding.visibility = View.VISIBLE
+                    } else {
                         binding.btnNextOnBoarding.visibility = View.GONE
                     }
                 }
-                binding.viewPager.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-                    override fun onPageSelected(position: Int) {
-
-                        if (position < items.size - 1) {
-                            binding.btnNextOnBoarding.visibility = View.VISIBLE
-                        }else{
-                            binding.btnNextOnBoarding.visibility = View.GONE
-                        }
-                    }
-                })
-            }.attach()
+            })
         }
-
     }
 
     private fun toRegister() {
@@ -87,5 +90,4 @@ class OnboardingFragment : Fragment() {
             sharedPref.saveFirstInstall(false)
         }
     }
-
 }

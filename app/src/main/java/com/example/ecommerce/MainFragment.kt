@@ -13,6 +13,7 @@ import com.example.ecommerce.databinding.FragmentMainBinding
 import com.example.ecommerce.pref.SharedPref
 
 class MainFragment : Fragment() {
+
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
@@ -27,15 +28,20 @@ class MainFragment : Fragment() {
         SharedPref(requireContext())
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         checkSession()
         checkUserNameExist()
+
         binding.apply {
             topAppBar.setOnMenuItemClickListener {
                 when (it.itemId) {
@@ -59,28 +65,19 @@ class MainFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    fun checkSession() {
+    private fun checkSession() {
         val session = sharedPref.getAccessToken()
         if (session.isNullOrEmpty()) {
             (requireActivity() as MainActivity).logOut()
         }
     }
-    fun checkUserNameExist() {
+
+    private fun checkUserNameExist() {
         val userName = sharedPref.getNameProfile()
-        if(userName.isNullOrEmpty()){
+        if (userName.isNullOrEmpty()) {
             (requireActivity() as MainActivity).checkUsernameExist()
-        }else{
+        } else {
             binding.tvUserName.text = userName
         }
     }
-
-
 }

@@ -3,19 +3,22 @@ package com.example.ecommerce.pref
 import android.content.Context
 import android.content.SharedPreferences
 
-class SharedPref(private val context: Context) {
+class SharedPref(context: Context) {
+
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("PrayPref", Context.MODE_PRIVATE)
 
-    fun saveAccessToken(accessToken: String,refreshToken:String) {
+    fun saveAccessToken(accessToken: String, refreshToken: String) {
         val editor = sharedPreferences.edit()
         editor.putString(ID_TOKEN, accessToken)
         editor.putString(ID_TOKEN_REFRESH, refreshToken)
         editor.apply()
     }
+
     fun getAccessToken(): String? {
         return sharedPreferences.getString(ID_TOKEN, null)
     }
+
     fun getRefreshToken(): String? {
         return sharedPreferences.getString(ID_TOKEN_REFRESH, null)
     }
@@ -25,6 +28,7 @@ class SharedPref(private val context: Context) {
         editor.putString(ID_NAME, token)
         editor.apply()
     }
+
     fun getNameProfile(): String? {
         return sharedPreferences.getString(ID_NAME, null)
     }
@@ -34,17 +38,18 @@ class SharedPref(private val context: Context) {
         editor.putString(ID_IMAGE, token)
         editor.apply()
     }
+
     fun getImage(): String? {
         return sharedPreferences.getString(ID_IMAGE, null)
     }
 
-    fun saveFirstInstall(isFisrtInstall: Boolean){
+    fun saveFirstInstall(isFisrtInstall: Boolean) {
         val editor = sharedPreferences.edit()
         editor.putBoolean(ID_FIRST_INSTALL, isFisrtInstall)
         editor.apply()
     }
 
-    fun getIsFirstInstall(): Boolean? {
+    fun getIsFirstInstall(): Boolean {
         return sharedPreferences.getBoolean(ID_FIRST_INSTALL, true)
     }
 
@@ -62,6 +67,5 @@ class SharedPref(private val context: Context) {
         private const val ID_NAME = "id_name"
         private const val ID_IMAGE = "id_image"
         private const val ID_TOKEN_REFRESH = "id_token_refresh"
-
     }
 }

@@ -40,7 +40,7 @@ class LoginFragment : Fragment() {
     private val viewModel: LoginViewModel by viewModels { factory }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.btnLogin.setEnabled(false)
+        binding.btnLogin.isEnabled = false
         doLogin()
         doRegister()
         spannable()
@@ -50,7 +50,7 @@ class LoginFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -76,7 +76,11 @@ class LoginFragment : Fragment() {
 
                             is Result.Error -> {
                                 progressCircular.hide()
-                                Toast.makeText(requireContext(), "Invalid email or password!", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Invalid email or password!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
 
                             }
 
@@ -89,6 +93,7 @@ class LoginFragment : Fragment() {
             }
         }
     }
+
     private fun doRegister() {
         binding.apply {
             btnRegister.setOnClickListener {
@@ -174,9 +179,9 @@ class LoginFragment : Fragment() {
                 override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             })
 
-            val email: String = binding.tieEmail.getText().toString()
-            val password: String = binding.tiePassword.getText().toString()
-            binding.btnLogin.setEnabled(email.isNotEmpty() && isValidEmail(email) && password.length >= 8)
+            val email: String = binding.tieEmail.text.toString()
+            val password: String = binding.tiePassword.text.toString()
+            binding.btnLogin.isEnabled = email.isNotEmpty() && isValidEmail(email) && password.length >= 8
 
         }
 

@@ -13,6 +13,6 @@
 
     <action
         android:id="@+id/action_mainNav_to_preLogNav"
-        app:destination="@id/prelogin_navigation"/>
+        app:destination="@id/prelogin_navigation" />
 
 </navigation>

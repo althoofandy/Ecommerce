@@ -15,10 +15,11 @@ class HomeFragment : Fragment() {
     private val sharedPref by lazy {
         SharedPref(requireContext())
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
@@ -29,18 +30,20 @@ class HomeFragment : Fragment() {
         logOut()
 
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
     }
 
-    private fun logOut(){
+    private fun logOut() {
         binding.apply {
             btnLogout.setOnClickListener {
                 (requireActivity() as MainActivity).logOut()
                 sharedPref.logout()
             }
-            tvAccessToken.text = "${sharedPref.getAccessToken().toString()} "+" ${sharedPref.getIsFirstInstall()}"
+            tvAccessToken.text =
+                "${sharedPref.getAccessToken().toString()} " + " ${sharedPref.getIsFirstInstall()}"
         }
     }
 

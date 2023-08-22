@@ -23,9 +23,9 @@ class EcommerceRepository(
             val resultResponse = response.data
             pref.saveAccessToken(
                 resultResponse!!.accessToken,
-                resultResponse!!.refreshToken
+                resultResponse.refreshToken
             )
-            pref.saveNameProfile(resultResponse!!.userName)
+            pref.saveNameProfile(resultResponse.userName)
             emit(Result.Success(resultResponse))
         } catch (e: Exception) {
             emit(Result.Error(e))
@@ -36,16 +36,12 @@ class EcommerceRepository(
         emit(Result.Loading)
         try {
             val response = apiService.doRegister(token, auth)
-            if (response != null) {
-                val resultResponse = response.data
-                pref.saveAccessToken(
-                    resultResponse!!.accessToken,
-                    resultResponse!!.refreshToken
-                )
-                emit(Result.Success(resultResponse))
-            } else {
-                Log.d("GAGAL MANING", "HEHE")
-            }
+            val resultResponse = response.data
+            pref.saveAccessToken(
+                resultResponse!!.accessToken,
+                resultResponse.refreshToken
+            )
+            emit(Result.Success(resultResponse))
         } catch (e: Exception) {
             emit(Result.Error(e))
         }
@@ -59,14 +55,11 @@ class EcommerceRepository(
         emit(Result.Loading)
         try {
             val response = apiService.saveToProfile("Bearer $bearer", name, image)
-            if (response != null) {
-                val resultResponse = response.data
-                pref.saveNameProfile(resultResponse!!.userName)
-                emit(Result.Success(resultResponse))
-            }
+            val resultResponse = response.data
+            pref.saveNameProfile(resultResponse!!.userName)
+            emit(Result.Success(resultResponse))
         } catch (e: Exception) {
             emit(Result.Error(e))
         }
     }
-
 }
