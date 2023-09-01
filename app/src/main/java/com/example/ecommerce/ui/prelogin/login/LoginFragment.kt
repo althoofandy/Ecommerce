@@ -27,6 +27,9 @@ import com.example.ecommerce.repos.EcommerceRepository
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
+    private val sharedPref by lazy {
+        SharedPref(requireContext())
+    }
     private val repository by lazy {
         val apiService = Retrofit(requireContext()).getApiService()
         val sharedPref = SharedPref(requireContext())
@@ -34,7 +37,7 @@ class LoginFragment : Fragment() {
     }
 
     private val factory by lazy {
-        ViewModelFactory(repository)
+        ViewModelFactory(repository,sharedPref)
     }
 
     private val viewModel: LoginViewModel by viewModels { factory }

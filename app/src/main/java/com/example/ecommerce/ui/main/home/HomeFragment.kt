@@ -42,8 +42,6 @@ class HomeFragment : Fragment() {
                 (requireActivity() as MainActivity).logOut()
                 sharedPref.logout()
             }
-            tvAccessToken.text =
-                "${sharedPref.getAccessToken().toString()} " + " ${sharedPref.getIsFirstInstall()}"
         }
     }
 

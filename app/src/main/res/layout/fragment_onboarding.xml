@@ -29,7 +29,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/viewPager" />
 
-
     <Button
         android:id="@+id/btnSkipOnBoarding"
         style="@style/Widget.Material3.Button.TextButton"

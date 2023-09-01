@@ -10,6 +10,13 @@
 
     <style name="Theme.Ecommerce" parent="Base.Theme.Ecommerce">
         <item name="fontFamily">@font/poppins_regular</item>
+        <item name="android:textColor">?attr/colorOnSurfaceVariant</item>
+    </style>
+
+    <style name="Search.Fullscreen" parent="Base.Theme.Ecommerce">
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">

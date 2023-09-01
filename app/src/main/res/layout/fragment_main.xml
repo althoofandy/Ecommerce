@@ -54,12 +54,26 @@
         app:defaultNavHost="true"
         app:navGraph="@navigation/child_fragment" />
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottom_nav"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/bottom_nav_menu" />
+        android:orientation="vertical"
+        android:layout_gravity="bottom">
 
-</FrameLayout>
+        <com.google.android.material.divider.MaterialDivider
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:labelVisibilityMode="labeled"
+            android:background="?attr/colorSurfaceContainerLowest"
+            app:menu="@menu/bottom_nav_menu" />
+    </LinearLayout>
+
+
+
+    </FrameLayout>

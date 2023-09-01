@@ -9,7 +9,8 @@
         android:id="@+id/main_fragment"
         android:name="com.example.ecommerce.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main" >
+    </fragment>
 
     <action
         android:id="@+id/action_mainNav_to_preLogNav"

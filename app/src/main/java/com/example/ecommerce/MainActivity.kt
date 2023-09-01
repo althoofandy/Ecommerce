@@ -22,6 +22,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+        instance = this
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -32,6 +33,14 @@ class MainActivity : AppCompatActivity() {
 
     fun logOut() {
         navController.navigate(R.id.action_mainNav_to_preLogNav)
+    }
+
+    fun goToDetailProduct(bundle: Bundle) {
+        navController.navigate(R.id.action_main_to_detailproductFragment, bundle)
+    }
+
+    fun goToDetailReview(bundle: Bundle) {
+        navController.navigate(R.id.action_detailProductFragment_to_reviewFragment, bundle)
     }
 
     fun checkUsernameExist() {
@@ -49,6 +58,13 @@ class MainActivity : AppCompatActivity() {
         val isFirstInstall = sharedPref.getIsFirstInstall()
         if (isFirstInstall) {
             navController.navigate(R.id.action_loginFragment_to_onboardingFragment)
+        }
+    }
+
+    companion object {
+        private var instance: MainActivity? = null
+        fun getInstance(): MainActivity? {
+            return instance
         }
     }
 }

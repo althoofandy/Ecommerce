@@ -7,4 +7,11 @@
     <string name="choose_pict">Pilih Gambar</string>
     <string name="camera">Kamera</string>
     <string name="gallery">Galeri</string>
+    <string name="product_name">Lenovo Legion 7 16 I7 11800 16GB 1TB SSD RTX3070 8GB</string>
+    <string name="product_price">Rp23.499.000</string>
+    <string name="product_store">ProStoreComputer</string>
+    <string name="product_rate">5.0</string>
+    <string name="product_sale">15</string>
+    <string name="review_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="snackbar_text">Berhasil tambah barang!</string>
 </resources>

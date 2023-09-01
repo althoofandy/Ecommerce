@@ -1,5 +1,7 @@
 package com.example.ecommerce.api
 
+import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.ecommerce.model.RefreshResponse
 import com.example.ecommerce.model.TokenRequest
 import com.example.ecommerce.pref.SharedPref
@@ -13,32 +15,39 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class AuthenticatorInterceptor(private val pref: SharedPref) : Authenticator {
+class AuthenticatorInterceptor(private val pref: SharedPref,private val context: Context) : Authenticator {
 
-    override fun authenticate(route: Route?, response: Response): Request {
+    override fun authenticate(route: Route?, response: Response): Request? {
+        val refreshToken = pref.getRefreshToken().toString()
         synchronized(this) {
             return runBlocking {
-                val refreshToken = pref.getRefreshToken()
-                val newToken = getToken(refreshToken!!)
-                if (!newToken.isSuccessful || newToken.body() == null) {
-                    pref.logout()
-                }
-                newToken.body().let {
-                    pref.saveAccessToken(it?.data!!.accessToken, it.data.refreshToken)
-                    response.request.newBuilder()
-                        .header("Authorization", "Bearer ${it.data.accessToken}")
-                        .build()
+                try {
+                    val newToken = getToken(refreshToken,context)
+                    if (newToken != null) {
+                        pref.saveAccessToken(newToken.data?.accessToken,newToken.data?.refreshToken)
+                        response.request
+                            .newBuilder()
+                            .header("Authorization", "Bearer ${newToken.data?.accessToken}")
+                            .build()
+                    } else {
+                        pref.logout()
+                        null
+                    }
+                } catch (error: Throwable) {
+                    null
                 }
             }
+
         }
     }
 
-    private suspend fun getToken(token: String): retrofit2.Response<RefreshResponse> {
+    private suspend fun getToken(token: String,context: Context):RefreshResponse {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
         val client = OkHttpClient.Builder()
             .addInterceptor(loggingInterceptor)
+            .addInterceptor(ChuckerInterceptor(context))
             .build()
 
         val retrofit = Retrofit.Builder()
@@ -49,7 +58,7 @@ class AuthenticatorInterceptor(private val pref: SharedPref) : Authenticator {
 
         val service = retrofit.create(ApiService::class.java)
 
-        val tokenReq = TokenRequest(token)
+        val tokenReq = TokenRequest(token!!)
         return service.refreshToken("6f8856ed-9189-488f-9011-0ff4b6c08edc", tokenReq)
     }
 }

@@ -43,6 +43,7 @@ class AddProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private var uri: Uri? = null
+    private var file: File? = null
 
     private val pref by lazy {
         SharedPref(requireContext())
@@ -55,7 +56,7 @@ class AddProfileFragment : Fragment() {
     }
 
     private val factory by lazy {
-        ViewModelFactory(repository)
+        ViewModelFactory(repository,pref)
     }
 
     private val viewModel: ProfileViewModel by viewModels { factory }
@@ -70,12 +71,12 @@ class AddProfileFragment : Fragment() {
         return FileProvider.getUriForFile(requireContext(), authority, photoFile)
     }
 
-    val startGallery =
+    private val startGallery =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
             if (uri != null) {
                 val file = uriToFile(uri, requireContext())
                 val reducedFile = reduceFileImage(file)
-                setProfile(reducedFile)
+                this.file = reducedFile
                 binding.vectorImg.visibility = View.GONE
                 Glide.with(binding.root.context)
                     .load(uri)
@@ -85,7 +86,7 @@ class AddProfileFragment : Fragment() {
             }
         }
 
-    val startCamera =
+    private val startCamera =
         registerForActivityResult(ActivityResultContracts.TakePicture()) { isSuccess: Boolean? ->
             if (isSuccess == true) {
                 binding.vectorImg.visibility = View.GONE
@@ -94,13 +95,13 @@ class AddProfileFragment : Fragment() {
                     .into(binding.ivPhoto)
                 val file = uriToFile(uri!!, requireContext())
                 val reducedFile = reduceFileImage(file)
-                setProfile(reducedFile)
+                this.file = reducedFile
             }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        instance = this
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
                 requireContext() as Activity,
@@ -120,48 +121,50 @@ class AddProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        checkUserSession()
         spannable()
         btnEnable()
         choosePhoto()
-        checkUserSession()
+        binding.btnDone.setOnClickListener {
+            setProfile(file)
+        }
     }
 
-    private fun setProfile(file: File) {
+    private fun setProfile(file: File?) {
         binding.apply {
-            btnDone.setOnClickListener {
-                progressCircular.visibility = View.VISIBLE
-                val requestUser =
-                    MultipartBody.Part.createFormData("userName", binding.tieNama.text.toString())
-                val requestImage = MultipartBody.Part.createFormData(
+            progressCircular.visibility = View.VISIBLE
+            val requestUser =
+                MultipartBody.Part.createFormData("userName", binding.tieNama.text.toString())
+            val requestImage = file?.let {
+                MultipartBody.Part.createFormData(
                     "userImage",
-                    file.name,
-                    file.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    file?.name,
+                    file!!.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 )
-                val token = pref.getAccessToken()
-                viewModel.doProfile(token!!, requestUser, requestImage)
-                    .observe(viewLifecycleOwner) {
-                        when (it) {
-                            is Result.Success -> {
-                                progressCircular.hide()
-                                findNavController().navigate(R.id.action_addProfileFragment_to_main_navigation)
-                            }
+            }
+            val token = pref.getAccessToken()
+            viewModel.doProfile(token!!, requestUser, requestImage)
+                .observe(viewLifecycleOwner) {
+                    when (it) {
+                        is Result.Success -> {
+                            progressCircular.hide()
+                            findNavController().navigate(R.id.action_addProfileFragment_to_main_navigation)
+                        }
 
-                            is Result.Error -> {
-                                progressCircular.hide()
-                                Toast.makeText(
-                                    requireContext(),
-                                    "Sesi anda telah berakhir!",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
+                        is Result.Error -> {
+                            progressCircular.hide()
+                            Toast.makeText(
+                                requireContext(),
+                                "Sesi anda telah berakhir!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
 
-                            is Result.Loading -> {
-                                progressCircular.show()
-                            }
+                        is Result.Loading -> {
+                            progressCircular.show()
                         }
                     }
-            }
+                }
         }
     }
 
@@ -255,13 +258,7 @@ class AddProfileFragment : Fragment() {
             }
         }
     }
-
-    companion object {
-        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
-        private const val REQUEST_CODE_PERMISSIONS = 10
-    }
-
-    private fun checkUserSession() {
+     private fun checkUserSession() {
         val token = pref.getAccessToken()
         if (token == null) {
             findNavController().navigate(R.id.action_addProfileFragment_to_prelogin_navigation)
@@ -271,5 +268,14 @@ class AddProfileFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+    companion object {
+        private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
+        private const val REQUEST_CODE_PERMISSIONS = 10
+
+        private var instance: AddProfileFragment? = null
+        fun getInstance(): AddProfileFragment? {
+            return instance
+        }
     }
 }

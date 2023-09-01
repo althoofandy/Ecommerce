@@ -17,6 +17,8 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_loginFragment_to_onboardingFragment"
+            app:popUpTo="@id/loginFragment"
+            app:popUpToInclusive="true"
             app:destination="@id/onboardingFragment" />
 
     </fragment>

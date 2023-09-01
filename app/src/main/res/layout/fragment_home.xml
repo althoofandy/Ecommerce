@@ -21,12 +21,5 @@
             android:fontFamily="@font/poppins_regular"
             android:text="Logout" />
 
-        <TextView
-            android:id="@+id/tvAccessToken"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="LIHAT ACCESS TOKEN" />
-
     </LinearLayout>
 </LinearLayout>

@@ -6,6 +6,6 @@ import okhttp3.MultipartBody
 
 class ProfileViewModel(private val repository: EcommerceRepository) : ViewModel() {
 
-    fun doProfile(token: String, name: MultipartBody.Part, image: MultipartBody.Part) =
+    fun doProfile(token: String, name: MultipartBody.Part, image: MultipartBody.Part?) =
         repository.saveToProfile(token, name, image)
 }

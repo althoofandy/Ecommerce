@@ -1,6 +1,11 @@
+
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-parcelize")
+    kotlin ("kapt")
 }
 
 android {
@@ -67,5 +72,13 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
 
     debugImplementation ("com.github.chuckerteam.chucker:library:4.0.0")
+
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
+    implementation ("androidx.paging:paging-runtime-ktx:3.1.0")
+
+    implementation ("androidx.room:room-runtime:2.5.2")
+    kapt("androidx.room:room-compiler:2.5.2")
+    implementation("androidx.room:room-ktx:2.5.2")
 
 }
