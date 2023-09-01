@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
@@ -20,6 +21,7 @@ import com.example.ecommerce.model.asProductLocalDb
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
+import com.example.ecommerce.ui.main.menu.db.AppExecutor
 import com.example.ecommerce.ui.main.menu.db.ProductDAO
 import com.example.ecommerce.ui.main.menu.db.ProductDatabase
 import com.example.ecommerce.ui.main.store.CurrencyUtils
@@ -52,6 +54,7 @@ class DetailProductFragment : Fragment() {
     private var varianName: String? = null
     private var productPrice: Int? = 0
     private var varianPrice: Int? = 0
+    private lateinit var appExecutors: AppExecutor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +82,7 @@ class DetailProductFragment : Fragment() {
 
     @SuppressLint("SetTextI18n")
     private fun getDataDetail() {
+        appExecutors = AppExecutor()
         database = ProductDatabase.getDatabase(requireContext())
         productDao = database.productDao()
 
@@ -115,22 +119,35 @@ class DetailProductFragment : Fragment() {
                         }
                         btnKeKeranjang.setOnClickListener {
                             val productLocalDb = product.asProductLocalDb(varianName, varianPrice)
-                            cartViewModel = CartViewModel(requireContext())
-                            cartViewModel.addToCart(
-                                productLocalDb.productId,
-                                productLocalDb.productName,
-                                productLocalDb.productPrice,
-                                productLocalDb.image,
-                                productLocalDb.stock,
-                                varianName ?: "RAM 16GB",
-                                varianPrice
-                            )
-                            val contextView = binding.view
-                            Snackbar.make(
-                                contextView,
-                                R.string.snackbar_text,
-                                Snackbar.LENGTH_SHORT
-                            ).show()
+
+                            appExecutors.diskIO.execute{
+
+                                cartViewModel = CartViewModel(requireContext())
+                                val checkProductExist = cartViewModel.getCartById(productLocalDb.productId)
+                                if(checkProductExist?.productId != null){
+                                    val sumQuantity = productLocalDb.quantity
+                                    val counter = sumQuantity + 1
+                                    cartViewModel.updateCartItemQuantity(productLocalDb.productId,counter)
+                                }
+                                else{
+                                    cartViewModel.addToCart(
+                                        productLocalDb.productId,
+                                        productLocalDb.productName,
+                                        productLocalDb.productPrice,
+                                        productLocalDb.image,
+                                        productLocalDb.stock,
+                                        varianName ?: "RAM 16GB",
+                                        varianPrice
+                                    )
+                                }
+
+                                val contextView = binding.view
+                                Snackbar.make(
+                                    contextView,
+                                    R.string.snackbar_text,
+                                    Snackbar.LENGTH_SHORT
+                                ).show()
+                            }
                         }
                     }
 

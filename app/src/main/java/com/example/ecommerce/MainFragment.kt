@@ -4,13 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ecommerce.databinding.FragmentMainBinding
 import com.example.ecommerce.pref.SharedPref
+import com.example.ecommerce.ui.main.menu.cart.CartAdapter
+import com.example.ecommerce.ui.main.menu.cart.CartViewModel
+import com.google.android.material.badge.BadgeDrawable
+import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.ExperimentalBadgeUtils
 
+@ExperimentalBadgeUtils
 class MainFragment : Fragment() {
 
     private var _binding: FragmentMainBinding? = null
@@ -26,6 +33,7 @@ class MainFragment : Fragment() {
     private val sharedPref by lazy {
         SharedPref(requireContext())
     }
+    private lateinit var cartViewModel: CartViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,6 +48,7 @@ class MainFragment : Fragment() {
 
         checkSession()
         checkUserNameExist()
+        setBadge()
 
         binding.apply {
             topAppBar.setOnMenuItemClickListener {
@@ -58,6 +67,22 @@ class MainFragment : Fragment() {
 
             binding.bottomNav.setupWithNavController(navController)
             binding.bottomNav.setOnItemReselectedListener { }
+        }
+    }
+
+    private fun setBadge() {
+        cartViewModel = CartViewModel(requireContext())
+
+        cartViewModel.getCartItem()?.observe(viewLifecycleOwner) {
+            val badgeDrawable = BadgeDrawable.create(requireContext())
+            val numberOfItemsInCart = it.size
+            badgeDrawable.number = numberOfItemsInCart
+
+            if (numberOfItemsInCart > 0) {
+                BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.topAppBar, R.id.cart)
+            } else {
+                badgeDrawable.clearNumber()
+            }
         }
     }
 

@@ -63,6 +63,13 @@ class CartAdapter(private val cartViewModel: CartViewModel) :
                     include.btnDecrease.isSelected = false
                 }
 
+                binding.checkBox2.isChecked = item.selected
+
+                binding.checkBox2.setOnClickListener {
+                    cartViewModel.updateCartItemCheckbox(listOf(item.productId), checkBox2.isChecked)
+
+                }
+
             }
         }
     }

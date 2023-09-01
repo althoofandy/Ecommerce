@@ -49,7 +49,7 @@
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/cbAllCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -66,7 +66,7 @@
             android:layout_marginStart="8dp"
             android:text="Pilih Semua"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/checkBox"
+            app:layout_constraintStart_toEndOf="@+id/cbAllCheck"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.466" />
 
@@ -83,25 +83,63 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.666" />
 
+        <Button
+            android:id="@+id/btnDeleteAll"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hapus"
+            android:textSize="14sp"
+            android:visibility="gone"
+            android:height="20px"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:id="@+id/linearError"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/materialDivider6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/materialDivider5">
+
+        <ImageView
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/error_img"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Empty"
+            android:textSize="32sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCart"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="2dp"
         android:layout_marginHorizontal="4dp"
+        android:layout_marginTop="2dp"
         app:layout_constraintBottom_toTopOf="@+id/materialDivider6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/materialDivider5"
+        app:layout_constraintVertical_bias="0.0"
         tools:listitem="@layout/item_cart" />
-
-    <!--    <include-->
-    <!--        android:id="@+id/error_layout"-->
-    <!--        layout="@layout/error_layout"-->
-    <!--        android:visibility="gone"-->
-    <!--        tools:visibility="gone" />-->
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/materialDivider6"

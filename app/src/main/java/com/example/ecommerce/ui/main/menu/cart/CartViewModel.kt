@@ -13,6 +13,7 @@ class CartViewModel(context: Context) : ViewModel() {
     private var cartDb: ProductDatabase? = ProductDatabase.getDatabase(context)
     private var cartDAO = cartDb?.productDao()
 
+
     fun addToCart(
         productId: String,
         productName: String,
@@ -43,6 +44,9 @@ class CartViewModel(context: Context) : ViewModel() {
             cartDAO?.addToCart(productItem)
         }
     }
+    fun getCartById(id:String): ProductLocalDb? {
+        return cartDAO?.getProductById(id)
+    }
 
     fun getCartItem(): LiveData<List<ProductLocalDb>>? {
         return cartDAO?.getCartProducts()
@@ -71,6 +75,7 @@ class CartViewModel(context: Context) : ViewModel() {
             cartDAO?.updateCartItemCheckbox(productId, isSelected)
         }
     }
+
 
 }
 

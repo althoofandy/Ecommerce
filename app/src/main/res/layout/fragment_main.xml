@@ -25,6 +25,7 @@
                 app:menu="@menu/top_app_bar"
                 app:navigationIcon="@drawable/outline_account_circle_24">
 
+
                 <TextView
                     android:id="@+id/tvUserName"
                     android:layout_width="match_parent"

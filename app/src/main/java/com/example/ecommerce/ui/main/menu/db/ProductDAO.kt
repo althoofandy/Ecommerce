@@ -15,6 +15,9 @@ interface ProductDAO {
     @Query("SELECT * FROM product_database")
     fun getCartProducts(): LiveData<List<ProductLocalDb>>
 
+    @Query("SELECT * FROM product_database WHERE productId = :productId")
+    fun getProductById(productId: String): ProductLocalDb?
+
     @Query("UPDATE product_database SET quantity = :newQuantity WHERE productId = :productId")
     suspend fun updateCartItemQuantity(productId: String, newQuantity: Int)
 
