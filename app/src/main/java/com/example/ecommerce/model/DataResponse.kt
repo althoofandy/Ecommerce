@@ -158,7 +158,7 @@ data class GetProductReviewItemResponse(
     val userReview : String
 )
 
-@Entity(tableName = "product_database")
+@Entity
 @Parcelize
 data class ProductLocalDb(
     @PrimaryKey
@@ -186,6 +186,52 @@ fun GetProductDetailItemResponse.asProductLocalDb(
     variantPrice: Int?
 ): ProductLocalDb {
     return ProductLocalDb(
+        productId,
+        productName,
+        productPrice,
+        image.firstOrNull().toString(),
+        brand,
+        description,
+        store,
+        sale,
+        stock,
+        totalRating,
+        totalReview,
+        totalSatisfaction,
+        productRating,
+        variantName.toString(),
+        variantPrice
+    )
+}
+
+@Entity
+@Parcelize
+data class WishlistProduct(
+    @PrimaryKey
+    val productId: String,
+    val productName: String,
+    val productPrice: Int,
+    val image: String,
+    val brand: String,
+    val description: String,
+    val store: String,
+    val sale: Int,
+    val stock: Int?,
+    val totalRating: Int,
+    val totalReview: Int,
+    val totalSatisfaction: Int,
+    val productRating: Float,
+    var variantName: String,
+    var variantPrice: Int?,
+    var quantity: Int = 1,
+    var selected: Boolean = false
+) : Parcelable
+
+fun GetProductDetailItemResponse.asWishlistProduct(
+    variantName: String?,
+    variantPrice: Int?
+): WishlistProduct {
+    return WishlistProduct(
         productId,
         productName,
         productPrice,

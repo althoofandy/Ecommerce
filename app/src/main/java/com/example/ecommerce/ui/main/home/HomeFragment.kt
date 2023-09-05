@@ -7,14 +7,17 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.databinding.FragmentHomeBinding
-import com.example.ecommerce.pref.SharedPref
+import com.example.ecommerce.ui.main.db.AppExecutor
+import com.example.ecommerce.ui.main.db.ProductDatabase
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
-    private val sharedPref by lazy {
-        SharedPref(requireContext())
+    private lateinit var viewModel: HomeViewModel
+    private val productDatabase by lazy {
+        ProductDatabase.getDatabase(requireContext())
     }
+    private lateinit var appExecutor: AppExecutor
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,8 +43,16 @@ class HomeFragment : Fragment() {
         binding.apply {
             btnLogout.setOnClickListener {
                 (requireActivity() as MainActivity).logOut()
-                sharedPref.logout()
+                clearDb()
+
             }
+        }
+    }
+    private fun clearDb(){
+        appExecutor = AppExecutor()
+        appExecutor.diskIO.execute {
+            viewModel = HomeViewModel(productDatabase)
+            viewModel.clearDb()
         }
     }
 

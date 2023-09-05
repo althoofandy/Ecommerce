@@ -4,7 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.ecommerce.model.ProductLocalDb
-import com.example.ecommerce.ui.main.menu.db.ProductDatabase
+import com.example.ecommerce.ui.main.db.ProductDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,7 +19,11 @@ class CartViewModel(context: Context) : ViewModel() {
         productName: String,
         productPrice: Int,
         image: String,
+        store:String,
+        sale:Int,
         stock: Int?,
+        rating:Int,
+        productRating:Float,
         variantName: String,
         variantPrice: Int?,
     ) {
@@ -31,13 +35,13 @@ class CartViewModel(context: Context) : ViewModel() {
                 image,
                 "",
                 "",
-                "",
-                0,
+                store,
+                sale,
                 stock,
+                rating,
                 0,
                 0,
-                0,
-                0F,
+                productRating,
                 variantName,
                 variantPrice
             )

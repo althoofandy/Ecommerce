@@ -1,27 +1,29 @@
-package com.example.ecommerce.ui.main.store.mainStore
+package com.example.ecommerce.ui.main.wishlist
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ecommerce.databinding.ItemProductGridBinding
-import com.example.ecommerce.databinding.ItemProductLinearBinding
-import com.example.ecommerce.model.GetProductsItemResponse
+import com.example.ecommerce.databinding.ItemWishlistGridBinding
+import com.example.ecommerce.databinding.ItemWishlistLinearBinding
+import com.example.ecommerce.model.WishlistProduct
 import com.example.ecommerce.ui.main.CurrencyUtils
-import com.example.ecommerce.ui.main.store.search.SearchAdapter
+import com.example.ecommerce.ui.main.db.AppExecutor
+import com.example.ecommerce.ui.main.store.mainStore.ViewType
 
-class AdapterProduct(
-    private val context: Context
-) : PagingDataAdapter<GetProductsItemResponse, RecyclerView.ViewHolder>(ProductComparator) {
+class WishlistAdapter(
+    private val context: Context, private val wishlistViewModel: WishlistViewModel
+) : ListAdapter<WishlistProduct, RecyclerView.ViewHolder>(ProductComparator) {
     var item = true
     var currentViewType = ViewType.LINEAR
-    private var onItemClickCallback: SearchAdapter.OnItemClickCallback? = null
 
-    fun setOnItemClickCallback(onItemClickCallback: SearchAdapter.OnItemClickCallback) {
+    private var onItemClickCallback: OnItemClickCallback? = null
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
@@ -29,12 +31,12 @@ class AdapterProduct(
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (getItemViewType(viewType)) {
             LINEAR -> {
-                val binding = ItemProductLinearBinding.inflate(layoutInflater, parent, false)
+                val binding = ItemWishlistLinearBinding.inflate(layoutInflater, parent, false)
                 LinearViewHolder(binding)
             }
 
             GRID -> {
-                val binding = ItemProductGridBinding.inflate(layoutInflater, parent, false)
+                val binding = ItemWishlistGridBinding.inflate(layoutInflater, parent, false)
                 GridViewHolder(binding)
             }
 
@@ -73,9 +75,9 @@ class AdapterProduct(
         }
     }
 
-    inner class LinearViewHolder(private val binding: ItemProductLinearBinding) :
+    inner class LinearViewHolder(private val binding: ItemWishlistLinearBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(product: GetProductsItemResponse) {
+        fun bind(product: WishlistProduct) {
             item = true
             binding.apply {
                 Glide.with(context)
@@ -86,16 +88,20 @@ class AdapterProduct(
                 tvStore.text = product.store
                 tvRating.text = product.productRating.toString()
                 tvSell.text = product.sale.toString()
+                btnAddToCart.setOnClickListener {
+                    onItemClickCallback?.onItemClick(product)
+                }
+                btnDelete.setOnClickListener {
+                    wishlistViewModel.removeWishlist(product.productId)
+                }
             }
-            binding.root.setOnClickListener {
-                onItemClickCallback?.onItemClicked(product.productId)
-            }
+
         }
     }
 
-    inner class GridViewHolder(private val binding: ItemProductGridBinding) :
+    inner class GridViewHolder(private val binding: ItemWishlistGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(product: GetProductsItemResponse) {
+        fun bind(product: WishlistProduct) {
 
             item = false
             binding.apply {
@@ -107,13 +113,19 @@ class AdapterProduct(
                 tvStore.text = product.store
                 tvRating.text = product.productRating.toString()
                 tvSell.text = product.sale.toString()
-            }
-            binding.root.setOnClickListener {
-                onItemClickCallback?.onItemClicked(product.productId)
+                btnAddToCart.setOnClickListener {
+                    onItemClickCallback?.onItemClick(product)
+                }
+                btnDelete.setOnClickListener {
+                    wishlistViewModel.removeWishlist(product.productId)
+                }
             }
 
         }
+    }
 
+    interface OnItemClickCallback {
+        fun onItemClick(position: WishlistProduct)
     }
 
     companion object {
@@ -122,22 +134,18 @@ class AdapterProduct(
     }
 }
 
-object ProductComparator : DiffUtil.ItemCallback<GetProductsItemResponse>() {
+object ProductComparator : DiffUtil.ItemCallback<WishlistProduct>() {
     override fun areItemsTheSame(
-        oldItem: GetProductsItemResponse,
-        newItem: GetProductsItemResponse
+        oldItem: WishlistProduct,
+        newItem: WishlistProduct
     ): Boolean {
         return oldItem.productId == newItem.productId
     }
 
     override fun areContentsTheSame(
-        oldItem: GetProductsItemResponse,
-        newItem: GetProductsItemResponse
+        oldItem: WishlistProduct,
+        newItem: WishlistProduct
     ): Boolean {
         return oldItem == newItem
     }
 }
-
-
-
-

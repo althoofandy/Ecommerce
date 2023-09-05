@@ -1,6 +1,10 @@
 package com.example.ecommerce.ui.main.store.mainStore
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -74,39 +78,55 @@ class StoreFragment : Fragment() {
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setChiperandFilter()
-        getAllProducts()
-        setSearch()
         binding.apply {
-            swiperefresh.setOnRefreshListener {
-                adapter.refresh()
-                binding.swiperefresh.isRefreshing = false
-            }
-            chipFilter.setOnClickListener {
-                val bottomSheet = BottomSheet.newInstance(
-                    category.toString(),
-                    sort.toString(),
-                    highest.toString(),
-                    lowest.toString()
-                )
-                bottomSheet.show(parentFragmentManager, BottomSheet.TAG)
-            }
-            tieSearch.setOnClickListener {
-                val fragmentManager = requireActivity().supportFragmentManager
-                val newFragment = SearchDialogFragment()
-                val transaction = fragmentManager.beginTransaction()
-                transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
-                transaction
-                    .add(android.R.id.content, newFragment)
-                    .addToBackStack(null)
-                    .commit()
+            adapter = AdapterProduct(requireContext())
+            if (isInternetAvailable(requireContext())) {
+                setChiperandFilter()
+                getAllProducts()
+                setSearch()
+                swiperefresh.setOnRefreshListener {
+                    adapter.refresh()
+                    binding.swiperefresh.isRefreshing = false
+                }
+                chipFilter.setOnClickListener {
+                    val bottomSheet = BottomSheet.newInstance(
+                        category.toString(),
+                        sort.toString(),
+                        highest.toString(),
+                        lowest.toString()
+                    )
+                    bottomSheet.show(parentFragmentManager, BottomSheet.TAG)
+                }
+                tieSearch.setOnClickListener {
+                    val fragmentManager = requireActivity().supportFragmentManager
+                    val newFragment = SearchDialogFragment()
+                    val transaction = fragmentManager.beginTransaction()
+                    transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
+                    transaction
+                        .add(android.R.id.content, newFragment)
+                        .addToBackStack(null)
+                        .commit()
+                }
+
+                ivLayout.setOnClickListener {
+                    changeToggle()
+                }
+            } else {
+                shimmerGrid.visibility = View.GONE
+                shimmerLinear.visibility = View.GONE
+                linearLayout.visibility = View.GONE
+                shimmerFilter.visibility = View.GONE
+
+                linearErrorLayout.visibility = View.VISIBLE
+                errorTypeText.text = "Connection"
+                errorTypeInfo.text = "Your connection is unavailable"
+                restartButton.text = "Refresh"
+                restartButton.setOnClickListener {
+                    adapter.refresh()
+                }
+                rvProduct.visibility = View.GONE
             }
         }
-
-        binding.ivLayout.setOnClickListener {
-            changeToggle()
-        }
-
     }
 
     private fun changeToggle() {
@@ -161,6 +181,7 @@ class StoreFragment : Fragment() {
                             viewModel.resetParam()
                             tieSearch.text?.clear()
                         }
+                        rvProduct.visibility = View.GONE
                     } else {
                         errorTypeText.text = "500"
                         errorTypeInfo.text = "Internal Server Error"
@@ -168,6 +189,7 @@ class StoreFragment : Fragment() {
                         restartButton.setOnClickListener {
                             adapter.refresh()
                         }
+                        rvProduct.visibility = View.GONE
                     }
                 }
                 if (isRefreshing) {
@@ -286,6 +308,20 @@ class StoreFragment : Fragment() {
         }
     }
 
+    fun isInternetAvailable(context: Context): Boolean {
+        val connectivityManager =
+            context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val networkCapabilities =
+                connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+            return networkCapabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
+        } else {
+            val networkInfo = connectivityManager.activeNetworkInfo
+            return networkInfo != null && networkInfo.isConnected
+        }
+    }
+
 
     companion object {
         const val FILTER = "filter"
@@ -293,7 +329,6 @@ class StoreFragment : Fragment() {
         const val CHIP_CATEGORY = "chipCategory"
         const val CHIP_LOWEST = "chipLowest"
         const val CHIP_HIGHEST = "chipHighest"
-        const val ID_PRODUCT = "idProduct"
         const val SEARCH = "search"
     }
 }

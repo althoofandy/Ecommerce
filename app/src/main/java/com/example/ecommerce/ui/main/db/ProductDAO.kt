@@ -1,4 +1,4 @@
-package com.example.ecommerce.ui.main.menu.db
+package com.example.ecommerce.ui.main.db
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
@@ -12,21 +12,21 @@ interface ProductDAO {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addToCart(cartProducts: ProductLocalDb)
 
-    @Query("SELECT * FROM product_database")
+    @Query("SELECT * FROM ProductLocalDb")
     fun getCartProducts(): LiveData<List<ProductLocalDb>>
 
-    @Query("SELECT * FROM product_database WHERE productId = :productId")
+    @Query("SELECT * FROM ProductLocalDb WHERE productId = :productId")
     fun getProductById(productId: String): ProductLocalDb?
 
-    @Query("UPDATE product_database SET quantity = :newQuantity WHERE productId = :productId")
+    @Query("UPDATE ProductLocalDb SET quantity = :newQuantity WHERE productId = :productId")
     suspend fun updateCartItemQuantity(productId: String, newQuantity: Int)
 
-    @Query("UPDATE product_database SET selected = :isSelected WHERE productId IN (:productId)")
+    @Query("UPDATE ProductLocalDb SET selected = :isSelected WHERE productId IN (:productId)")
     suspend fun updateCartItemCheckbox(productId: List<String>, isSelected: Boolean)
 
-    @Query("DELETE FROM product_database WHERE product_database.productId = :id")
+    @Query("DELETE FROM ProductLocalDb WHERE ProductLocalDb.productId = :id")
     suspend fun removeFromCart(id: String): Int
 
-    @Query("DELETE FROM product_database WHERE product_database.productId IN (:productId)")
+    @Query("DELETE FROM ProductLocalDb WHERE ProductLocalDb.productId IN (:productId)")
     suspend fun removeFromCartAll(productId: List<String>)
 }

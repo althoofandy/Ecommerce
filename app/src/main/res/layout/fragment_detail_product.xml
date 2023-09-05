@@ -6,10 +6,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <LinearLayout
+        android:id="@+id/linearError"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout">
+
+        <ImageView
+            android:layout_width="128dp"
+            android:layout_height="128dp"
+            android:src="@drawable/error_img" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Empty"
+            android:textSize="32sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your requested data is unavailable"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/btnRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Refresh"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/viewBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/coordinatorLayout">
@@ -32,10 +74,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
-                app:tabBackground="@drawable/tab_selector"
                 app:layout_constraintBottom_toBottomOf="@+id/vpImageProduct"
                 app:layout_constraintEnd_toEndOf="@+id/vpImageProduct"
                 app:layout_constraintStart_toStartOf="@+id/vpImageProduct"
+                app:tabBackground="@drawable/tab_selector"
                 app:tabIndicatorHeight="0dp" />
 
             <TextView
@@ -49,14 +91,22 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/vpImageProduct" />
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/outline_share_24"
+                android:layout_marginEnd="6dp"
+                app:layout_constraintBottom_toBottomOf="@+id/toggle_favorite"
+                app:layout_constraintEnd_toStartOf="@+id/toggle_favorite"
+                app:layout_constraintTop_toTopOf="@+id/toggle_favorite" />
             <ToggleButton
                 android:id="@+id/toggle_favorite"
-                android:layout_width="20dp"
-                android:layout_height="18.75dp"
-                android:layout_marginEnd="18dp"
-                android:background="@drawable/baseline_favorite_border_24"
-                android:focusable="false"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
                 android:layout_marginTop="16dp"
+                android:layout_marginEnd="18dp"
+                android:background="@drawable/toogle_wishlist"
+                android:focusable="false"
                 android:focusableInTouchMode="false"
                 android:textOff=""
                 android:textOn=""
@@ -103,27 +153,42 @@
                 app:layout_constraintTop_toBottomOf="@+id/tvProductName"
                 tools:ignore="SmallSp" />
 
-            <ImageView
-                android:id="@+id/imageView6"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="10dp"
-                android:src="@drawable/baseline_star_24"
-                app:layout_constraintStart_toEndOf="@+id/tvSale"
-                app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
-
-            <TextView
-                android:id="@+id/tvRatingUp"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:background="@drawable/rounded_rate"
+                android:gravity="center"
+                android:layout_marginStart="12dp"
                 android:layout_marginTop="9dp"
-                android:layout_marginStart="5dp"
-                android:text="4.5"
-                android:textColor="?attr/colorOnSurfaceVariant"
-                android:textSize="12sp"
-                app:layout_constraintStart_toEndOf="@+id/imageView6"
-                app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
+                app:layout_constraintStart_toEndOf="@+id/tvSale"
+                app:layout_constraintTop_toBottomOf="@+id/tvProductName">
+
+                <ImageView
+                    android:id="@+id/imageView6"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:src="@drawable/baseline_star_24"
+                     />
+
+                <TextView
+                    android:id="@+id/tvRatingUp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="4.5"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvRate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(2)"
+                    android:layout_marginEnd="2dp"
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <com.google.android.material.divider.MaterialDivider
                 android:id="@+id/materialDivider1"
@@ -138,11 +203,11 @@
 
             <com.google.android.material.chip.ChipGroup
                 android:id="@+id/chipGroupVarian"
+                style="@style/Widget.Material3.Chip.Input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
-                style="@style/Widget.Material3.Chip.Input"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -180,9 +245,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="12dp"
+                android:fontFamily="@font/poppins_medium"
                 android:text="Deskripsi Produk"
                 android:textSize="16sp"
-                android:fontFamily="@font/poppins_medium"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialDivider3" />
 
@@ -224,11 +289,11 @@
 
             <Button
                 android:id="@+id/buttonLihatSemua"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
-                style="@style/Widget.Material3.Button.TextButton"
                 android:includeFontPadding="false"
                 android:text="Lihat Semua"
                 android:textColor="#6750A4"
@@ -253,8 +318,8 @@
                 android:id="@+id/tvUserFeel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginTop="8dp"
                 android:text="Pembeli merasa puas"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/tvPercent"
@@ -306,12 +371,12 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
                 android:layout_marginTop="11dp"
-                android:text="5.0"
                 android:layout_marginBottom="18dp"
+                android:text="5.0"
                 android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/imageView7"
-                app:layout_constraintTop_toBottomOf="@+id/tvReview"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/tvReview" />
 
             <TextView
                 android:id="@+id/textView11"
@@ -363,16 +428,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:dividerColor="#A0A0A0"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/viewBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
-        android:id="@+id/view"
+        android:id="@+id/viewBottom"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/white"
         android:orientation="horizontal"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -386,11 +452,7 @@
             android:layout_marginVertical="8dp"
             android:textSize="14sp"
             android:text="Beli Langsung"
-            style="@style/Widget.Material3.Button.IconButton.Outlined"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view"
-            app:layout_constraintVertical_bias="0.0" />
+            style="@style/Widget.Material3.Button.IconButton.Outlined" />
 
         <Button
             android:id="@+id/btnKeKeranjang"
@@ -400,13 +462,21 @@
             android:layout_marginVertical="8dp"
             android:textSize="14sp"
             android:layout_marginHorizontal="12dp"
-            android:text="+ Keranjang"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/view"
-            app:layout_constraintVertical_bias="0.0" />
+            android:text="+ Keranjang" />
 
 
     </LinearLayout>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

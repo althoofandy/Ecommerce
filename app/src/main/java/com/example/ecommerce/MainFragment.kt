@@ -13,8 +13,10 @@ import com.example.ecommerce.databinding.FragmentMainBinding
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.ui.main.menu.cart.CartAdapter
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
+import com.example.ecommerce.ui.main.wishlist.WishlistViewModel
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils
+import com.google.android.material.badge.BadgeUtils.attachBadgeDrawable
 import com.google.android.material.badge.ExperimentalBadgeUtils
 
 @ExperimentalBadgeUtils
@@ -34,7 +36,7 @@ class MainFragment : Fragment() {
         SharedPref(requireContext())
     }
     private lateinit var cartViewModel: CartViewModel
-
+    private lateinit var wishViewModel: WishlistViewModel
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -72,16 +74,28 @@ class MainFragment : Fragment() {
 
     private fun setBadge() {
         cartViewModel = CartViewModel(requireContext())
-
+        wishViewModel = WishlistViewModel(requireContext())
         cartViewModel.getCartItem()?.observe(viewLifecycleOwner) {
             val badgeDrawable = BadgeDrawable.create(requireContext())
             val numberOfItemsInCart = it.size
             badgeDrawable.number = numberOfItemsInCart
 
             if (numberOfItemsInCart > 0) {
-                BadgeUtils.attachBadgeDrawable(badgeDrawable, binding.topAppBar, R.id.cart)
+                attachBadgeDrawable(badgeDrawable, binding.topAppBar, R.id.cart)
             } else {
                 badgeDrawable.clearNumber()
+            }
+        }
+
+        wishViewModel.getWishlistProduct()?.observe(viewLifecycleOwner){
+            val numberOfItemsInCart = it.size
+            val bottomBadge = binding.bottomNav.getOrCreateBadge(R.id.wishlistFragment)
+            if (numberOfItemsInCart > 0) {
+                bottomBadge.number = numberOfItemsInCart
+                bottomBadge.isVisible = true
+            } else {
+                bottomBadge.isVisible = false
+                bottomBadge.clearNumber()
             }
         }
     }

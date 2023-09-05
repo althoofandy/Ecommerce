@@ -4,10 +4,12 @@ import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
+import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +42,7 @@ class SearchDialogFragment : DialogFragment() {
 
     private val viewModel: SearchViewModel by viewModels { factory }
     private lateinit var adapter: SearchAdapter
+    private var searchString: String = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -72,6 +75,7 @@ class SearchDialogFragment : DialogFragment() {
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.progressBar.visibility = View.VISIBLE
+                searchString = s.toString()
                 job?.cancel()
                 job = lifecycleScope.launch {
                     delay(1000)
@@ -82,22 +86,34 @@ class SearchDialogFragment : DialogFragment() {
                     }
                     adapter.setOnItemClickCallback(object : SearchAdapter.OnItemClickCallback {
                         override fun onItemClicked(data: String) {
-                            val bundle = Bundle().apply {
-                                putString(StoreFragment.SEARCH, data)
-                            }
-                            requireActivity().supportFragmentManager.setFragmentResult(
-                                StoreFragment.FILTER,
-                                bundle
-                            )
+                            setData(data)
                             dismiss()
                         }
-
                     })
+                    binding.tieSearch.setOnKeyListener { _, actionId, event ->
+                        if (event.action == KeyEvent.ACTION_DOWN && actionId== KeyEvent.KEYCODE_ENTER) {
+                            setData(s.toString())
+                            dismiss()
+                            return@setOnKeyListener true
+                        }
+                        return@setOnKeyListener false
+                    }
                 }
+
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
+    }
+
+    private fun setData(data: String) {
+        val bundle = Bundle().apply {
+            putString(StoreFragment.SEARCH, data)
+        }
+        requireActivity().supportFragmentManager.setFragmentResult(
+            StoreFragment.FILTER,
+            bundle
+        )
     }
 }
 

@@ -2,7 +2,6 @@ package com.example.ecommerce.ui.main.menu.cart
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,7 +9,7 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecommerce.databinding.FragmentCartBinding
-import com.example.ecommerce.ui.main.store.CurrencyUtils
+import com.example.ecommerce.ui.main.CurrencyUtils
 
 class CartFragment : Fragment() {
     private var _binding: FragmentCartBinding? = null

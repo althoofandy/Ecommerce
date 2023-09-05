@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.ViewModelFactory
 import com.example.ecommerce.api.Result
@@ -152,7 +153,7 @@ class AddProfileFragment : Fragment() {
                         }
 
                         is Result.Error -> {
-                            progressCircular.hide()
+//                            (requireActivity() as MainActivity).logOut()                           progressCircular.hide()
                             Toast.makeText(
                                 requireContext(),
                                 "Sesi anda telah berakhir!",

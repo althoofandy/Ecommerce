@@ -8,9 +8,11 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="8dp"
         android:layout_margin="5dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
         android:elevation="4dp"
+        app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,41 +27,40 @@
                 android:id="@+id/ivProduct"
                 android:layout_width="match_parent"
                 android:layout_height="186dp"
-                android:src="@drawable/default_product"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_product" />
 
             <TextView
                 android:id="@+id/tvProductName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12sp"
+                android:lineHeight="16dp"
                 android:lineSpacingExtra="4sp"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:lineHeight="16dp"
                 android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:text="Lenovo Legion 7 16 I7 11800 16GB 1TB SSD RTX3070 8GB"
                 android:textColor="?attr/colorOnSurface"
-                android:text="Lenovo Legion 7 16 I7 11800 16GB 1TB SSD RTX3070 8GB"/>
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tvProductPrice"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="14sp"
+                android:fontFamily="@font/poppins_bold"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:lineHeight="20dp"
-                android:fontFamily="@font/poppins_bold"
+                android:text="Rp23.499.000"
                 android:textColor="?attr/colorOnSurface"
-                android:text="Rp23.499.000"/>
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:orientation="horizontal">
+                android:paddingEnd="10dp">
 
                 <ImageView
                     android:layout_width="10dp"
@@ -80,9 +81,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:orientation="horizontal"
                 android:paddingStart="10dp"
-                android:paddingEnd="10dp"
-                android:orientation="horizontal">
+                android:paddingEnd="10dp">
 
                 <ImageView
                     android:layout_width="10dp"
@@ -125,6 +126,33 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="8dp"
+                android:gravity="center">
+
+                <ImageView
+                    android:id="@+id/btnDelete"
+                    android:layout_margin="6dp"
+                    android:paddingHorizontal="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/rounded_wishlist"
+                    android:src="@drawable/baseline_delete_24"
+                    />
+
+                <Button
+                    android:id="@+id/btnAddToCart"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    style="@style/Widget.Material3.Button.IconButton.Outlined"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="+ Keranjang"/>
+
+            </LinearLayout>
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>

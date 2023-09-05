@@ -52,7 +52,7 @@
             android:id="@+id/cbAllCheck"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_margin="18dp"
             android:minWidth="0dp"
             android:minHeight="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -69,19 +69,6 @@
             app:layout_constraintStart_toEndOf="@+id/cbAllCheck"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.466" />
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/btnHapusItem"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:text="Hapus"
-            android:textColor="?attr/colorPrimary"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.666" />
 
         <Button
             android:id="@+id/btnDeleteAll"
@@ -123,7 +110,9 @@
             android:textSize="32sp"/>
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Your requested data is unavailable"/>
 
 
     </LinearLayout>

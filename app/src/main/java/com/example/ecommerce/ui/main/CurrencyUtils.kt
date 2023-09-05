@@ -1,4 +1,4 @@
-package com.example.ecommerce.ui.main.store
+package com.example.ecommerce.ui.main
 
 import java.text.NumberFormat
 import java.util.Locale

@@ -16,6 +16,8 @@
         tools:layout="@layout/fragment_add_profile">
         <action
             android:id="@+id/action_addProfileFragment_to_main_navigation"
+            app:popUpTo="@id/app_navigation"
+            app:popUpToInclusive="true"
             app:destination="@id/main_navigation" />
         <action
             android:id="@+id/action_addProfileFragment_to_prelogin_navigation"

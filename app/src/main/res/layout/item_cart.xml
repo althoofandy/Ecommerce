@@ -5,17 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="1dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginHorizontal="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:cardCornerRadius="8dp"
-        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -64,11 +53,13 @@
             <TextView
                 android:id="@+id/tvProductName"
                 android:layout_width="0dp"
+                android:fontFamily="@font/poppins_medium"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="16dp"
                 android:maxLines="1"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:text="Lenovo Legion 7 16 I7 11800 16GB..."
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -79,10 +70,10 @@
                 android:id="@+id/ads_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/poppins_medium"
                 android:text="Rp24.000.000"
                 android:textSize="14sp"
-                android:layout_marginTop="8dp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@+id/tvVarian"
                 app:layout_constraintTop_toBottomOf="@+id/tvSisaProduk" />
 
@@ -91,6 +82,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="16GB, 1TB SSD"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:layout_marginTop="2dp"
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="@+id/tvProductName"
@@ -102,6 +94,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sisa 2"
+                android:textColor="?attr/colorOnSurfaceVariant"
                 android:layout_marginTop="2dp"
                 android:textSize="10sp"
                 app:layout_constraintStart_toStartOf="@+id/tvVarian"
@@ -119,7 +112,7 @@
                 android:minHeight="0dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/include"
-                app:layout_constraintTop_toBottomOf="@+id/ads_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
 
             <include
                 android:id="@+id/include"
@@ -130,10 +123,14 @@
                 android:layout_height="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ads_name" />
+                app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
 
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_marginTop="11dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/include" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
 
 </GridLayout>

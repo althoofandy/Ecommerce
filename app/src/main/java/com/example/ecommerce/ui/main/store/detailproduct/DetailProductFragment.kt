@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
@@ -18,13 +17,15 @@ import com.example.ecommerce.api.Retrofit
 import com.example.ecommerce.databinding.FragmentDetailProductBinding
 import com.example.ecommerce.model.ProductVariant
 import com.example.ecommerce.model.asProductLocalDb
+import com.example.ecommerce.model.asWishlistProduct
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
+import com.example.ecommerce.ui.main.CurrencyUtils
+import com.example.ecommerce.ui.main.db.AppExecutor
+import com.example.ecommerce.ui.main.db.ProductDAO
+import com.example.ecommerce.ui.main.db.ProductDatabase
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
-import com.example.ecommerce.ui.main.menu.db.AppExecutor
-import com.example.ecommerce.ui.main.menu.db.ProductDAO
-import com.example.ecommerce.ui.main.menu.db.ProductDatabase
-import com.example.ecommerce.ui.main.store.CurrencyUtils
+import com.example.ecommerce.ui.main.wishlist.WishlistViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -46,21 +47,21 @@ class DetailProductFragment : Fragment() {
     }
     private val viewModel: DetailProductViewModel by viewModels { factory }
     private lateinit var cartViewModel: CartViewModel
+    private lateinit var wishlistViewModel: WishlistViewModel
     private lateinit var database: ProductDatabase
     private lateinit var productDao: ProductDAO
 
     private var id_product: String? = null
-
     private var varianName: String? = null
     private var productPrice: Int? = 0
     private var varianPrice: Int? = 0
+    private var counter = 0
     private lateinit var appExecutors: AppExecutor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,17 +81,22 @@ class DetailProductFragment : Fragment() {
         }
     }
 
+
     @SuppressLint("SetTextI18n")
     private fun getDataDetail() {
         appExecutors = AppExecutor()
         database = ProductDatabase.getDatabase(requireContext())
         productDao = database.productDao()
 
-        val accessToken = sharedPref.getAccessToken() ?: throw Exception("token null")
-        viewModel.getDetailProduct(accessToken, id_product).observe(viewLifecycleOwner) {
-            binding.apply {
+        binding.apply {
+            progressCircular.visibility = View.VISIBLE
+            val accessToken = sharedPref.getAccessToken() ?: throw Exception("token null")
+            viewModel.getDetailProduct(accessToken, id_product).observe(viewLifecycleOwner) {
                 when (it) {
                     is Result.Success -> {
+                        scrollView2.visibility = View.VISIBLE
+                        viewBottom.visibility = View.VISIBLE
+                        progressCircular.hide()
                         val listVarian = ArrayList<ProductVariant>()
                         val product = it.data.data
                         productPrice = product.productPrice
@@ -99,6 +105,7 @@ class DetailProductFragment : Fragment() {
                         tvProductName.text = product.productName
                         tvSale.text = product.sale.toString()
                         tvRatingUp.text = product.productRating.toString()
+                        tvRate.text = "(${product.totalRating})"
                         tvProductRating.text = product.productRating.toString()
                         tvDescription.text = product.description
                         tvPercent.text = "${product.totalSatisfaction}%"
@@ -111,56 +118,130 @@ class DetailProductFragment : Fragment() {
                         val images = product.image
                         val viewpagerAdapter = ProductPagerAdapter(images)
                         vpImageProduct.adapter = viewpagerAdapter
-                        TabLayoutMediator(tabDots, vpImageProduct) { _, _ -> }.attach()
+
+                        if (images.size <= 1) {
+                            tabDots.visibility = View.GONE
+                        } else {
+                            tabDots.visibility = View.VISIBLE
+                            TabLayoutMediator(tabDots, vpImageProduct) { _, _ -> }.attach()
+                        }
 
                         binding.buttonLihatSemua.setOnClickListener {
                             val bundle = bundleOf("id_product" to product.productId)
                             (requireActivity() as MainActivity).goToDetailReview(bundle)
                         }
                         btnKeKeranjang.setOnClickListener {
-                            val productLocalDb = product.asProductLocalDb(varianName, varianPrice)
+                            val productLocalDb =
+                                product.asProductLocalDb(varianName, varianPrice)
 
-                            appExecutors.diskIO.execute{
+                            cartViewModel = CartViewModel(requireContext())
+                            appExecutors.diskIO.execute {
+                                val checkProductExist =
+                                    cartViewModel.getCartById(productLocalDb.productId)
 
-                                cartViewModel = CartViewModel(requireContext())
-                                val checkProductExist = cartViewModel.getCartById(productLocalDb.productId)
-                                if(checkProductExist?.productId != null){
-                                    val sumQuantity = productLocalDb.quantity
-                                    val counter = sumQuantity + 1
-                                    cartViewModel.updateCartItemQuantity(productLocalDb.productId,counter)
-                                }
-                                else{
+                                if (checkProductExist?.productId != null) {
+                                    if (checkProductExist.quantity < checkProductExist.stock!!) {
+                                        counter = checkProductExist.quantity
+                                        counter++
+                                        cartViewModel.updateCartItemQuantity(
+                                            checkProductExist.productId,
+                                            counter
+                                        )
+                                    } else {
+                                        val contextView = binding.viewBottom
+                                        Snackbar.make(
+                                            contextView,
+                                            "Stok Habis!",
+                                            Snackbar.LENGTH_SHORT
+                                        ).show()
+                                    }
+                                } else {
                                     cartViewModel.addToCart(
                                         productLocalDb.productId,
                                         productLocalDb.productName,
                                         productLocalDb.productPrice,
                                         productLocalDb.image,
+                                        productLocalDb.store,
+                                        productLocalDb.sale,
                                         productLocalDb.stock,
+                                        productLocalDb.totalRating,
+                                        productLocalDb.productRating,
                                         varianName ?: "RAM 16GB",
                                         varianPrice
                                     )
+                                    val contextView = binding.viewBottom
+                                    Snackbar.make(
+                                        contextView,
+                                        R.string.snackbar_text,
+                                        Snackbar.LENGTH_SHORT
+                                    ).show()
                                 }
+                            }
+                        }
+                        appExecutors.diskIO.execute {
+                            wishlistViewModel = WishlistViewModel(requireContext())
+                            val wishlistLocalDb =
+                                product.asWishlistProduct(varianName, varianPrice)
 
-                                val contextView = binding.view
-                                Snackbar.make(
-                                    contextView,
-                                    R.string.snackbar_text,
-                                    Snackbar.LENGTH_SHORT
-                                ).show()
+                            val checkWishlistExist =
+                                wishlistViewModel.getProductWishlistById(wishlistLocalDb.productId)
+
+                            var isChecked = false
+                            if (checkWishlistExist?.productId != null) {
+                                binding.toggleFavorite.isChecked = true
+                                isChecked = true
+                            } else {
+                                binding.toggleFavorite.isChecked = false
+                                isChecked = false
+                            }
+                            binding.toggleFavorite.setOnClickListener {
+                                isChecked = !isChecked
+                                if (isChecked) {
+                                    wishlistViewModel.addToCart(
+                                        wishlistLocalDb.productId,
+                                        wishlistLocalDb.productName,
+                                        wishlistLocalDb.productPrice,
+                                        wishlistLocalDb.image,
+                                        wishlistLocalDb.store,
+                                        wishlistLocalDb.sale,
+                                        wishlistLocalDb.stock,
+                                        wishlistLocalDb.totalRating,
+                                        wishlistLocalDb.productRating,
+                                        varianName ?: "RAM 16GB",
+                                        varianPrice
+                                    )
+                                } else {
+                                    wishlistViewModel.removeWishlist(wishlistLocalDb.productId)
+                                }
+                                binding.toggleFavorite.isChecked = isChecked
+                            }
+                        }
+                    }
+                    is Result.Error -> {
+                        progressCircular.hide()
+                        cartViewModel = CartViewModel(requireContext())
+                        binding.apply {
+                            viewBottom.visibility = View.GONE
+                            scrollView2.visibility = View.GONE
+                            linearError.visibility = View.VISIBLE
+                            btnRefresh.setOnClickListener {
+                                val accessToken =
+                                    sharedPref.getAccessToken() ?: throw Exception("Token is null")
+                                viewModel.getDetailProduct(accessToken, id_product!!)
                             }
                         }
                     }
 
-                    is Result.Error -> {
-
-                    }
-
                     is Result.Loading -> {
-
+                        progressCircular.show()
+                        scrollView2.visibility = View.GONE
+                        viewBottom.visibility = View.GONE
                     }
                 }
             }
         }
+
+
     }
 
     private fun createChip(varians: List<ProductVariant>) {
