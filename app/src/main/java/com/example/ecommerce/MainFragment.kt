@@ -4,18 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.MenuItemCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ecommerce.databinding.FragmentMainBinding
 import com.example.ecommerce.pref.SharedPref
-import com.example.ecommerce.ui.main.menu.cart.CartAdapter
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
 import com.example.ecommerce.ui.main.wishlist.WishlistViewModel
 import com.google.android.material.badge.BadgeDrawable
-import com.google.android.material.badge.BadgeUtils
 import com.google.android.material.badge.BadgeUtils.attachBadgeDrawable
 import com.google.android.material.badge.ExperimentalBadgeUtils
 
@@ -55,8 +52,7 @@ class MainFragment : Fragment() {
         binding.apply {
             topAppBar.setOnMenuItemClickListener {
                 when (it.itemId) {
-                    R.id.notification -> {
-                    }
+                    R.id.notification -> {}
 
                     R.id.cart -> {
                         findNavController().navigate(R.id.action_main_to_cartFragment)
@@ -66,7 +62,6 @@ class MainFragment : Fragment() {
                 }
                 true
             }
-
             binding.bottomNav.setupWithNavController(navController)
             binding.bottomNav.setOnItemReselectedListener { }
         }

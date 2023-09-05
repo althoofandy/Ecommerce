@@ -96,12 +96,10 @@ class BottomSheet : BottomSheetDialogFragment() {
             chipGroupUrutkan.setOnCheckedChangeListener { _, _ ->
                 buttonReset.visibility = View.VISIBLE
             }
-
             chipGroupKategori.setOnCheckedChangeListener { _, _ ->
                 buttonReset.visibility = View.VISIBLE
             }
         }
-
     }
 
     private fun sendData() {

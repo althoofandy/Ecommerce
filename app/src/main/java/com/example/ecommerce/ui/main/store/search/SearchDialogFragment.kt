@@ -66,7 +66,14 @@ class SearchDialogFragment : DialogFragment() {
             setHasFixedSize(true)
             adapter = this@SearchDialogFragment.adapter
         }
-
+        binding.tieSearch.setOnEditorActionListener { textView, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || event.action == KeyEvent.ACTION_DOWN && actionId== KeyEvent.KEYCODE_ENTER) {
+                setData(textView.text.toString())
+                dismiss()
+                return@setOnEditorActionListener true
+            }
+            return@setOnEditorActionListener false
+        }
         val accessToken = sharedPref.getAccessToken()
             ?: throw NullPointerException("Access token is null")
         var job: Job? = null
@@ -90,14 +97,6 @@ class SearchDialogFragment : DialogFragment() {
                             dismiss()
                         }
                     })
-                    binding.tieSearch.setOnKeyListener { _, actionId, event ->
-                        if (event.action == KeyEvent.ACTION_DOWN && actionId== KeyEvent.KEYCODE_ENTER) {
-                            setData(s.toString())
-                            dismiss()
-                            return@setOnKeyListener true
-                        }
-                        return@setOnKeyListener false
-                    }
                 }
 
             }

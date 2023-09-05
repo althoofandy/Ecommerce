@@ -62,7 +62,6 @@ class DetailProductFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
     }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -80,7 +79,6 @@ class DetailProductFragment : Fragment() {
             findNavController().navigateUp()
         }
     }
-
 
     @SuppressLint("SetTextI18n")
     private fun getDataDetail() {

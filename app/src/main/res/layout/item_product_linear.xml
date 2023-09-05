@@ -53,6 +53,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:lineHeight="16dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
                     android:text="@string/product_name"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="12sp" />

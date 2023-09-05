@@ -89,8 +89,10 @@ class CartFragment : Fragment() {
 
             if(selectedItemCount>0){
                 binding.btnDeleteAll.visibility = View.VISIBLE
+                binding.btnBeliCart.visibility = View.VISIBLE
             }else{
                 binding.btnDeleteAll.visibility = View.GONE
+                binding.btnBeliCart.visibility = View.GONE
             }
 
             if (!(totalItemCount > 0 && selectedItemCount == totalItemCount)) {
