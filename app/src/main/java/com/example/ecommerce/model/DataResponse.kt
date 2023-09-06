@@ -1,10 +1,12 @@
 package com.example.ecommerce.model
 
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
 data class Auth(
     @SerializedName("email")
@@ -249,6 +251,138 @@ fun GetProductDetailItemResponse.asWishlistProduct(
         variantPrice
     )
 }
+
+data class PaymentMethodResponse(
+    val code: Int,
+    val message: String,
+    val data: List<PaymentMethodCategoryResponse>
+)
+
+data class PaymentMethodCategoryResponse(
+    val title: String,
+    val item: List<PaymentMethodItemResponse>
+)
+
+data class PaymentMethodItemResponse(
+    val label: String,
+    val image: String,
+    val status: Boolean
+)
+
+data class Payment(
+    val payment: String,
+    val items: @RawValue List<PaymentItem>
+)
+
+@Parcelize
+data class PaymentItem(
+    val productId: String,
+    val variantName: String,
+    val quantity: Int
+) : Parcelable
+
+@Parcelize
+data class PaymentResponse(
+    val code: Int,
+    val message: String,
+    val data: @RawValue PaymentDataResponse
+) : Parcelable
+
+@Parcelize
+data class PaymentDataResponse(
+    val invoiceId: String,
+    val status: Boolean,
+    val date: String,
+    val time: String,
+    val payment: String,
+    val total: Int
+) : Parcelable
+
+data class Rating(
+    val invoiceId: String,
+    val rating: Int?,
+    val review: String?
+)
+
+data class RatingResponse(
+    val code: String,
+    val message: String
+)
+
+data class TransactionResponse(
+    val code: String,
+    val message: String,
+    val data: List<TransactionDataResponse>
+)
+
+@Parcelize
+data class TransactionDataResponse(
+    val invoiceId: String,
+    val status: Boolean,
+    val date: String,
+    val time: String,
+    val payment: String,
+    val total: Int,
+    val items: @RawValue List<PaymentItem>?,
+    val rating: Int,
+    val review: String?,
+    val image: String,
+    val name: String
+) : Parcelable
+
+
+@Entity
+@Parcelize
+data class CheckoutProduct(
+    @PrimaryKey
+    val productId: String,
+    val productName: String,
+    val productPrice: Int,
+    val image: String,
+    val brand: String,
+    val description: String,
+    val store: String,
+    val sale: Int,
+    val stock: Int?,
+    val totalRating: Int,
+    val totalReview: Int,
+    val totalSatisfaction: Int,
+    val productRating: Float,
+    var variantName: String,
+    var variantPrice: Int?,
+    var quantity: Int = 1,
+    var selected: Boolean = false
+) : Parcelable
+
+fun ProductLocalDb.asCheckoutProduct(
+    variantName: String?,
+    variantPrice: Int?
+): CheckoutProduct {
+    return CheckoutProduct(
+        productId,
+        productName,
+        productPrice,
+        image,
+        brand,
+        description,
+        store,
+        sale,
+        stock,
+        totalRating,
+        totalReview,
+        totalSatisfaction,
+        productRating,
+        variantName.toString(),
+        variantPrice,
+        quantity
+    )
+}
+@Keep
+@Parcelize
+data class ListCheckout(
+    val listCheckout: List<CheckoutProduct>? = emptyList()
+):Parcelable
+
 
 
 

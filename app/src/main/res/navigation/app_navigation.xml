@@ -57,6 +57,9 @@
         android:label="DetailProductFragment"
         tools:layout="@layout/fragment_detail_product">
         <argument
+            android:name="data_product"
+            app:argType="com.example.ecommerce.model.CheckoutProduct"/>
+        <argument
             android:name="id_product"
             app:argType="string"/>
         <action
@@ -69,6 +72,13 @@
         <action
             android:id="@+id/action_detailProductFragment_to_cartFragment2"
             app:destination="@id/cartFragment" />
+        <action
+            android:id="@+id/action_detailProductFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" >
+            <argument
+                android:name="data_product"
+                app:argType="com.example.ecommerce.model.CheckoutProduct"/>
+        </action>
 
     </fragment>
     <fragment
@@ -84,6 +94,23 @@
         android:id="@+id/cartFragment"
         android:name="com.example.ecommerce.ui.main.menu.cart.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" />
+        tools:layout="@layout/fragment_cart" >
+        <action
+            android:id="@+id/action_cartFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment" >
+            <argument
+                android:name="data_product"
+                app:argType="com.example.ecommerce.model.CheckoutProduct"/>
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.example.ecommerce.ui.main.transaction.checkout.CheckoutFragment"
+        android:label="CheckoutFragment"
+        tools:layout="@layout/fragment_checkout">
+        <argument
+            android:name="data_product"
+            app:argType="com.example.ecommerce.model.CheckoutProduct"/>
+    </fragment>
 
 </navigation>

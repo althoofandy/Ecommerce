@@ -2,13 +2,20 @@ package com.example.ecommerce.ui.main.menu.cart
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ecommerce.R
 import com.example.ecommerce.databinding.FragmentCartBinding
+import com.example.ecommerce.model.CheckoutProduct
+import com.example.ecommerce.model.GetProductsItemResponse
+import com.example.ecommerce.model.ProductLocalDb
+import com.example.ecommerce.model.asCheckoutProduct
 import com.example.ecommerce.ui.main.CurrencyUtils
 
 class CartFragment : Fragment() {
@@ -19,6 +26,8 @@ class CartFragment : Fragment() {
 
     private var selectedItemCount = 0
     private var totalItemCount = 0
+
+    private var listCart = listOf<CheckoutProduct>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -35,7 +44,7 @@ class CartFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         onBackpressed()
         showData()
-        checkBoxAllCheck()
+        initEvent()
     }
 
     private fun onBackpressed() {
@@ -44,11 +53,17 @@ class CartFragment : Fragment() {
         }
     }
 
-    private fun checkBoxAllCheck() {
+    private fun initEvent() {
         binding.apply {
             cbAllCheck.setOnClickListener {
                 selectAllItems(binding.cbAllCheck.isChecked)
             }
+            btnBeliCart.setOnClickListener {
+                val bundle = bundleOf("data_product" to listCart)
+                Log.d("cek cartfragm1", bundle.toString())
+                findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment, bundle)
+            }
+
         }
     }
 
@@ -87,10 +102,10 @@ class CartFragment : Fragment() {
             selectedItemCount = cartItems.count { it.selected }
             totalItemCount = cartItems.size
 
-            if(selectedItemCount>0){
+            if (selectedItemCount > 0) {
                 binding.btnDeleteAll.visibility = View.VISIBLE
                 binding.btnBeliCart.visibility = View.VISIBLE
-            }else{
+            } else {
                 binding.btnDeleteAll.visibility = View.GONE
                 binding.btnBeliCart.visibility = View.GONE
             }
@@ -108,9 +123,18 @@ class CartFragment : Fragment() {
                 binding.linearError.visibility = View.GONE
             }
 
+            val selectedProduct = cartItems.filter { it.selected }.map {
+                Log.d("cek quantity :",it.quantity.toString())
+                it.asCheckoutProduct(it.variantName,it.variantPrice)
+
+            }
+            listCart = selectedProduct
+
+
             val selectedIds = cartItems
                 .filter { it.selected }
                 .map { it.productId }
+
 
             binding.btnDeleteAll.setOnClickListener {
                 cartViewModel.removeFromCartAll(selectedIds)

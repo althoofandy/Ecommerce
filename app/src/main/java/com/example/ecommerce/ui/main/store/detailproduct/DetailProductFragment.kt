@@ -2,6 +2,7 @@ package com.example.ecommerce.ui.main.store.detailproduct
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,11 @@ import com.example.ecommerce.ViewModelFactory
 import com.example.ecommerce.api.Result
 import com.example.ecommerce.api.Retrofit
 import com.example.ecommerce.databinding.FragmentDetailProductBinding
+import com.example.ecommerce.model.CheckoutProduct
+import com.example.ecommerce.model.ListCheckout
+import com.example.ecommerce.model.ProductLocalDb
 import com.example.ecommerce.model.ProductVariant
+import com.example.ecommerce.model.asCheckoutProduct
 import com.example.ecommerce.model.asProductLocalDb
 import com.example.ecommerce.model.asWishlistProduct
 import com.example.ecommerce.pref.SharedPref
@@ -62,6 +67,7 @@ class DetailProductFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -73,10 +79,16 @@ class DetailProductFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getDataDetail()
         getChip()
-        binding.topAppBar.setNavigationOnClickListener {
-            findNavController().navigateUp()
+        getDataDetail()
+        initEvent()
+    }
+
+    private fun initEvent() {
+        binding.apply {
+            topAppBar.setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
         }
     }
 
@@ -92,6 +104,7 @@ class DetailProductFragment : Fragment() {
             viewModel.getDetailProduct(accessToken, id_product).observe(viewLifecycleOwner) {
                 when (it) {
                     is Result.Success -> {
+
                         scrollView2.visibility = View.VISIBLE
                         viewBottom.visibility = View.VISIBLE
                         progressCircular.hide()
@@ -128,12 +141,30 @@ class DetailProductFragment : Fragment() {
                             val bundle = bundleOf("id_product" to product.productId)
                             (requireActivity() as MainActivity).goToDetailReview(bundle)
                         }
-                        btnKeKeranjang.setOnClickListener {
-                            val productLocalDb =
-                                product.asProductLocalDb(varianName, varianPrice)
 
-                            cartViewModel = CartViewModel(requireContext())
+                        btnBeliLangsung.setOnClickListener {
+                            val productLocalDb = product.asProductLocalDb(varianName, varianPrice)
+                            val productCheckout = arrayListOf(
+                                productLocalDb.asCheckoutProduct(
+                                    varianName,
+                                    varianPrice
+                                )
+                            )
+                            val listCart = productCheckout
+                            val bundle = bundleOf("data_product" to listCart)
+                            Log.d("cek cartfragm2", bundle.toString())
+                            findNavController().navigate(
+                                R.id.action_detailProductFragment_to_checkoutFragment,
+                                bundle
+                            )
+                        }
+
+
+                        btnKeKeranjang.setOnClickListener {
                             appExecutors.diskIO.execute {
+                                cartViewModel = CartViewModel(requireContext())
+                                val productLocalDb =
+                                    product.asProductLocalDb(varianName, varianPrice)
                                 val checkProductExist =
                                     cartViewModel.getCartById(productLocalDb.productId)
 
@@ -215,6 +246,7 @@ class DetailProductFragment : Fragment() {
                             }
                         }
                     }
+
                     is Result.Error -> {
                         progressCircular.hide()
                         cartViewModel = CartViewModel(requireContext())

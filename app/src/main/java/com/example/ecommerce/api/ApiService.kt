@@ -5,10 +5,16 @@ import com.example.ecommerce.model.DataResponse
 import com.example.ecommerce.model.GetProductDetailResponse
 import com.example.ecommerce.model.GetProductResponse
 import com.example.ecommerce.model.GetProductReviewResponse
+import com.example.ecommerce.model.Payment
+import com.example.ecommerce.model.PaymentMethodResponse
+import com.example.ecommerce.model.PaymentResponse
 import com.example.ecommerce.model.ProfileResponse
+import com.example.ecommerce.model.Rating
+import com.example.ecommerce.model.RatingResponse
 import com.example.ecommerce.model.RefreshResponse
 import com.example.ecommerce.model.SearchResponse
 import com.example.ecommerce.model.TokenRequest
+import com.example.ecommerce.model.TransactionResponse
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -77,7 +83,26 @@ interface ApiService {
         @Header("Authorization") auth: String,
         @Path("id") id: String?
     ): GetProductReviewResponse
+//PAYMENT and TRANSACTION
+    @GET("payment")
+    suspend fun getPaymentMethods(
+        @Header("Authorization") auth: String
+    ): PaymentMethodResponse
 
+    @POST("fulfillment")
+    suspend fun doBuyProducts(
+        @Header("Authorization") auth: String,
+        @Body payment : Payment
+    ): PaymentResponse
 
+    @POST("rating")
+    suspend fun doGiveRating(
+        @Header("Authorization") auth: String,
+        @Body rating : Rating
+    ): RatingResponse
 
+    @GET("transaction")
+    suspend fun getTransactionHistory(
+        @Header("Authorization") auth: String
+    ): TransactionResponse
 }
