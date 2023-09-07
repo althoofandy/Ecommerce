@@ -16,9 +16,6 @@ import com.example.ecommerce.ViewModelFactory
 import com.example.ecommerce.api.Result
 import com.example.ecommerce.api.Retrofit
 import com.example.ecommerce.databinding.FragmentDetailProductBinding
-import com.example.ecommerce.model.CheckoutProduct
-import com.example.ecommerce.model.ListCheckout
-import com.example.ecommerce.model.ProductLocalDb
 import com.example.ecommerce.model.ProductVariant
 import com.example.ecommerce.model.asCheckoutProduct
 import com.example.ecommerce.model.asProductLocalDb
@@ -143,7 +140,7 @@ class DetailProductFragment : Fragment() {
                         }
 
                         btnBeliLangsung.setOnClickListener {
-                            val productLocalDb = product.asProductLocalDb(varianName, varianPrice)
+                            val productLocalDb = product.asProductLocalDb(varianName?: "RAM 16GB", varianPrice)
                             val productCheckout = arrayListOf(
                                 productLocalDb.asCheckoutProduct(
                                     varianName,
@@ -306,5 +303,10 @@ class DetailProductFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

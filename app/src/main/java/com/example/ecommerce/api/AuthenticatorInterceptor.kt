@@ -2,7 +2,6 @@ package com.example.ecommerce.api
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.example.ecommerce.MainActivity
 import com.example.ecommerce.model.RefreshResponse
 import com.example.ecommerce.model.TokenRequest
 import com.example.ecommerce.pref.SharedPref

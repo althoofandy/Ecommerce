@@ -262,12 +262,12 @@ data class PaymentMethodCategoryResponse(
     val title: String,
     val item: List<PaymentMethodItemResponse>
 )
-
+@Parcelize
 data class PaymentMethodItemResponse(
     val label: String,
     val image: String,
     val status: Boolean
-)
+):Parcelable
 
 data class Payment(
     val payment: String,
@@ -295,13 +295,33 @@ data class PaymentDataResponse(
     val date: String,
     val time: String,
     val payment: String,
-    val total: Int
+    val total: Int,
+    val review: String?,
+    val rating: Int?
 ) : Parcelable
+
+fun TransactionDataResponse.asPaymentDataResponse(
+    review: String?,
+    rating: Int?
+):
+    PaymentDataResponse
+ {
+    return PaymentDataResponse(
+        invoiceId,
+        status,
+        date,
+        time,
+        payment,
+        total,
+        review.toString(),
+        rating
+    )
+}
 
 data class Rating(
     val invoiceId: String,
-    val rating: Int?,
-    val review: String?
+    val rating: Int? = null,
+    val review: String? = null
 )
 
 data class RatingResponse(

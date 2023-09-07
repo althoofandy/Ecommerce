@@ -114,5 +114,10 @@ class SearchDialogFragment : DialogFragment() {
             bundle
         )
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }
 

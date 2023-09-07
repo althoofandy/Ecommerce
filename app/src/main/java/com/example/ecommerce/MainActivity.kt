@@ -39,6 +39,10 @@ class MainActivity : AppCompatActivity() {
         navController.navigate(R.id.action_main_to_detailproductFragment, bundle)
     }
 
+    fun goToSuccess(bundle: Bundle) {
+        navController.navigate(R.id.action_mainTransac_to_successFragment, bundle)
+    }
+
     fun goToDetailReview(bundle: Bundle) {
         navController.navigate(R.id.action_detailProductFragment_to_reviewFragment, bundle)
     }

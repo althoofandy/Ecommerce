@@ -12,9 +12,14 @@ import com.example.ecommerce.model.Auth
 import com.example.ecommerce.model.GetProductDetailResponse
 import com.example.ecommerce.model.GetProductReviewResponse
 import com.example.ecommerce.model.GetProductsItemResponse
+import com.example.ecommerce.model.Payment
 import com.example.ecommerce.model.PaymentMethodResponse
+import com.example.ecommerce.model.PaymentResponse
 import com.example.ecommerce.model.ProfileResultResponse
+import com.example.ecommerce.model.Rating
+import com.example.ecommerce.model.RatingResponse
 import com.example.ecommerce.model.ResultResponse
+import com.example.ecommerce.model.TransactionResponse
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.ui.main.store.paging.ProductPagingSource
 import okhttp3.MultipartBody
@@ -120,6 +125,36 @@ class EcommerceRepository(
         emit(Result.Loading)
         try {
             val response = apiService.getPaymentMethods("Bearer $token")
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            emit(Result.Error(e))
+        }
+    }
+
+    fun doBuyProducts(token: String,payment: Payment): LiveData<Result<PaymentResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.doBuyProducts("Bearer $token",payment)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            emit(Result.Error(e))
+        }
+    }
+
+    fun getTransactionHistory(token: String): LiveData<Result<TransactionResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.getTransactionHistory("Bearer $token")
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            emit(Result.Error(e))
+        }
+    }
+
+    fun doGiveRating(token: String, rating: Rating): LiveData<Result<RatingResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.doGiveRating("Bearer $token",rating)
             emit(Result.Success(response))
         } catch (e: Exception) {
             emit(Result.Error(e))

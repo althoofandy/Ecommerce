@@ -16,7 +16,6 @@ import com.example.ecommerce.model.SearchResponse
 import com.example.ecommerce.model.TokenRequest
 import com.example.ecommerce.model.TransactionResponse
 import okhttp3.MultipartBody
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header

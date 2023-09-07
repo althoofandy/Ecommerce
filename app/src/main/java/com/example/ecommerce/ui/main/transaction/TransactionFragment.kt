@@ -5,20 +5,75 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.ecommerce.R
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ecommerce.MainActivity
+import com.example.ecommerce.api.Result
+import com.example.ecommerce.api.Retrofit
+import com.example.ecommerce.databinding.FragmentTransactionBinding
+import com.example.ecommerce.model.TransactionDataResponse
+import com.example.ecommerce.model.asPaymentDataResponse
+import com.example.ecommerce.pref.SharedPref
+import com.example.ecommerce.repos.EcommerceRepository
 
 
 class TransactionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentTransactionBinding? = null
+    private val binding get() = _binding!!
+    private val repository by lazy {
+        val apiService = Retrofit(requireContext()).getApiService()
+        val sharedPref = SharedPref(requireContext())
+        EcommerceRepository(apiService, sharedPref)
+    }
+    private lateinit var viewModel: TransactionViewModel
+    private lateinit var sharedPref: SharedPref
+    private lateinit var adapter: TransactionAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_transaction, container, false)
+        _binding = FragmentTransactionBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        getData()
+    }
+
+    fun getData() {
+        viewModel = TransactionViewModel(repository)
+        sharedPref = SharedPref(requireContext())
+        val accessToken = sharedPref.getAccessToken() ?: throw Exception("token is null")
+        viewModel.getTransactionHistory(accessToken).observe(viewLifecycleOwner) {
+            when (it) {
+                is Result.Success -> {
+                    adapter = TransactionAdapter(it.data.data)
+                    val linearLayout = LinearLayoutManager(requireContext())
+                    binding.rvTransaction.layoutManager = linearLayout
+                    binding.rvTransaction.adapter = adapter
+
+                    adapter.setItemClickListener(object : TransactionAdapter.TransactionDataClickListener{
+                        override fun onItemClick(label: TransactionDataResponse) {
+                            val convert = label.asPaymentDataResponse(label.review,label.rating)
+                            val bundle = Bundle().apply {
+                                putParcelable("invoice",convert)
+                            }
+                            (requireActivity() as MainActivity).goToSuccess(bundle)
+                        }
+                    })
+
+                }
+                is Result.Loading -> {
+
+                }
+
+                is Result.Error -> {
+
+                }
+            }
+        }
+
     }
 
 }

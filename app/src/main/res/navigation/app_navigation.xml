@@ -16,13 +16,21 @@
         tools:layout="@layout/fragment_add_profile">
         <action
             android:id="@+id/action_addProfileFragment_to_main_navigation"
+            app:destination="@id/main_navigation"
             app:popUpTo="@id/app_navigation"
-            app:popUpToInclusive="true"
-            app:destination="@id/main_navigation" />
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_addProfileFragment_to_prelogin_navigation"
             app:destination="@id/prelogin_navigation" />
     </fragment>
+
+    <action
+        android:id="@+id/action_mainTransac_to_successFragment"
+        app:destination="@id/successPaymentFragment">
+        <argument
+            android:name="invoice"
+            app:argType="com.example.ecommerce.model.PaymentDataResponse" />
+    </action>
 
     <action
         android:id="@+id/action_prelog_to_mainFragment"
@@ -58,26 +66,26 @@
         tools:layout="@layout/fragment_detail_product">
         <argument
             android:name="data_product"
-            app:argType="com.example.ecommerce.model.CheckoutProduct"/>
+            app:argType="com.example.ecommerce.model.CheckoutProduct" />
         <argument
             android:name="id_product"
-            app:argType="string"/>
+            app:argType="string" />
         <action
             android:id="@+id/action_detailProductFragment_to_reviewFragment"
             app:destination="@id/reviewFragment">
             <argument
                 android:name="id_product"
-                app:argType="string"/>
+                app:argType="string" />
         </action>
         <action
             android:id="@+id/action_detailProductFragment_to_cartFragment2"
             app:destination="@id/cartFragment" />
         <action
             android:id="@+id/action_detailProductFragment_to_checkoutFragment"
-            app:destination="@id/checkoutFragment" >
+            app:destination="@id/checkoutFragment">
             <argument
                 android:name="data_product"
-                app:argType="com.example.ecommerce.model.CheckoutProduct"/>
+                app:argType="com.example.ecommerce.model.CheckoutProduct" />
         </action>
 
     </fragment>
@@ -88,19 +96,19 @@
         tools:layout="@layout/fragment_review">
         <argument
             android:name="id_product"
-            app:argType="string"/>
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/cartFragment"
         android:name="com.example.ecommerce.ui.main.menu.cart.CartFragment"
         android:label="fragment_cart"
-        tools:layout="@layout/fragment_cart" >
+        tools:layout="@layout/fragment_cart">
         <action
             android:id="@+id/action_cartFragment_to_checkoutFragment"
-            app:destination="@id/checkoutFragment" >
+            app:destination="@id/checkoutFragment">
             <argument
                 android:name="data_product"
-                app:argType="com.example.ecommerce.model.CheckoutProduct"/>
+                app:argType="com.example.ecommerce.model.CheckoutProduct" />
         </action>
     </fragment>
     <fragment
@@ -110,14 +118,46 @@
         tools:layout="@layout/fragment_checkout">
         <argument
             android:name="data_product"
-            app:argType="com.example.ecommerce.model.CheckoutProduct"/>
+            app:argType="com.example.ecommerce.model.CheckoutProduct" />
+        <argument
+            android:name="payment"
+            app:argType="com.example.ecommerce.model.PaymentMethodItemResponse" />
+        <argument
+            android:name="invoice"
+            app:argType="com.example.ecommerce.model.PaymentDataResponse" />
         <action
             android:id="@+id/action_checkoutFragment_to_paymentMethodFragment"
             app:destination="@id/paymentMethodFragment" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_successPaymentFragment"
+            app:destination="@id/successPaymentFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/paymentMethodFragment"
         android:name="com.example.ecommerce.ui.main.transaction.paymentmethod.PaymentMethodFragment"
-        android:label="PaymentMethodFragment" />
+        android:label="PaymentMethodFragment">
+        <argument
+            android:name="payment"
+            app:argType="com.example.ecommerce.model.PaymentMethodItemResponse" />
+        <action
+            android:id="@+id/action_paymentMethodFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment">
+            <argument
+                android:name="payment"
+                app:argType="com.example.ecommerce.model.PaymentMethodItemResponse" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/successPaymentFragment"
+        android:name="com.example.ecommerce.ui.main.transaction.successpayment.SuccessPaymentFragment"
+        android:label="SuccessPaymentFragment">
+        <argument
+            android:name="invoice"
+            app:argType="com.example.ecommerce.model.PaymentDataResponse" />
+        <action
+            android:id="@+id/action_successPaymentFragment_to_main_navigation"
+            app:destination="@id/main_navigation" />
+    </fragment>
 
 </navigation>

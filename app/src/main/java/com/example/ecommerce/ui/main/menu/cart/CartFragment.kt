@@ -13,8 +13,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.FragmentCartBinding
 import com.example.ecommerce.model.CheckoutProduct
-import com.example.ecommerce.model.GetProductsItemResponse
-import com.example.ecommerce.model.ProductLocalDb
 import com.example.ecommerce.model.asCheckoutProduct
 import com.example.ecommerce.ui.main.CurrencyUtils
 
@@ -60,7 +58,6 @@ class CartFragment : Fragment() {
             }
             btnBeliCart.setOnClickListener {
                 val bundle = bundleOf("data_product" to listCart)
-                Log.d("cek cartfragm1", bundle.toString())
                 findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment, bundle)
             }
         }
@@ -139,5 +136,10 @@ class CartFragment : Fragment() {
             val formattedPrice = CurrencyUtils.formatRupiah(totalSelectedPrice)
             binding.tvHargaCart.text = formattedPrice.toString()
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

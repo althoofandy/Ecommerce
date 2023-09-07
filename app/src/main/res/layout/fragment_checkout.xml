@@ -138,15 +138,19 @@
                     android:orientation="horizontal">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="16dp"
+                        android:id="@+id/ivBankImage"
+                        android:layout_width="48dp"
+                        android:layout_height="32dp"
+                        android:scaleType="fitCenter"
+                        android:layout_marginStart="16dp"
                         android:src="@drawable/baseline_add_card_24" />
 
                     <TextView
+                        android:id="@+id/tvBankName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:layout_margin="16dp"
                         android:fontFamily="@font/poppins_medium"
                         android:text="Pilih Pembayaran" />
 

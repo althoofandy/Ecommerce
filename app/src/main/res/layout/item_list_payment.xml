@@ -18,9 +18,9 @@
 
             <ImageView
                 android:id="@+id/ivBank"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_margin="16dp"
+                android:layout_width="48dp"
+                android:layout_height="32dp"
+                android:scaleType="fitCenter"
                 android:src="@drawable/baseline_add_card_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -39,8 +39,8 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
                 android:layout_margin="16dp"
                 android:src="@drawable/baseline_arrow_forward_ios_24"
                 app:layout_constraintBottom_toBottomOf="parent"

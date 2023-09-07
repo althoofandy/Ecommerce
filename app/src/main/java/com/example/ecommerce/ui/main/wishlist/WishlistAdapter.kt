@@ -12,7 +12,6 @@ import com.example.ecommerce.databinding.ItemWishlistGridBinding
 import com.example.ecommerce.databinding.ItemWishlistLinearBinding
 import com.example.ecommerce.model.WishlistProduct
 import com.example.ecommerce.ui.main.CurrencyUtils
-import com.example.ecommerce.ui.main.db.AppExecutor
 import com.example.ecommerce.ui.main.store.mainStore.ViewType
 
 class WishlistAdapter(
