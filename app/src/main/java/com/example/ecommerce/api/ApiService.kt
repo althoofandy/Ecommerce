@@ -83,7 +83,8 @@ interface ApiService {
         @Header("Authorization") auth: String,
         @Path("id") id: String?
     ): GetProductReviewResponse
-//PAYMENT and TRANSACTION
+
+    //PAYMENT and TRANSACTION
     @GET("payment")
     suspend fun getPaymentMethods(
         @Header("Authorization") auth: String
@@ -92,13 +93,13 @@ interface ApiService {
     @POST("fulfillment")
     suspend fun doBuyProducts(
         @Header("Authorization") auth: String,
-        @Body payment : Payment
+        @Body payment: Payment
     ): PaymentResponse
 
     @POST("rating")
     suspend fun doGiveRating(
         @Header("Authorization") auth: String,
-        @Body rating : Rating
+        @Body rating: Rating
     ): RatingResponse
 
     @GET("transaction")

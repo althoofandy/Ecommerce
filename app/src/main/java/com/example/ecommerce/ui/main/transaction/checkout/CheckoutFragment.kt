@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ecommerce.R
 import com.example.ecommerce.databinding.FragmentCheckoutBinding
 import com.example.ecommerce.model.CheckoutProduct
 import com.example.ecommerce.model.ProductLocalDb
@@ -56,22 +57,21 @@ class CheckoutFragment : Fragment() {
         binding.rvCheckout.adapter = adapter
 
         Log.d("cek cekot",dataProduct.toString())
-
         adapter.submitList(dataProduct)
 
         val totalSelectedPrice = dataProduct.sumBy { (it.productPrice + it.variantPrice!!) * it.quantity }
 
         val formattedPrice = CurrencyUtils.formatRupiah(totalSelectedPrice)
         binding.tvHargaCheckout.text = formattedPrice.toString()
-
     }
-
     private fun initEvent() {
         binding.apply {
             topAppBar.setNavigationOnClickListener {
                 findNavController().navigateUp()
             }
+            btnBeliCheckout.setOnClickListener {
+                findNavController().navigate(R.id.action_checkoutFragment_to_paymentMethodFragment)
+            }
         }
     }
-
 }

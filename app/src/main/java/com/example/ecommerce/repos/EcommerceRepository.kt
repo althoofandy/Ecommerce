@@ -9,10 +9,10 @@ import androidx.paging.liveData
 import com.example.ecommerce.api.ApiService
 import com.example.ecommerce.api.Result
 import com.example.ecommerce.model.Auth
-import com.example.ecommerce.model.GetProductDetailItemResponse
 import com.example.ecommerce.model.GetProductDetailResponse
 import com.example.ecommerce.model.GetProductReviewResponse
 import com.example.ecommerce.model.GetProductsItemResponse
+import com.example.ecommerce.model.PaymentMethodResponse
 import com.example.ecommerce.model.ProfileResultResponse
 import com.example.ecommerce.model.ResultResponse
 import com.example.ecommerce.pref.SharedPref
@@ -110,6 +110,16 @@ class EcommerceRepository(
         emit(Result.Loading)
         try {
             val response = apiService.getProductReview("Bearer $token",id)
+            emit(Result.Success(response))
+        } catch (e: Exception) {
+            emit(Result.Error(e))
+        }
+    }
+
+    fun getPaymentMethods(token:String): LiveData<Result<PaymentMethodResponse>> = liveData {
+        emit(Result.Loading)
+        try {
+            val response = apiService.getPaymentMethods("Bearer $token")
             emit(Result.Success(response))
         } catch (e: Exception) {
             emit(Result.Error(e))

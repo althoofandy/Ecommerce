@@ -63,7 +63,6 @@ class CartFragment : Fragment() {
                 Log.d("cek cartfragm1", bundle.toString())
                 findNavController().navigate(R.id.action_cartFragment_to_checkoutFragment, bundle)
             }
-
         }
     }
 
@@ -82,10 +81,8 @@ class CartFragment : Fragment() {
                     btnDeleteAll.visibility = View.GONE
                 }
             }
-
             cartViewModel.updateCartItemCheckbox(selectedIds, isSelected)
             adapter.notifyDataSetChanged()
-
         }
     }
 
@@ -126,15 +123,12 @@ class CartFragment : Fragment() {
             val selectedProduct = cartItems.filter { it.selected }.map {
                 Log.d("cek quantity :",it.quantity.toString())
                 it.asCheckoutProduct(it.variantName,it.variantPrice)
-
             }
             listCart = selectedProduct
-
 
             val selectedIds = cartItems
                 .filter { it.selected }
                 .map { it.productId }
-
 
             binding.btnDeleteAll.setOnClickListener {
                 cartViewModel.removeFromCartAll(selectedIds)
@@ -144,7 +138,6 @@ class CartFragment : Fragment() {
 
             val formattedPrice = CurrencyUtils.formatRupiah(totalSelectedPrice)
             binding.tvHargaCart.text = formattedPrice.toString()
-
         }
     }
 }

@@ -111,6 +111,13 @@
         <argument
             android:name="data_product"
             app:argType="com.example.ecommerce.model.CheckoutProduct"/>
+        <action
+            android:id="@+id/action_checkoutFragment_to_paymentMethodFragment"
+            app:destination="@id/paymentMethodFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/paymentMethodFragment"
+        android:name="com.example.ecommerce.ui.main.transaction.paymentmethod.PaymentMethodFragment"
+        android:label="PaymentMethodFragment" />
 
 </navigation>
