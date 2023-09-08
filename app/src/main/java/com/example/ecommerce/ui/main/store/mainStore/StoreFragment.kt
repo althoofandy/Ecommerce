@@ -99,15 +99,17 @@ class StoreFragment : Fragment() {
                 }
                 tieSearch.setOnClickListener {
                     val fragmentManager = requireActivity().supportFragmentManager
-                    val newFragment = SearchDialogFragment()
+                    val newFragment = SearchDialogFragment.newInstance(
+                        search.toString()
+                    )
                     val transaction = fragmentManager.beginTransaction()
                     transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN)
                     transaction
                         .add(android.R.id.content, newFragment)
                         .addToBackStack(null)
                         .commit()
+                    newFragment.show(parentFragmentManager, SearchDialogFragment.TAG)
                 }
-
                 ivLayout.setOnClickListener {
                     changeToggle()
                 }

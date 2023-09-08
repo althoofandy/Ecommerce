@@ -28,7 +28,8 @@ class SuccessPaymentFragment : Fragment() {
     }
     private lateinit var sharedPref: SharedPref
     private lateinit var viewModel: SuccessPaymentViewModel
-    private var getreview: String? = null
+    private var getreview: String? = ""
+    private var rating: Int? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments.let {
@@ -57,17 +58,22 @@ class SuccessPaymentFragment : Fragment() {
         binding.apply {
             btnBeliCheckout.setOnClickListener {
                 val ratings = rbReview.rating.toInt()
+                if(ratings == 0){
+                    rating = null
+                }else{
+                    rating = ratings
+                }
 
                 val review = tieReviewDescription.text.toString()
-                if(review.isEmpty()){
-                    getreview = ""
-                }else{
-                    getreview=review
-            }
+                if (review.isEmpty()) {
+                    getreview = null
+                } else {
+                    getreview = review
+                }
 
                 viewModel.doGiveRate(
                     accessToken,
-                    Rating(dataPayment!!.invoiceId, ratings, getreview)
+                    Rating(dataPayment!!.invoiceId, rating, getreview)
                 ).observe(viewLifecycleOwner) {
                     when (it) {
                         is Result.Success -> {

@@ -35,7 +35,7 @@ class TransactionAdapter(private val dataList: List<TransactionDataResponse>) :
                 Glide.with(binding.root.context)
                     .load(item.image)
                     .into(ivBarang)
-                if (item.review.isNullOrEmpty()) {
+                if (item.rating == 0 || item.review.isNullOrEmpty()) {
                     btnReviewToResponse.visibility = View.VISIBLE
                 } else {
                     btnReviewToResponse.visibility = View.GONE

@@ -21,6 +21,7 @@ import com.example.ecommerce.databinding.FragmentSearchDialogBinding
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 import com.example.ecommerce.ui.main.store.mainStore.StoreFragment
+import com.example.ecommerce.ui.main.store.mainStore.StoreFragment.Companion.SEARCH
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -43,12 +44,14 @@ class SearchDialogFragment : DialogFragment() {
 
     private val viewModel: SearchViewModel by viewModels { factory }
     private lateinit var adapter: SearchAdapter
-    private var searchString: String = ""
+    private var searchString: String? = ""
+    private var search: String? = ""
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        search = arguments?.getString(SEARCH)
         _binding = FragmentSearchDialogBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -69,8 +72,14 @@ class SearchDialogFragment : DialogFragment() {
             setHasFixedSize(true)
             adapter = this@SearchDialogFragment.adapter
         }
+        if(search.isNullOrEmpty() || search == "null"){
+            binding.tieSearch.setText("")
+        }else{
+            binding.tieSearch.setText(search)
+        }
+
         binding.tieSearch.setOnEditorActionListener { textView, actionId, event ->
-            if (actionId == EditorInfo.IME_ACTION_SEARCH || event.action == KeyEvent.ACTION_DOWN && actionId== KeyEvent.KEYCODE_ENTER) {
+            if (actionId == EditorInfo.IME_ACTION_SEARCH || event.action == KeyEvent.ACTION_DOWN && actionId == KeyEvent.KEYCODE_ENTER) {
                 setData(textView.text.toString())
                 dismiss()
                 return@setOnEditorActionListener true
@@ -101,7 +110,6 @@ class SearchDialogFragment : DialogFragment() {
                         }
                     })
                 }
-
             }
 
             override fun afterTextChanged(s: Editable?) {}
@@ -109,11 +117,12 @@ class SearchDialogFragment : DialogFragment() {
     }
 
     private fun initEvent() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true){
-            override fun handleOnBackPressed() {
-                dismiss()
-            }
-        })
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    dismiss()
+                }
+            })
     }
 
     private fun setData(data: String) {
@@ -127,10 +136,27 @@ class SearchDialogFragment : DialogFragment() {
     }
 
 
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+    companion object {
+        const val TAG = "SearchDialogFragment"
+
+        @JvmStatic
+        fun newInstance(
+            search: String?
+
+        ): SearchDialogFragment {
+            val myFragment = SearchDialogFragment()
+
+            val args = Bundle().apply {
+                putString(SEARCH, search)
+            }
+            myFragment.arguments = args
+
+            return myFragment
+        }
     }
 }
 
