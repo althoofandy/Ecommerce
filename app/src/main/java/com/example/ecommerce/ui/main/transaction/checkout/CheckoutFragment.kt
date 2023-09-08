@@ -1,7 +1,6 @@
 package com.example.ecommerce.ui.main.transaction.checkout
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ import com.example.ecommerce.model.PaymentMethodItemResponse
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 import com.example.ecommerce.ui.main.CurrencyUtils
-import com.example.ecommerce.ui.main.db.AppExecutor
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
 
 class CheckoutFragment : Fragment() {
@@ -36,10 +34,10 @@ class CheckoutFragment : Fragment() {
     }
     private lateinit var sharedPref: SharedPref
     private lateinit var viewModel: CheckoutViewModel
-    private lateinit var appExecutor: AppExecutor
     private var dataProduct = listOf<CheckoutProduct>()
     private var dataPayment: PaymentMethodItemResponse? = null
     private var listPayment = listOf<PaymentItem>()
+    private var itemCount: Int? = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,8 +64,8 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun getData() {
-        appExecutor = AppExecutor()
         cartViewModel = CartViewModel(requireContext())
+        viewModel = CheckoutViewModel(repository)
         adapter = CheckoutAdapter(cartViewModel)
 
         binding.apply {
@@ -76,6 +74,28 @@ class CheckoutFragment : Fragment() {
             rvCheckout.adapter = adapter
 
             adapter.submitList(dataProduct)
+
+            adapter.setItemClickListener(object : CheckoutAdapter.CheckoutClickListener {
+                override fun onItemClick(item: List<PaymentItem>) {
+
+                    item.forEach { paymentItem ->
+                        val productToUpdate =
+                            dataProduct.find { it.productId == paymentItem.productId }
+                        productToUpdate?.quantity = paymentItem.quantity
+                    }
+
+                    item.forEach { paymentItem ->
+                        val productToUpdate =
+                            dataProduct.find { it.productId == paymentItem.productId }
+                        productToUpdate?.quantity = paymentItem.quantity
+                    }
+
+                    val totalSelectedPrice =
+                        dataProduct.sumBy { (it.productPrice + it.variantPrice!!) * it.quantity }
+                    updateTotalPrice(totalSelectedPrice)
+                }
+            })
+            listPayment = dataProduct.map { PaymentItem(it.productId, it.variantName, it.quantity) }
 
             val totalSelectedPrice =
                 dataProduct.sumBy { (it.productPrice + it.variantPrice!!) * it.quantity }
@@ -90,7 +110,10 @@ class CheckoutFragment : Fragment() {
                 tvBankName.text = dataPayment?.label
             }
         }
+    }
 
+    private fun updateTotalPrice(item: Int) {
+        binding.tvHargaCheckout.text = CurrencyUtils.formatRupiah(item)
     }
 
     private fun initEvent() {
@@ -107,18 +130,20 @@ class CheckoutFragment : Fragment() {
             }
             if (dataPayment != null) {
                 btnBeliCheckout.isEnabled = true
-                listPayment =  dataProduct.map { PaymentItem(it.productId, it.variantName, it.quantity) }
+                dataProduct.map { itemCount = it.quantity }
 
                 btnBeliCheckout.setOnClickListener {
                     viewModel.doBuyProducts(accessToken, Payment(dataPayment?.label!!, listPayment))
                         .observe(viewLifecycleOwner) {
                             when (it) {
                                 is Result.Success -> {
-                                    Log.d("cek item:",listPayment.toString())
                                     val bundle = Bundle().apply {
-                                        putParcelable("invoice",it.data.data)
+                                        putParcelable("invoice", it.data.data)
                                     }
-                                    findNavController().navigate(R.id.action_checkoutFragment_to_successPaymentFragment,bundle)
+                                    findNavController().navigate(
+                                        R.id.action_checkoutFragment_to_successPaymentFragment,
+                                        bundle
+                                    )
                                 }
 
                                 is Result.Loading -> {

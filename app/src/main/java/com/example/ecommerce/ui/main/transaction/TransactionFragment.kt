@@ -42,12 +42,14 @@ class TransactionFragment : Fragment() {
     }
 
     fun getData() {
+        binding.linearErrorLayout.visibility = View.VISIBLE
         viewModel = TransactionViewModel(repository)
         sharedPref = SharedPref(requireContext())
         val accessToken = sharedPref.getAccessToken() ?: throw Exception("token is null")
         viewModel.getTransactionHistory(accessToken).observe(viewLifecycleOwner) {
             when (it) {
                 is Result.Success -> {
+                    binding.linearErrorLayout.visibility = View.GONE
                     adapter = TransactionAdapter(it.data.data)
                     val linearLayout = LinearLayoutManager(requireContext())
                     binding.rvTransaction.layoutManager = linearLayout

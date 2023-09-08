@@ -98,10 +98,10 @@ class CartFragment : Fragment() {
 
             if (selectedItemCount > 0) {
                 binding.btnDeleteAll.visibility = View.VISIBLE
-                binding.btnBeliCart.visibility = View.VISIBLE
+                binding.btnBeliCart.isEnabled = true
             } else {
                 binding.btnDeleteAll.visibility = View.GONE
-                binding.btnBeliCart.visibility = View.GONE
+                binding.btnBeliCart.isEnabled = false
             }
 
             if (!(totalItemCount > 0 && selectedItemCount == totalItemCount)) {
@@ -118,7 +118,6 @@ class CartFragment : Fragment() {
             }
 
             val selectedProduct = cartItems.filter { it.selected }.map {
-                Log.d("cek quantity :",it.quantity.toString())
                 it.asCheckoutProduct(it.variantName,it.variantPrice)
             }
             listCart = selectedProduct

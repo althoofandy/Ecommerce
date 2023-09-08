@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ecommerce.R
 import com.example.ecommerce.databinding.ItemReviewProductBinding
 import com.example.ecommerce.model.GetProductReviewItemResponse
 
@@ -34,6 +35,16 @@ class ProductReviewAdapter :
              Glide.with(binding.root.context)
                  .load(item.userImage)
                  .into(binding.ivImageBuyer)
+
+            if(item.userImage.isNullOrEmpty()){
+                Glide.with(binding.root.context)
+                    .load(R.drawable.default_product)
+                    .into(binding.ivImageBuyer)
+            }else{
+                Glide.with(binding.root.context)
+                    .load(item.userImage)
+                    .into(binding.ivImageBuyer)
+            }
         }
     }
 }

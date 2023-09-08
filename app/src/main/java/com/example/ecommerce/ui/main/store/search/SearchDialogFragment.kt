@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.EditorInfo
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -60,6 +61,8 @@ class SearchDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        initEvent()
         adapter = SearchAdapter()
         binding.rvSearch.apply {
             layoutManager = LinearLayoutManager(context)
@@ -105,6 +108,14 @@ class SearchDialogFragment : DialogFragment() {
         })
     }
 
+    private fun initEvent() {
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,object : OnBackPressedCallback(true){
+            override fun handleOnBackPressed() {
+                dismiss()
+            }
+        })
+    }
+
     private fun setData(data: String) {
         val bundle = Bundle().apply {
             putString(StoreFragment.SEARCH, data)
@@ -114,6 +125,8 @@ class SearchDialogFragment : DialogFragment() {
             bundle
         )
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()

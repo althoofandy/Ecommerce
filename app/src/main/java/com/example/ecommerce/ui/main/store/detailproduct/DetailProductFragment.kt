@@ -140,16 +140,15 @@ class DetailProductFragment : Fragment() {
                         }
 
                         btnBeliLangsung.setOnClickListener {
-                            val productLocalDb = product.asProductLocalDb(varianName?: "RAM 16GB", varianPrice)
+                            val productLocalDb = product.asProductLocalDb(varianName, varianPrice)
                             val productCheckout = arrayListOf(
                                 productLocalDb.asCheckoutProduct(
-                                    varianName,
+                                    varianName?: "RAM 16GB",
                                     varianPrice
                                 )
                             )
                             val listCart = productCheckout
                             val bundle = bundleOf("data_product" to listCart)
-                            Log.d("cek cartfragm2", bundle.toString())
                             findNavController().navigate(
                                 R.id.action_detailProductFragment_to_checkoutFragment,
                                 bundle
