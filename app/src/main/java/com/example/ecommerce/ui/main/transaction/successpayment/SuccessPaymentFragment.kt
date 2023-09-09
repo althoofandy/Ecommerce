@@ -57,6 +57,7 @@ class SuccessPaymentFragment : Fragment() {
 
         binding.apply {
             btnBeliCheckout.setOnClickListener {
+                progressCircular.visibility = View.VISIBLE
                 val ratings = rbReview.rating.toInt()
                 if(ratings == 0){
                     rating = null
@@ -77,11 +78,16 @@ class SuccessPaymentFragment : Fragment() {
                 ).observe(viewLifecycleOwner) {
                     when (it) {
                         is Result.Success -> {
+                            progressCircular.hide()
                             findNavController().navigate(R.id.action_successPaymentFragment_to_main_navigation)
                         }
 
-                        is Result.Error -> {}
-                        is Result.Loading -> {}
+                        is Result.Error -> {
+                            progressCircular.hide()
+                        }
+                        is Result.Loading -> {
+                            progressCircular.show()
+                        }
                     }
                 }
             }

@@ -3,6 +3,7 @@
     android:id="@+id/search_product_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:foreground="?selectableItemBackground"
     android:layout_marginBottom="24dp"
     android:gravity="center"
     android:orientation="horizontal">

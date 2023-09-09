@@ -33,6 +33,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
+        android:id="@+id/scrollView4"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/view"
@@ -62,8 +63,8 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardView"
-                android:layout_width="380dp"
-                android:layout_height="296dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="64dp"
                 android:elevation="5dp"
@@ -83,7 +84,8 @@
                         android:layout_marginTop="48dp"
                         android:fontFamily="@font/poppins_semibold"
                         android:text="Pembayaran Berhasil"
-                        android:textSize="20sp"
+                        android:textColor="?attr/colorPrimary"
+                        android:textSize="24sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.502"
                         app:layout_constraintStart_toStartOf="parent"
@@ -127,7 +129,7 @@
                         <com.google.android.material.textfield.TextInputEditText
                             android:id="@+id/tieReviewDescription"
                             android:layout_width="match_parent"
-                            android:layout_height="84dp"
+                            android:layout_height="100dp"
                             android:fontFamily="@font/poppins_medium"
                             android:gravity="top|start"
                             android:maxLines="5"
@@ -302,11 +304,22 @@
 
     </ScrollView>
 
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progress_circular"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/materialDivider6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/materialDivider6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
         app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

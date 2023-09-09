@@ -59,8 +59,8 @@ class CheckoutFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initEvent()
         getData()
+        initEvent()
     }
 
     private fun getData() {
@@ -92,6 +92,7 @@ class CheckoutFragment : Fragment() {
 
                     val totalSelectedPrice =
                         dataProduct.sumBy { (it.productPrice + it.variantPrice!!) * it.quantity }
+                    listPayment = dataProduct.map { PaymentItem(it.productId, it.variantName, it.quantity) }
                     updateTotalPrice(totalSelectedPrice)
                 }
             })
@@ -133,10 +134,12 @@ class CheckoutFragment : Fragment() {
                 dataProduct.map { itemCount = it.quantity }
 
                 btnBeliCheckout.setOnClickListener {
+                    binding.progressCircular.visibility = View.VISIBLE
                     viewModel.doBuyProducts(accessToken, Payment(dataPayment?.label!!, listPayment))
                         .observe(viewLifecycleOwner) {
                             when (it) {
                                 is Result.Success -> {
+                                    binding.progressCircular.hide()
                                     val bundle = Bundle().apply {
                                         putParcelable("invoice", it.data.data)
                                     }
@@ -147,11 +150,11 @@ class CheckoutFragment : Fragment() {
                                 }
 
                                 is Result.Loading -> {
-
+                                    binding.progressCircular.show()
                                 }
 
                                 is Result.Error -> {
-
+                                    binding.progressCircular.hide()
                                 }
                             }
 

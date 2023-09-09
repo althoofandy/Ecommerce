@@ -151,7 +151,10 @@
     <fragment
         android:id="@+id/successPaymentFragment"
         android:name="com.example.ecommerce.ui.main.transaction.successpayment.SuccessPaymentFragment"
-        android:label="SuccessPaymentFragment">
+        android:label="SuccessPaymentFragment"
+        app:popUpTo="@id/app_navigation"
+        app:popUpToInclusive="true"
+        >
         <argument
             android:name="invoice"
             app:argType="com.example.ecommerce.model.PaymentDataResponse" />

@@ -63,8 +63,9 @@
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vpImageProduct"
                 android:layout_width="match_parent"
-                android:layout_height="310dp"
+                android:layout_height="350dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription,ImageContrastCheck" />
@@ -449,7 +450,6 @@
             android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginVertical="8dp"
             android:textSize="14sp"
             android:text="Beli Langsung"
             style="@style/Widget.Material3.Button.IconButton.Outlined" />
@@ -459,7 +459,6 @@
             android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
             android:textSize="14sp"
             android:layout_marginHorizontal="12dp"
             android:text="+ Keranjang" />

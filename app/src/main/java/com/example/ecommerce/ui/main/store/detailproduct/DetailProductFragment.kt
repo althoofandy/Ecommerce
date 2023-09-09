@@ -266,8 +266,6 @@ class DetailProductFragment : Fragment() {
                 }
             }
         }
-
-
     }
 
     private fun createChip(varians: List<ProductVariant>) {

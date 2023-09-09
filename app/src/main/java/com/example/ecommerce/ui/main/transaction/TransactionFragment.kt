@@ -15,7 +15,6 @@ import com.example.ecommerce.model.asPaymentDataResponse
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 
-
 class TransactionFragment : Fragment() {
     private var _binding: FragmentTransactionBinding? = null
     private val binding get() = _binding!!
@@ -42,36 +41,41 @@ class TransactionFragment : Fragment() {
     }
 
     fun getData() {
-        binding.linearErrorLayout.visibility = View.VISIBLE
+        binding.progressCircular.visibility = View.VISIBLE
         viewModel = TransactionViewModel(repository)
         sharedPref = SharedPref(requireContext())
         val accessToken = sharedPref.getAccessToken() ?: throw Exception("token is null")
         viewModel.getTransactionHistory(accessToken).observe(viewLifecycleOwner) {
             when (it) {
                 is Result.Success -> {
-                    binding.linearErrorLayout.visibility = View.GONE
-                    adapter = TransactionAdapter(it.data.data)
-                    val linearLayout = LinearLayoutManager(requireContext())
-                    binding.rvTransaction.layoutManager = linearLayout
-                    binding.rvTransaction.adapter = adapter
+                    binding.progressCircular.hide()
+                    if(it!=null){
+                        binding.linearErrorLayout.visibility = View.GONE
+                        adapter = TransactionAdapter(it.data.data)
+                        val linearLayout = LinearLayoutManager(requireContext())
+                        binding.rvTransaction.layoutManager = linearLayout
+                        binding.rvTransaction.adapter = adapter
 
-                    adapter.setItemClickListener(object : TransactionAdapter.TransactionDataClickListener{
-                        override fun onItemClick(label: TransactionDataResponse) {
-                            val convert = label.asPaymentDataResponse(label.review,label.rating)
-                            val bundle = Bundle().apply {
-                                putParcelable("invoice",convert)
+                        adapter.setItemClickListener(object : TransactionAdapter.TransactionDataClickListener{
+                            override fun onItemClick(label: TransactionDataResponse) {
+                                val convert = label.asPaymentDataResponse(label.review,label.rating)
+                                val bundle = Bundle().apply {
+                                    putParcelable("invoice",convert)
+                                }
+                                (requireActivity() as MainActivity).goToSuccess(bundle)
                             }
-                            (requireActivity() as MainActivity).goToSuccess(bundle)
-                        }
-                    })
-
+                        })
+                    }else{
+                        binding.linearErrorLayout.visibility = View.VISIBLE
+                    }
                 }
                 is Result.Loading -> {
-
+                    binding.progressCircular.show()
                 }
 
                 is Result.Error -> {
-
+                    binding.progressCircular.hide()
+                    binding.linearErrorLayout.visibility = View.VISIBLE
                 }
             }
         }

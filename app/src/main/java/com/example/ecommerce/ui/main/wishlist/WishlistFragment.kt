@@ -26,7 +26,6 @@ class WishlistFragment : Fragment() {
     private lateinit var appExecutors: AppExecutor
     private var counter = 0
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

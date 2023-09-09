@@ -304,6 +304,7 @@ class StoreFragment : Fragment() {
                     isChipIconVisible = false
                     isCloseIconVisible = false
                     isCheckable = true
+                    isChecked = true
                 }
                 chipGroup.addView(chip as View)
             }
