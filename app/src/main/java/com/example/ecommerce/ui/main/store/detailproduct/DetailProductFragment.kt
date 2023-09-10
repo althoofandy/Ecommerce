@@ -1,6 +1,7 @@
 package com.example.ecommerce.ui.main.store.detailproduct
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -62,7 +63,6 @@ class DetailProductFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
     }
 
     override fun onCreateView(
@@ -85,6 +85,16 @@ class DetailProductFragment : Fragment() {
         binding.apply {
             topAppBar.setNavigationOnClickListener {
                 findNavController().navigateUp()
+            }
+            btnShare.setOnClickListener {
+                val productId = id_product
+                val deepLink = "https://www.ecommerce.com/products/$productId"
+
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.type = "text/plain"
+                shareIntent.putExtra(Intent.EXTRA_TEXT, deepLink)
+
+                startActivity(shareIntent)
             }
         }
     }
