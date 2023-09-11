@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.api.Result
 import com.example.ecommerce.api.Retrofit
@@ -120,7 +121,7 @@ class CheckoutFragment : Fragment() {
     private fun initEvent() {
         viewModel = CheckoutViewModel(repository)
         sharedPref = SharedPref(requireContext())
-        val accessToken = sharedPref.getAccessToken() ?: throw Exception("token is null")
+        val accessToken = sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
 
         binding.apply {
             topAppBar.setNavigationOnClickListener {
@@ -135,7 +136,7 @@ class CheckoutFragment : Fragment() {
 
                 btnBeliCheckout.setOnClickListener {
                     binding.progressCircular.visibility = View.VISIBLE
-                    viewModel.doBuyProducts(accessToken, Payment(dataPayment?.label!!, listPayment))
+                    viewModel.doBuyProducts(accessToken.toString(), Payment(dataPayment?.label!!, listPayment))
                         .observe(viewLifecycleOwner) {
                             when (it) {
                                 is Result.Success -> {

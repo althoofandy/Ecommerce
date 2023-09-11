@@ -31,11 +31,6 @@ xmlns:tools="http://schemas.android.com/tools">
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
     </activity>
-    <activity
-        android:name="com.example.ecommerce.ui.main.store.detailproduct.Detail"
-        android:exported="false"
-        android:label="@string/title_activity_detail"
-        android:theme="@style/Theme.Ecommerce" />
 
     <provider
         android:name="androidx.core.content.FileProvider"

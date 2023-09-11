@@ -29,7 +29,7 @@ class TransactionAdapter(private val dataList: List<TransactionDataResponse>) :
                 tvTanggalTransaksi.text = item.date
                 tvNamaBarang.text = item.name
                 tvTotalBelanja.text = CurrencyUtils.formatRupiah(item.total)
-                val countItem = item.items?.sumBy { it.quantity }
+                val countItem = item.items?.size
                 tvJmlBarang.text = "$countItem Barang"
 
                 Glide.with(binding.root.context)

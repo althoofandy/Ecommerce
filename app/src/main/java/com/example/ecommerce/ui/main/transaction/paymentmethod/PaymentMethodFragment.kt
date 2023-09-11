@@ -8,6 +8,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ecommerce.MainActivity
 import com.example.ecommerce.api.Result
 import com.example.ecommerce.api.Retrofit
 import com.example.ecommerce.databinding.FragmentPaymentMethodBinding
@@ -58,9 +59,9 @@ class PaymentMethodFragment : Fragment() {
 
     private fun getData() {
         viewModel = PaymentMethodViewModel(repository)
-        val tokenAccess = sharedPref.getAccessToken() ?: throw Exception("token is null")
+        val tokenAccess = sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
 
-        viewModel.getPaymentMethod(tokenAccess).observe(viewLifecycleOwner) {
+        viewModel.getPaymentMethod(tokenAccess.toString()).observe(viewLifecycleOwner) {
             when (it) {
                 is Result.Success -> {
                     adapter = PaymentMethodAdapter(it.data.data)

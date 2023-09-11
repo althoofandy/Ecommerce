@@ -38,8 +38,7 @@
         android:id="@+id/action_prelog_to_profileFragment"
         app:destination="@id/addProfileFragment"
         app:popUpTo="@id/app_navigation"
-        app:popUpToInclusive="true"
-        />
+        app:popUpToInclusive="true" />
     <action
         android:id="@+id/action_main_to_cartFragment"
         app:destination="@id/cartFragment" />
@@ -65,7 +64,7 @@
             android:id="@+id/action_addProfileFragment_to_prelogin_navigation"
             app:destination="@id/prelogin_navigation"
             app:popUpTo="@id/app_navigation"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -145,7 +144,9 @@
             app:destination="@id/paymentMethodFragment" />
         <action
             android:id="@+id/action_checkoutFragment_to_successPaymentFragment"
-            app:destination="@id/successPaymentFragment" />
+            app:destination="@id/successPaymentFragment"
+            app:popUpTo="@id/app_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -174,7 +175,9 @@
             app:argType="com.example.ecommerce.model.PaymentDataResponse" />
         <action
             android:id="@+id/action_successPaymentFragment_to_main_navigation"
-            app:destination="@id/main_navigation" />
+            app:destination="@id/main_navigation"
+            app:popUpTo="@id/app_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>

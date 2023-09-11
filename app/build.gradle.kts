@@ -54,7 +54,6 @@ android {
 //            excludes += "/META-INF/{AL2.0,LGPL2.1}"
 //        }
 //    }
-
 }
 
 dependencies {
@@ -66,9 +65,8 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.android.gms:play-services-base:18.2.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
-    implementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-graphics-android:1.5.1")
+//    implementation("androidx.compose.ui:ui-graphics")
+//    implementation("androidx.compose.ui:ui-graphics-android:1.5.1")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
@@ -86,8 +84,7 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2023.03.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+//    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
 
     debugImplementation("com.github.chuckerteam.chucker:library:4.0.0")
 
@@ -96,12 +93,12 @@ dependencies {
     implementation("androidx.paging:paging-runtime-ktx:3.1.0")
 
     implementation("androidx.room:room-runtime:2.5.2")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+//    debugImplementation("androidx.compose.ui:ui-test-manifest")
     kapt("androidx.room:room-compiler:2.5.2")
     implementation("androidx.room:room-ktx:2.5.2")
 
     //COMPOSE
-//    val composeBom = platform("androidx.compose:compose-bom:2023.04.01")
+//    val composeBom = platform("androidx.compose:compose-bom:2023.05.01")
 //    implementation(composeBom)
 //    androidTestImplementation(composeBom)
 //

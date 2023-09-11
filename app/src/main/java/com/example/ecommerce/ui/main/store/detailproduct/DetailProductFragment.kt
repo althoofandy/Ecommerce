@@ -109,8 +109,8 @@ class DetailProductFragment : Fragment() {
 
         binding.apply {
             progressCircular.visibility = View.VISIBLE
-            val accessToken = sharedPref.getAccessToken() ?: throw Exception("token null")
-            viewModel.getDetailProduct(accessToken, id_product).observe(viewLifecycleOwner) {
+            val accessToken = sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
+            viewModel.getDetailProduct(accessToken.toString(), id_product).observe(viewLifecycleOwner) {
                 when (it) {
                     is Result.Success -> {
 

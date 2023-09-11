@@ -44,8 +44,8 @@ class TransactionFragment : Fragment() {
         binding.progressCircular.visibility = View.VISIBLE
         viewModel = TransactionViewModel(repository)
         sharedPref = SharedPref(requireContext())
-        val accessToken = sharedPref.getAccessToken() ?: throw Exception("token is null")
-        viewModel.getTransactionHistory(accessToken).observe(viewLifecycleOwner) {
+        val accessToken = sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
+        viewModel.getTransactionHistory(accessToken.toString()).observe(viewLifecycleOwner) {
             when (it) {
                 is Result.Success -> {
                     binding.progressCircular.hide()

@@ -1,4 +1,7 @@
-//package com.example.ecommerce.ui.main.store.detailproduct
+package com.example.ecommerce.ui.main.store.detailproduct
+
+import androidx.fragment.app.Fragment
+
 //
 //import androidx.compose.foundation.ExperimentalFoundationApi
 //import androidx.compose.foundation.background
@@ -11,7 +14,6 @@
 //import androidx.compose.foundation.layout.height
 //import androidx.compose.foundation.layout.padding
 //import androidx.compose.foundation.layout.size
-//import androidx.compose.foundation.lazy.LazyColumn
 //import androidx.compose.foundation.pager.HorizontalPager
 //import androidx.compose.foundation.pager.rememberPagerState
 //import androidx.compose.foundation.shape.CircleShape
@@ -27,7 +29,6 @@
 //import androidx.compose.material3.Text
 //import androidx.compose.material3.TopAppBar
 //import androidx.compose.runtime.Composable
-//import androidx.compose.ui.Alignment
 //import androidx.compose.ui.Modifier
 //import androidx.compose.ui.draw.clip
 //import androidx.compose.ui.graphics.Color
@@ -37,7 +38,7 @@
 //import androidx.fragment.app.Fragment
 //import androidx.navigation.fragment.findNavController
 //
-//class DetailProductFragmentCompose : Fragment() {
+class DetailProductFragmentCompose : Fragment() {
 //    @OptIn(ExperimentalMaterial3Api::class)
 //    @Composable
 //    fun ScaffoldExample() {
@@ -156,4 +157,4 @@
 //    fun PreviewMessageCard() {
 //        ScaffoldExample()
 //    }
-//}
+}

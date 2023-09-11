@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ecommerce.MainActivity
 import com.example.ecommerce.ViewModelFactory
 import com.example.ecommerce.api.Result
 import com.example.ecommerce.api.Retrofit
@@ -60,8 +61,8 @@ class ReviewFragment : Fragment() {
         val linearLayout = LinearLayoutManager(requireContext())
         binding.rvReview.layoutManager = linearLayout
         binding.rvReview.adapter = adapter
-        val accessToken = sharedPref.getAccessToken() ?: throw Exception("Token not available")
-        viewModel.getProductReview(accessToken,id_product).observe(viewLifecycleOwner){
+        val accessToken = sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
+        viewModel.getProductReview(accessToken.toString(),id_product).observe(viewLifecycleOwner){
             when(it){
                 is Result.Success ->{
                     val data = it.data.data

@@ -131,6 +131,16 @@ class StoreFragment : Fragment() {
         }
     }
 
+    private fun cekParam() {
+        viewModel.param.observe(viewLifecycleOwner) {
+            search = it.search
+            sort = it.sort
+            category = it.sort
+            lowest = it.lowest.toString()
+            highest = it.highest.toString()
+        }
+    }
+
     private fun changeToggle() {
         isList = !isList
         val imageRes =
@@ -171,32 +181,39 @@ class StoreFragment : Fragment() {
 
                 if (isError) {
                     linearErrorLayout.visibility = View.VISIBLE
-                    rvProduct.visibility = View.GONE
                     val error = (loadStates.refresh as LoadState.Error).error
                     val errorMessage = error.message
 
                     if (errorMessage?.contains("404") == true) {
+                        swiperefresh.visibility = View.GONE
                         errorTypeText.text = "Empty"
                         errorTypeInfo.text = "Your requested data is unavailable"
                         restartButton.text = "Reset"
                         restartButton.setOnClickListener {
+                            sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
+                            chipGroup.removeAllViews()
                             viewModel.resetParam()
+                            cekParam()
                             tieSearch.text?.clear()
                         }
                         rvProduct.visibility = View.GONE
                     } else {
-                        rvProduct.visibility = View.GONE
+                        swiperefresh.visibility = View.GONE
                         errorTypeText.text = "500"
                         errorTypeInfo.text = "Internal Server Error"
                         restartButton.text = "Refresh"
                         restartButton.setOnClickListener {
+                            sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
                             adapter.refresh()
                         }
                     }
+                } else {
+                    swiperefresh.visibility = View.VISIBLE
+                    rvProduct.visibility = View.VISIBLE
                 }
                 if (isRefreshing) {
                     linearErrorLayout.visibility = View.GONE
-                    rvProduct.visibility = View.GONE
+                    swiperefresh.visibility = View.GONE
                     if (isList) {
                         shimmerLinear.visibility = View.VISIBLE
                         shimmerGrid.visibility = View.GONE
@@ -212,7 +229,6 @@ class StoreFragment : Fragment() {
                 } else {
                     shimmerGrid.visibility = View.GONE
                     shimmerLinear.visibility = View.GONE
-                    rvProduct.visibility = View.VISIBLE
                     horizontalScrollView.visibility = View.VISIBLE
                     chipFilter.visibility = View.VISIBLE
                     linearLayoutToogle.visibility = View.VISIBLE

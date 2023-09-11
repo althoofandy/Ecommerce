@@ -6,15 +6,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
+import com.example.ecommerce.MainActivity
 import com.example.ecommerce.model.ProductParam
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 
 class StoreViewModel(private val repository: EcommerceRepository, sharedPref: SharedPref) :
     ViewModel() {
-    private val accesToken = sharedPref.getAccessToken() ?: throw Exception("No token available")
+    private val accesToken = sharedPref.getAccessToken() ?: MainActivity().logOut()
 
-    private val _param = MutableLiveData(ProductParam(accesToken))
+    private val _param = MutableLiveData(ProductParam(accesToken.toString()))
     val param: LiveData<ProductParam> = _param
 
     fun setSearch(

@@ -15,6 +15,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ecommerce.MainActivity
 import com.example.ecommerce.ViewModelFactory
 import com.example.ecommerce.api.Retrofit
 import com.example.ecommerce.databinding.FragmentSearchDialogBinding
@@ -46,6 +47,11 @@ class SearchDialogFragment : DialogFragment() {
     private lateinit var adapter: SearchAdapter
     private var searchString: String? = ""
     private var search: String? = ""
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -64,42 +70,47 @@ class SearchDialogFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setSearchDialog()
         initEvent()
+    }
+
+    private fun setSearchDialog() {
         adapter = SearchAdapter()
         binding.rvSearch.apply {
             layoutManager = LinearLayoutManager(context)
             setHasFixedSize(true)
             adapter = this@SearchDialogFragment.adapter
         }
-        if(search.isNullOrEmpty() || search == "null"){
+        if (search.isNullOrEmpty() || search == "null") {
             binding.tieSearch.setText("")
-        }else{
+        } else {
             binding.tieSearch.setText(search)
         }
 
         binding.tieSearch.setOnEditorActionListener { textView, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH || event.action == KeyEvent.ACTION_DOWN && actionId == KeyEvent.KEYCODE_ENTER) {
-                setData(textView.text.toString())
-                dismiss()
+                lifecycleScope.launch {
+                    delay(1000)
+                    setData(textView.text.toString())
+                    dismiss()
+                }
                 return@setOnEditorActionListener true
             }
             return@setOnEditorActionListener false
         }
         val accessToken = sharedPref.getAccessToken()
-            ?: throw NullPointerException("Access token is null")
+            ?: (requireActivity() as MainActivity).logOut()
         var job: Job? = null
         binding.tieSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 binding.progressBar.visibility = View.VISIBLE
                 searchString = s.toString()
                 job?.cancel()
                 job = lifecycleScope.launch {
                     delay(1000)
-                    val searchResult = viewModel.doSearch(accessToken, s.toString())
-                    searchResult.observe(viewLifecycleOwner) {
+                    viewModel.doSearch(accessToken.toString(), s.toString()).observe(viewLifecycleOwner) {
                         adapter.setSearchProducts(it)
                         binding.progressBar.visibility = View.GONE
                     }
@@ -140,6 +151,7 @@ class SearchDialogFragment : DialogFragment() {
         super.onDestroy()
         _binding = null
     }
+
     companion object {
         const val TAG = "SearchDialogFragment"
 
