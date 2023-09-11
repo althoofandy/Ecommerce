@@ -185,13 +185,13 @@ class StoreFragment : Fragment() {
                         }
                         rvProduct.visibility = View.GONE
                     } else {
+                        rvProduct.visibility = View.GONE
                         errorTypeText.text = "500"
                         errorTypeInfo.text = "Internal Server Error"
                         restartButton.text = "Refresh"
                         restartButton.setOnClickListener {
                             adapter.refresh()
                         }
-                        rvProduct.visibility = View.GONE
                     }
                 }
                 if (isRefreshing) {

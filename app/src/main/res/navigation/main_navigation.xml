@@ -8,14 +8,13 @@
     <fragment
         android:id="@+id/main_fragment"
         android:name="com.example.ecommerce.MainFragment"
-        android:label="fragment_main"
-        tools:layout="@layout/fragment_main" >
-    </fragment>
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main"/>
 
-    <action
-        android:id="@+id/action_mainNav_to_preLogNav"
-        app:popUpTo="@id/main_navigation"
-        app:popUpToInclusive="true"
-        app:destination="@id/prelogin_navigation" />
+    <!--    <action-->
+    <!--        android:id="@+id/action_mainNav_to_preLogNav"-->
+    <!--        app:popUpTo="@id/main_navigation"-->
+    <!--        app:popUpToInclusive="true"-->
+    <!--        app:destination="@id/prelogin_navigation" />-->
 
 </navigation>

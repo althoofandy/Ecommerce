@@ -3,7 +3,6 @@ package com.example.ecommerce.ui.main.store.detailproduct
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +16,7 @@ import com.example.ecommerce.ViewModelFactory
 import com.example.ecommerce.api.Result
 import com.example.ecommerce.api.Retrofit
 import com.example.ecommerce.databinding.FragmentDetailProductBinding
+import com.example.ecommerce.model.GetProductDetailItemResponse
 import com.example.ecommerce.model.ProductVariant
 import com.example.ecommerce.model.asCheckoutProduct
 import com.example.ecommerce.model.asProductLocalDb
@@ -58,6 +58,7 @@ class DetailProductFragment : Fragment() {
     private var varianName: String? = null
     private var productPrice: Int? = 0
     private var varianPrice: Int? = 0
+    private var product: GetProductDetailItemResponse? = null
     private var counter = 0
     private lateinit var appExecutors: AppExecutor
 
@@ -87,14 +88,15 @@ class DetailProductFragment : Fragment() {
                 findNavController().navigateUp()
             }
             btnShare.setOnClickListener {
-                val productId = id_product
-                val deepLink = "https://www.ecommerce.com/products/$productId"
+                val deepLink = "Product : ${product?.productName}\n" +
+                        "Price : ${CurrencyUtils.formatRupiah(product?.productPrice)}\n" +
+                        "Link : http://ecommerce.com/products/$id_product"
 
                 val shareIntent = Intent(Intent.ACTION_SEND)
                 shareIntent.type = "text/plain"
                 shareIntent.putExtra(Intent.EXTRA_TEXT, deepLink)
 
-                startActivity(shareIntent)
+                startActivity(Intent.createChooser(shareIntent,null))
             }
         }
     }
@@ -116,25 +118,25 @@ class DetailProductFragment : Fragment() {
                         viewBottom.visibility = View.VISIBLE
                         progressCircular.hide()
                         val listVarian = ArrayList<ProductVariant>()
-                        val product = it.data.data
-                        productPrice = product.productPrice
+                        product = it.data.data
+                        productPrice = product?.productPrice
 
-                        tvProductPrice.text = CurrencyUtils.formatRupiah(product.productPrice)
-                        tvProductName.text = product.productName
-                        tvSale.text = product.sale.toString()
-                        tvRatingUp.text = product.productRating.toString()
-                        tvRate.text = "(${product.totalRating})"
-                        tvProductRating.text = product.productRating.toString()
-                        tvDescription.text = product.description
-                        tvPercent.text = "${product.totalSatisfaction}%"
-                        tvTotalRate.text = "${product.totalRating} Rating"
-                        tvTotalReview.text = "${product.totalReview} Ulasan"
-                        product.productVariant.forEach {
+                        tvProductPrice.text = CurrencyUtils.formatRupiah(product?.productPrice)
+                        tvProductName.text = product?.productName
+                        tvSale.text = product?.sale.toString()
+                        tvRatingUp.text = product?.productRating.toString()
+                        tvRate.text = "(${product?.totalRating})"
+                        tvProductRating.text = product?.productRating.toString()
+                        tvDescription.text = product?.description
+                        tvPercent.text = "${product?.totalSatisfaction}%"
+                        tvTotalRate.text = "${product?.totalRating} Rating"
+                        tvTotalReview.text = "${product?.totalReview} Ulasan"
+                        product?.productVariant?.forEach {
                             listVarian.add(it)
                         }
                         createChip(listVarian)
-                        val images = product.image
-                        val viewpagerAdapter = ProductPagerAdapter(images)
+                        val images = product?.image
+                        val viewpagerAdapter = ProductPagerAdapter(images!!)
                         vpImageProduct.adapter = viewpagerAdapter
 
                         if (images.size <= 1) {
@@ -145,14 +147,14 @@ class DetailProductFragment : Fragment() {
                         }
 
                         binding.buttonLihatSemua.setOnClickListener {
-                            val bundle = bundleOf("id_product" to product.productId)
+                            val bundle = bundleOf("id_product" to product?.productId)
                             (requireActivity() as MainActivity).goToDetailReview(bundle)
                         }
 
                         btnBeliLangsung.setOnClickListener {
-                            val productLocalDb = product.asProductLocalDb(varianName, varianPrice)
+                            val productLocalDb = product?.asProductLocalDb(varianName, varianPrice)
                             val productCheckout = arrayListOf(
-                                productLocalDb.asCheckoutProduct(
+                                productLocalDb?.asCheckoutProduct(
                                     varianName?: "RAM 16GB",
                                     varianPrice
                                 )
@@ -170,9 +172,9 @@ class DetailProductFragment : Fragment() {
                             appExecutors.diskIO.execute {
                                 cartViewModel = CartViewModel(requireContext())
                                 val productLocalDb =
-                                    product.asProductLocalDb(varianName, varianPrice)
+                                    product?.asProductLocalDb(varianName, varianPrice)
                                 val checkProductExist =
-                                    cartViewModel.getCartById(productLocalDb.productId)
+                                    cartViewModel.getCartById(productLocalDb?.productId!!)
 
                                 if (checkProductExist?.productId != null) {
                                     if (checkProductExist.quantity < checkProductExist.stock!!) {
@@ -216,10 +218,10 @@ class DetailProductFragment : Fragment() {
                         appExecutors.diskIO.execute {
                             wishlistViewModel = WishlistViewModel(requireContext())
                             val wishlistLocalDb =
-                                product.asWishlistProduct(varianName, varianPrice)
+                                product?.asWishlistProduct(varianName, varianPrice)
 
                             val checkWishlistExist =
-                                wishlistViewModel.getProductWishlistById(wishlistLocalDb.productId)
+                                wishlistViewModel.getProductWishlistById(wishlistLocalDb?.productId!!)
 
                             var isChecked = false
                             if (checkWishlistExist?.productId != null) {

@@ -3,26 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation"
-    app:startDestination="@id/prelogin_navigation">
+    app:startDestination="@id/main_navigation">
 
     <include app:graph="@navigation/prelogin_navigation" />
 
     <include app:graph="@navigation/main_navigation" />
-
-    <fragment
-        android:id="@+id/addProfileFragment"
-        android:name="com.example.ecommerce.ui.prelogin.profile.AddProfileFragment"
-        android:label="fragment_add_profile"
-        tools:layout="@layout/fragment_add_profile">
-        <action
-            android:id="@+id/action_addProfileFragment_to_main_navigation"
-            app:destination="@id/main_navigation"
-            app:popUpTo="@id/app_navigation"
-            app:popUpToInclusive="true" />
-        <action
-            android:id="@+id/action_addProfileFragment_to_prelogin_navigation"
-            app:destination="@id/prelogin_navigation" />
-    </fragment>
 
     <action
         android:id="@+id/action_mainTransac_to_successFragment"
@@ -39,6 +24,12 @@
         app:popUpToInclusive="true" />
 
     <action
+        android:id="@+id/action_main_to_prelog"
+        app:destination="@id/prelogin_navigation"
+        app:popUpTo="@id/main_navigation"
+        app:popUpToInclusive="true" />
+
+    <action
         android:id="@+id/action_main_to_profileFragment"
         app:destination="@id/addProfileFragment"
         app:popUpTo="@id/app_navigation"
@@ -47,7 +38,8 @@
         android:id="@+id/action_prelog_to_profileFragment"
         app:destination="@id/addProfileFragment"
         app:popUpTo="@id/app_navigation"
-        app:popUpToInclusive="true" />
+        app:popUpToInclusive="true"
+        />
     <action
         android:id="@+id/action_main_to_cartFragment"
         app:destination="@id/cartFragment" />
@@ -60,16 +52,41 @@
     </action>
 
     <fragment
+        android:id="@+id/addProfileFragment"
+        android:name="com.example.ecommerce.ui.prelogin.profile.AddProfileFragment"
+        android:label="AddProfileFragment"
+        tools:layout="@layout/fragment_add_profile">
+        <action
+            android:id="@+id/action_addProfileFragment_to_main_navigation"
+            app:destination="@id/main_navigation"
+            app:popUpTo="@id/app_navigation"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_addProfileFragment_to_prelogin_navigation"
+            app:destination="@id/prelogin_navigation"
+            app:popUpTo="@id/app_navigation"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
         android:id="@+id/detailProductFragment"
         android:name="com.example.ecommerce.ui.main.store.detailproduct.DetailProductFragment"
         android:label="DetailProductFragment"
         tools:layout="@layout/fragment_detail_product">
-        <argument
-            android:name="data_product"
-            app:argType="com.example.ecommerce.model.CheckoutProduct" />
+        <action
+            android:id="@+id/action_detailProductFragment_to_cartFragment2"
+            app:destination="@id/cartFragment">
+            <argument
+                android:name="data_product"
+                app:argType="com.example.ecommerce.model.CheckoutProduct" />
+        </action>
         <argument
             android:name="id_product"
             app:argType="string" />
+        <deepLink
+            android:id="@+id/deepLink"
+            android:autoVerify="true"
+            app:uri="http://ecommerce.com/products/{id_product}" />
         <action
             android:id="@+id/action_detailProductFragment_to_reviewFragment"
             app:destination="@id/reviewFragment">
@@ -77,9 +94,7 @@
                 android:name="id_product"
                 app:argType="string" />
         </action>
-        <action
-            android:id="@+id/action_detailProductFragment_to_cartFragment2"
-            app:destination="@id/cartFragment" />
+
         <action
             android:id="@+id/action_detailProductFragment_to_checkoutFragment"
             app:destination="@id/checkoutFragment">
@@ -87,8 +102,8 @@
                 android:name="data_product"
                 app:argType="com.example.ecommerce.model.CheckoutProduct" />
         </action>
-
     </fragment>
+
     <fragment
         android:id="@+id/reviewFragment"
         android:name="com.example.ecommerce.ui.main.store.review.ReviewFragment"
@@ -153,8 +168,7 @@
         android:name="com.example.ecommerce.ui.main.transaction.successpayment.SuccessPaymentFragment"
         android:label="SuccessPaymentFragment"
         app:popUpTo="@id/app_navigation"
-        app:popUpToInclusive="true"
-        >
+        app:popUpToInclusive="true">
         <argument
             android:name="invoice"
             app:argType="com.example.ecommerce.model.PaymentDataResponse" />

@@ -27,12 +27,11 @@ class MainActivity : AppCompatActivity() {
 
         sharedPref = SharedPref(this)
         checkSession()
-        checkFirstInstall()
     }
 
     fun logOut() {
         sharedPref.logout()
-        navController.navigate(R.id.action_mainNav_to_preLogNav)
+        navController.navigate(R.id.action_main_to_prelog)
     }
 
     fun goToDetailProduct(bundle: Bundle) {
@@ -53,15 +52,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkSession() {
         val token = sharedPref.getAccessToken()
-        if (token != null) {
-            navController.navigate(R.id.action_prelog_to_mainFragment)
+        if (token == null) {
+            navController.navigate(R.id.action_main_to_prelog)
         }
     }
 
-    private fun checkFirstInstall() {
-        val isFirstInstall = sharedPref.getIsFirstInstall()
-        if (isFirstInstall) {
-            navController.navigate(R.id.action_loginFragment_to_onboardingFragment)
-        }
+    fun profileToPrelog() {
+            navController.navigate(R.id.action_addProfileFragment_to_prelogin_navigation)
     }
+
+
 }

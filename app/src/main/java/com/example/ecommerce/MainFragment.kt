@@ -34,6 +34,11 @@ class MainFragment : Fragment() {
     }
     private lateinit var cartViewModel: CartViewModel
     private lateinit var wishViewModel: WishlistViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -105,9 +110,10 @@ class MainFragment : Fragment() {
     private fun checkUserNameExist() {
         val userName = sharedPref.getNameProfile()
         if (userName.isNullOrEmpty()) {
-            (requireActivity() as MainActivity).checkUsernameExist()
+           findNavController().navigate(R.id.action_main_to_profileFragment)
         } else {
             binding.tvUserName.text = userName
         }
     }
+
 }

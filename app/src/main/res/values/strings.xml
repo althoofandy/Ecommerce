@@ -21,4 +21,5 @@
     <string name="your_requested_data_is_unavailable">Your requested data is unavailable</string>
     <string name="empty">Empty</string>
     <string name="tanggal">07 September 2023</string>
+    <string name="title_activity_detail">Detail</string>
 </resources>

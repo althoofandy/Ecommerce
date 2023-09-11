@@ -20,6 +20,10 @@ class PaymentAdapter(private val nestedDataList: List<PaymentMethodItemResponse>
     inner class NestedViewHolder(private val binding: ItemListPaymentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PaymentMethodItemResponse) {
+            if (item.status == false){
+                binding.root.alpha = 0.5f
+                binding.root.setOnClickListener(null)
+            }
             binding.apply {
                 Glide.with(binding.root.context)
                     .load(item.image)

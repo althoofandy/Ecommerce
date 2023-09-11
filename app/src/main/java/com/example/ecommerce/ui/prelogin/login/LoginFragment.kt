@@ -40,6 +40,11 @@ class LoginFragment : Fragment() {
         ViewModelFactory(repository,sharedPref)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        checkFirstInstall()
+    }
+
     private val viewModel: LoginViewModel by viewModels { factory }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -189,6 +194,12 @@ class LoginFragment : Fragment() {
         }
 
         override fun afterTextChanged(editable: Editable) {}
+    }
+    private fun checkFirstInstall() {
+        val isFirstInstall = sharedPref.getIsFirstInstall()
+        if (isFirstInstall) {
+            findNavController().navigate(R.id.action_loginFragment_to_onboardingFragment)
+        }
     }
 
 

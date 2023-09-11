@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.ViewModelFactory
 import com.example.ecommerce.api.Result
@@ -102,13 +103,7 @@ class AddProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         instance = this
-        if (!allPermissionsGranted()) {
-            ActivityCompat.requestPermissions(
-                requireContext() as Activity,
-                REQUIRED_PERMISSIONS,
-                REQUEST_CODE_PERMISSIONS
-            )
-        }
+
     }
 
     override fun onCreateView(
@@ -152,7 +147,8 @@ class AddProfileFragment : Fragment() {
                         }
 
                         is Result.Error -> {
-//                            (requireActivity() as MainActivity).logOut()                           progressCircular.hide()
+                            progressCircular.hide()
+                            (requireActivity() as MainActivity).profileToPrelog()
                             Toast.makeText(
                                 requireContext(),
                                 "Sesi anda telah berakhir!",
@@ -167,10 +163,19 @@ class AddProfileFragment : Fragment() {
                 }
         }
     }
-
+    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
+        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
+    }
     private fun choosePhoto() {
         binding.apply {
             cvPhoto.setOnClickListener {
+                if (!allPermissionsGranted()) {
+                    ActivityCompat.requestPermissions(
+                        requireContext() as Activity,
+                        REQUIRED_PERMISSIONS,
+                        REQUEST_CODE_PERMISSIONS
+                    )
+                }
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle(R.string.choose_pict)
                     .setItems(R.array.choose_pict) { dialog, which ->
@@ -218,9 +223,6 @@ class AddProfileFragment : Fragment() {
         startGallery.launch("image/*")
     }
 
-    private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
-        ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
-    }
 
     @SuppressLint("ResourceAsColor")
     private fun spannable() {
@@ -240,24 +242,7 @@ class AddProfileFragment : Fragment() {
         binding.tvPolicy.text = spannableString
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == REQUEST_CODE_PERMISSIONS) {
-            if (!allPermissionsGranted()) {
-                Toast.makeText(
-                    requireContext(),
-                    "Tidak mendapatkan permission.",
-                    Toast.LENGTH_SHORT
-                ).show()
 
-            }
-        }
-    }
      private fun checkUserSession() {
         val token = pref.getAccessToken()
         if (token == null) {

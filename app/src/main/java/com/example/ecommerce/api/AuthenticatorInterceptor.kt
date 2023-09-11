@@ -2,7 +2,6 @@ package com.example.ecommerce.api
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
-import com.example.ecommerce.MainActivity
 import com.example.ecommerce.model.RefreshResponse
 import com.example.ecommerce.model.TokenRequest
 import com.example.ecommerce.pref.SharedPref
@@ -52,7 +51,7 @@ class AuthenticatorInterceptor(private val pref: SharedPref,private val context:
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.1.14:5000/")
+            .baseUrl("http://192.168.153.125:5000/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()
