@@ -4,16 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
-import androidx.lifecycle.viewModelScope
-import androidx.paging.cachedIn
-import com.example.ecommerce.model.GetProductDetailItemResponse
 import com.example.ecommerce.model.GetProductDetailResponse
 import com.example.ecommerce.model.ProductDetailParam
-import com.example.ecommerce.model.ProductParam
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
 
 class DetailProductViewModel(
     private val repository: EcommerceRepository

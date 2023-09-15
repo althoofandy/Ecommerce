@@ -5,16 +5,16 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal">
 
-    <androidx.cardview.widget.CardView
+    <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:layout_margin="5dp"
         app:cardCornerRadius="8dp"
-        android:backgroundTint="?attr/colorSurfaceContainerLowest"
         android:foreground="?selectableItemBackground"
-        android:elevation="4dp"
+        android:backgroundTint="?attr/colorSurfaceContainerLowest"
+        android:elevation="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,6 +23,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:foreground="?selectableItemBackground"
             android:orientation="vertical">
 
             <ImageView
@@ -86,6 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
+                android:layout_marginBottom="4dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
                 android:orientation="horizontal">
@@ -134,7 +136,7 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.google.android.material.card.MaterialCardView>
 
 
 </LinearLayout>

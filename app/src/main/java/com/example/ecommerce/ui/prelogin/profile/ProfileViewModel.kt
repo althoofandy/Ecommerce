@@ -1,8 +1,6 @@
 package com.example.ecommerce.ui.prelogin.profile
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import com.example.ecommerce.repos.EcommerceRepository
 import okhttp3.MultipartBody
 

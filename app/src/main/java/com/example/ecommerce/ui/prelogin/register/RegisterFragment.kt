@@ -1,12 +1,8 @@
 package com.example.ecommerce.ui.prelogin.register
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
-import android.text.SpannableString
-import android.text.Spanned
 import android.text.TextWatcher
-import android.text.style.ForegroundColorSpan
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -49,7 +45,6 @@ class RegisterFragment : Fragment() {
         binding.btnRegister.isEnabled = false
         doLogin()
         doRegister()
-        spannable()
         checkField()
     }
 
@@ -113,24 +108,6 @@ class RegisterFragment : Fragment() {
 
     private fun isValidEmail(email: CharSequence): Boolean {
         return Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    @SuppressLint("ResourceAsColor")
-    private fun spannable() {
-        val text =
-            "Dengan daftar disini, kamu menyetujui Syarat dan Ketentuan serta Kebijakan Privasi TokoPhincon."
-        val spannableString = SpannableString(text)
-        val color1 = ForegroundColorSpan(R.color.primary)
-        spannableString.setSpan(
-            color1,
-            37, 58, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        val color2 = ForegroundColorSpan(R.color.primary)
-        spannableString.setSpan(
-            color2,
-            64, 82, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        binding.tvPolicy.text = spannableString
     }
 
     private fun checkField() {

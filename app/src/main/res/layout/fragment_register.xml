@@ -108,7 +108,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="@string/or"
+                android:text="@string/or_login"
                 android:textSize="12sp" />
 
             <com.google.android.material.divider.MaterialDivider

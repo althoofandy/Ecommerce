@@ -14,7 +14,8 @@
     <string name="your_requested_data_is_unavailable">Data yang anda inginkan tidak tersedia</string>
     <string name="empty">Kosong</string>
     <string name="login">Masuk</string>
-    <string name="or">atau daftar dengan</string>
+    <string name="or_register">atau daftar dengan</string>
+    <string name="or_login">atau masuk dengan</string>
     <string name="register">Daftar</string>
     <string name="helperEmail">Contoh: test@gmail.com</string>
     <string name="helperPassword">Minimal 8 karakter</string>
@@ -46,8 +47,8 @@
     <string name="title_activity_detail">Detail</string>
     <string name="title_activity_product_review_compose">ProductReviewCompose</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="id" translatable="false">Id</string>
-    <string name="en" translatable="false">En</string>
+    <string name="id" translatable="false">ID</string>
+    <string name="en" translatable="false">EN</string>
     <string name="review_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
     <string name="tanggal">07 September 2023</string>
     <string name="product_name">Lenovo Legion 7 16 I7 11800 16GB 1TB SSD RTX3070 8GB</string>
@@ -72,4 +73,17 @@
     <string name="emptyStock">Stock habis!</string>
     <string name="logout">Keluar</string>
     <string name="remaining">Sisa</string>
+    <string name="lowest">Harga Terendah</string>
+    <string name="highest">Harga Tertinggi</string>
+    <string name="show_product">Tampilkan Produk</string>
+    <string name="sort">Urutkan</string>
+    <string name="category">Kategori</string>
+    <string name="price">Harga</string>
+    <string name="penjualan">Penjualan</string>
+    <string name="reset">Muat ulang</string>
+    <string name="refresh">Segarkan</string>
+    <string name="internal_error">Kesalahan dari dalam server</string>
+    <string name="no_internet">Koneksi Anda tidak tersedia</string>
+    <string name="success">Berhasil</string>
+    <string name="failed">Gagal</string>
 </resources>

@@ -37,9 +37,9 @@
                 android:layout_height="40dp"
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
-                android:visibility="gone"
                 android:text="Reset"
                 android:textColor="?attr/colorPrimary"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -49,7 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Urutkan"
+                android:text="@string/sort"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="Ulasan"
+                    android:text="@string/rate"
                     app:checkedIconVisible="false"
                     app:closeIconVisible="false"
                     app:layout_constraintStart_toStartOf="parent"
@@ -84,7 +84,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="Penjualan"
+                    android:text="@string/penjualan"
                     app:checkedIconVisible="false"
                     app:closeIconVisible="false"
                     app:layout_constraintStart_toStartOf="parent"
@@ -96,7 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="Harga Terendah"
+                    android:text="@string/lowest"
                     app:checkedIconVisible="false"
                     app:closeIconVisible="false"
                     app:layout_constraintStart_toStartOf="parent"
@@ -108,7 +108,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
-                    android:text="Harga Tertinggi"
+                    android:text="@string/highest"
                     app:checkedIconVisible="false"
                     app:closeIconVisible="false"
                     app:layout_constraintStart_toStartOf="parent"
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Kategori"
+                android:text="@string/category"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chipGroupUrutkan" />
 
@@ -191,19 +191,18 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:text="Harga"
+                android:text="@string/price"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/chipGroupKategori" />
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
                 android:baselineAligned="false"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/btnTampilkan"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView5">
@@ -214,7 +213,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:hint="Terendah"
+                    android:hint="@string/lowest"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
@@ -236,7 +235,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_weight="1"
-                    android:hint="Tertinggi"
+                    android:hint="@string/highest"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/terendahEditTextLayout"
@@ -254,16 +253,16 @@
 
             <Button
                 android:id="@+id/btnTampilkan"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
-                android:layout_marginTop="420dp"
-                android:text="Tampilkan Produk"
+                android:layout_marginTop="16dp"
+                android:text="@string/show_product"
                 android:textSize="14sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </FrameLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -5,10 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
 import com.example.ecommerce.api.Result
-import com.example.ecommerce.model.GetProductDetailResponse
-import com.example.ecommerce.model.GetProductReviewItemResponse
 import com.example.ecommerce.model.GetProductReviewResponse
-import com.example.ecommerce.model.ProductDetailParam
 import com.example.ecommerce.model.ProductReviewParam
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository

@@ -1,20 +1,6 @@
 package com.example.ecommerce.ui.main.store.review
 
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ecommerce.MainActivity
-import com.example.ecommerce.ViewModelFactory
-import com.example.ecommerce.api.Result
-import com.example.ecommerce.api.Retrofit
-import com.example.ecommerce.databinding.FragmentReviewBinding
-import com.example.ecommerce.pref.SharedPref
-import com.example.ecommerce.repos.EcommerceRepository
 
 
 class ReviewFragment : Fragment() {

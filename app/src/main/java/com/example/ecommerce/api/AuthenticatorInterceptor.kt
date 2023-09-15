@@ -1,14 +1,10 @@
 package com.example.ecommerce.api
 
 import android.content.Context
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.asLiveData
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.example.ecommerce.model.RefreshResponse
 import com.example.ecommerce.model.TokenRequest
 import com.example.ecommerce.pref.SharedPref
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Authenticator
 import okhttp3.OkHttpClient
@@ -56,7 +52,7 @@ class AuthenticatorInterceptor(private val pref: SharedPref,private val context:
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://172.17.20.217:5000/")
+            .baseUrl("http://192.168.153.125:5000/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

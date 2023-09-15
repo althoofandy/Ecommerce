@@ -59,10 +59,12 @@ class CheckoutAdapter(private val cartViewModel: CartViewModel) :
                 updateCounter()
                 tvProductName.text = item.productName
                 tvVarian.text = item.variantName
-                tvSisaProduk.text = "Sisa ${item.stock}"
+                tvSisaProduk.text = "${item.stock}"
                 if (item.stock!! <= 5) {
+                    tvremaining.setTextColor(Color.RED)
                     tvSisaProduk.setTextColor(Color.RED)
                 } else {
+                    tvremaining.setTextColor(Color.RED)
                     tvSisaProduk.setTextColor(R.color.stockColor)
                 }
                 val sum = item.productPrice.plus(item.variantPrice!!)

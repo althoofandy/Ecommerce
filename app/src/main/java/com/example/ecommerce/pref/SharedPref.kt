@@ -2,7 +2,6 @@ package com.example.ecommerce.pref
 
 import android.content.Context
 import android.content.SharedPreferences
-import androidx.lifecycle.LiveData
 
 class SharedPref(context: Context) {
 

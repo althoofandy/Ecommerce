@@ -96,7 +96,7 @@ class WishlistFragment : Fragment() {
                                     val contextView = binding.root
                                     Snackbar.make(
                                         contextView,
-                                        "Stok Habis!",
+                                        getString(R.string.emptyStock),
                                         Snackbar.LENGTH_SHORT
                                     ).show()
                                 }

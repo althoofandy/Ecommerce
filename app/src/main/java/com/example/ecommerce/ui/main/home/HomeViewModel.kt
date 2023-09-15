@@ -1,6 +1,5 @@
 package com.example.ecommerce.ui.main.home
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.ui.main.db.ProductDatabase

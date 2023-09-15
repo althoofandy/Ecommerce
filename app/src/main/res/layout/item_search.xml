@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/search_product_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -11,7 +12,8 @@
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:src="@drawable/ic_search_24" />
+        android:src="@drawable/ic_search_24"
+        app:tint="?colorControlNormal" />
 
     <TextView
         android:id="@+id/tvproductName"
@@ -30,6 +32,7 @@
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
+        app:tint="?colorControlNormal"
         android:src="@drawable/baseline_arrow_forward_24" />
 
 </LinearLayout>

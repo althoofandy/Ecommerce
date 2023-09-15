@@ -2,7 +2,6 @@ package com.example.ecommerce.ui.main.store.detailproduct
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -134,6 +134,7 @@ class DetailProductFragmentCompose : Fragment() {
 
     private var counter = 0
     private lateinit var appExecutors: AppExecutor
+    private var product:GetProductDetailItemResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -160,6 +161,7 @@ class DetailProductFragmentCompose : Fragment() {
                                 LoadingScreen(isLoading = false)
                                 val data = it.data.data
                                 ProductDetail(data)
+                                product = data
                                 lifecycleScope.launch {
                                     withContext(Dispatchers.IO) {
                                         val wishlistLocalDb =
@@ -213,7 +215,6 @@ class DetailProductFragmentCompose : Fragment() {
                             text = stringResource(id = R.string.productDetail),
                             fontFamily = poppins,
                             fontWeight = FontWeight.Normal
-
                         )
                     },
                     navigationIcon = {
@@ -351,7 +352,7 @@ class DetailProductFragmentCompose : Fragment() {
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     EcommerceTheme {
-                        detailContent(product)
+                        DetailContent(product)
                     }
                 }
             })
@@ -362,7 +363,7 @@ class DetailProductFragmentCompose : Fragment() {
         ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class
     )
     @Composable
-    fun detailContent(product: GetProductDetailItemResponse) {
+    fun DetailContent(product: GetProductDetailItemResponse) {
         val poppins = FontFamily(
             Font(R.font.poppins_medium, FontWeight.Medium),
             Font(R.font.poppins_semibold, FontWeight.SemiBold),
@@ -376,6 +377,9 @@ class DetailProductFragmentCompose : Fragment() {
         var selectedVariantPrice: Int by remember { mutableStateOf(0) }
         varianName = selectedVariantName
         varianPrice = selectedVariantPrice
+
+        val isDarkMode = isSystemInDarkTheme()
+
         val pageCount = product.image.size
         val pagerState = rememberPagerState()
         Column(
@@ -384,40 +388,44 @@ class DetailProductFragmentCompose : Fragment() {
                 .verticalScroll(rememberScrollState())
         ) {
             repeat(1) {
-                HorizontalPager(
-                    pageCount = pageCount,
-                    state = pagerState,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(400.dp)
-                ) { page ->
-
-                    GlideImage(
-                        model = product.image.getOrElse(page) { "" },
-                        contentDescription = null,
+                Box(
+                    modifier = Modifier.fillMaxSize()
+                ) {
+                    HorizontalPager(
+                        pageCount = pageCount,
+                        state = pagerState,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(400.dp),
-                        contentScale = ContentScale.Crop,
-                    )
-                }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(50.dp),
-                    horizontalArrangement = Arrangement.Center,
-                ) {
-                    repeat(pageCount) { iteration ->
-                        Box(
+                    ) { page ->
+                        GlideImage(
+                            model = product.image.getOrElse(page) { "" },
+                            contentDescription = null,
                             modifier = Modifier
-                                .padding(8.dp)
-                                .size(8.dp)
-                                .clip(CircleShape)
-                                .background(
-                                    color = if (pagerState.currentPage == iteration) primaryColor() else Color.LightGray,
-                                    shape = CircleShape
-                                )
+                                .fillMaxWidth()
+                                .height(360.dp),
+                            contentScale = ContentScale.Crop,
                         )
+                    }
+
+                    Row(
+                        modifier = Modifier
+                            .padding(top = 340.dp)
+                            .fillMaxWidth()
+                            .background(color = Color.Transparent),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        repeat(pageCount) { iteration ->
+                            Box(
+                                modifier = Modifier
+                                    .padding(4.dp)
+                                    .size(8.dp)
+                                    .clip(CircleShape)
+                                    .background(
+                                        color = if (pagerState.currentPage == iteration) primaryColor() else Color.LightGray,
+                                        shape = CircleShape
+                                    )
+                            )
+                        }
                     }
                 }
                 Row(
@@ -450,7 +458,11 @@ class DetailProductFragmentCompose : Fragment() {
                         Icon(
                             imageVector = Icons.Default.Share,
                             contentDescription = "Share",
-                            tint = Color.Black,
+                            tint = if (isDarkMode) {
+                                Color.White
+                            } else {
+                                Color.Black
+                            },
                             modifier = Modifier
                                 .width(24.dp)
                                 .height(24.dp)
@@ -502,7 +514,19 @@ class DetailProductFragmentCompose : Fragment() {
                         Icon(
                             imageVector = icon,
                             contentDescription = "Favorite",
-                            tint = Color.Black,
+                            tint = if (isDarkMode) {
+                                if (isChecked) {
+                                    Color.Red
+                                } else {
+                                    Color.White
+                                }
+                            } else {
+                                if (isChecked) {
+                                    Color.Red
+                                } else {
+                                    Color.Black
+                                }
+                            },
                             modifier = Modifier
                                 .width(24.dp)
                                 .height(24.dp)
@@ -523,14 +547,15 @@ class DetailProductFragmentCompose : Fragment() {
                             .padding(top = 8.dp, start = 16.dp, end = 16.dp)
                     ) {
                         Text(
-                            text = stringResource(id = R.string.sold) +" "+ product.sale,
+                            text = stringResource(id = R.string.sold) + " " + product.sale,
                             fontSize = 12.sp
                         )
                         CompositionLocalProvider(LocalRippleTheme provides NoRippleTheme) {
                             SuggestionChip(
                                 onClick = {
                                 },
-                                modifier = Modifier.padding(start = 8.dp)
+                                modifier = Modifier
+                                    .padding(start = 8.dp)
                                     .defaultMinSize(minHeight = 0.dp, minWidth = 0.dp)
                                     .noRippleClickable {}
                                     .clickable(enabled = false) {},
@@ -639,7 +664,11 @@ class DetailProductFragmentCompose : Fragment() {
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = "Star",
-                        tint = Color.Black,
+                        tint = if (isDarkMode) {
+                            Color.White
+                        } else {
+                            Color.Black
+                        },
                         modifier = Modifier
                             .padding(bottom = 2.dp)
                             .width(24.dp)
@@ -715,6 +744,7 @@ class DetailProductFragmentCompose : Fragment() {
         )
 
     }
+
     fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
         clickable(
             indication = null,
@@ -759,6 +789,6 @@ class DetailProductFragmentCompose : Fragment() {
     @Preview(showBackground = true)
     @Composable
     fun PreviewMessageCard() {
-        LoadingScreen(true)
+        DetailContent(product = product!!)
     }
 }

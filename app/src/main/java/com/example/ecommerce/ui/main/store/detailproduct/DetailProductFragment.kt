@@ -1,37 +1,6 @@
 package com.example.ecommerce.ui.main.store.detailproduct
 
-import android.annotation.SuppressLint
-import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import com.example.ecommerce.MainActivity
-import com.example.ecommerce.R
-import com.example.ecommerce.ViewModelFactory
-import com.example.ecommerce.api.Result
-import com.example.ecommerce.api.Retrofit
-import com.example.ecommerce.databinding.FragmentDetailProductBinding
-import com.example.ecommerce.model.GetProductDetailItemResponse
-import com.example.ecommerce.model.ProductVariant
-import com.example.ecommerce.model.asCheckoutProduct
-import com.example.ecommerce.model.asProductLocalDb
-import com.example.ecommerce.model.asWishlistProduct
-import com.example.ecommerce.pref.SharedPref
-import com.example.ecommerce.repos.EcommerceRepository
-import com.example.ecommerce.ui.main.CurrencyUtils
-import com.example.ecommerce.ui.main.db.AppExecutor
-import com.example.ecommerce.ui.main.db.ProductDAO
-import com.example.ecommerce.ui.main.db.ProductDatabase
-import com.example.ecommerce.ui.main.menu.cart.CartViewModel
-import com.example.ecommerce.ui.main.wishlist.WishlistViewModel
-import com.google.android.material.chip.Chip
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.tabs.TabLayoutMediator
 
 class DetailProductFragment : Fragment() {
 //    private var _binding: FragmentDetailProductBinding? = null

@@ -7,4 +7,5 @@
         <item name="android:windowLightStatusBar">false</item>
         <item name="android:windowBackground">?attr/colorSurfaceContainerLowest</item>
     </style>
+
 </resources>

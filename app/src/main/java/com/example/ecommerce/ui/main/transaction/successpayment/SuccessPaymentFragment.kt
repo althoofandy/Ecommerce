@@ -98,9 +98,9 @@ class SuccessPaymentFragment : Fragment() {
             tvMetodePembayaran.text = dataPayment?.payment
             tvTotalPembayaran.text = CurrencyUtils.formatRupiah(dataPayment?.total)
             if (dataPayment!!.status) {
-                tvStatus.text = "Berhasil"
+                tvStatus.text = getString(R.string.success)
             } else {
-                tvStatus.text = "Gagal"
+                tvStatus.text = getString(R.string.failed)
             }
         }
     }

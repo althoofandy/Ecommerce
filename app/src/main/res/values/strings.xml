@@ -8,12 +8,13 @@
     <string name="snackbar_text">Add product success!</string>
     <string name="total_bayar">Total Payment</string>
     <string name="bayar">Pay</string>
-    <string name="pembayaran">Pembayaran</string>
-    <string name="barang_yang_dibeli">Barang yang dibeli</string>
+    <string name="pembayaran">Payment</string>
+    <string name="barang_yang_dibeli">Items purchased</string>
     <string name="your_requested_data_is_unavailable">Your requested data is unavailable</string>
     <string name="empty">Empty</string>
     <string name="login">Login</string>
-    <string name="or">or register with</string>
+    <string name="or_register">or register with</string>
+    <string name="or_login">or login with</string>
     <string name="register">Register</string>
     <string name="helperEmail">Example: test@gmail.com</string>
     <string name="helperPassword">Minimum 8 characters</string>
@@ -48,8 +49,8 @@
     <string name="title_activity_detail">Detail</string>
     <string name="title_activity_product_review_compose">ProductReviewCompose</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="id" translatable="false">Id</string>
-    <string name="en" translatable="false">En</string>
+    <string name="id" translatable="false">ID</string>
+    <string name="en" translatable="false">EN</string>
     <string name="review_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
     <string name="tanggal">07 September 2023</string>
     <string name="product_name">Lenovo Legion 7 16 I7 11800 16GB 1TB SSD RTX3070 8GB</string>
@@ -71,6 +72,18 @@
     <string name="Stuff">Item(s)</string>
     <string name="logout">Logout</string>
     <string name="remaining">Remaining</string>
-
+    <string name="lowest">Lowest</string>
+    <string name="highest">Highest</string>
+    <string name="show_product">Show Product</string>
+    <string name="sort">Sort</string>
+    <string name="category">Category</string>
+    <string name="price">Price</string>
+    <string name="penjualan">Sales</string>
+    <string name="reset">Reset</string>
+    <string name="refresh">Refresh</string>
+    <string name="internal_error">Internal Server Error</string>
+    <string name="no_internet">Your connection is unavailable</string>
+    <string name="success">Success</string>
+    <string name="failed">Failed</string>
 
 </resources>

@@ -4,5 +4,6 @@
     <style name="Theme.App.Starting" parent="Theme.SplashScreen">
         <item name="android:windowSplashScreenAnimatedIcon">@drawable/splash_screen</item>
         <item name="postSplashScreenTheme">@style/Theme.Ecommerce</item>
+        <item name="android:windowBackground">?attr/colorSurfaceContainerLowest</item>
     </style>
 </resources>

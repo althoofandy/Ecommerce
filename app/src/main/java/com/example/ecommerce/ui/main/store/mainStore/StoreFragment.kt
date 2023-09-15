@@ -120,9 +120,9 @@ class StoreFragment : Fragment() {
                 shimmerFilter.visibility = View.GONE
 
                 linearErrorLayout.visibility = View.VISIBLE
-                errorTypeText.text = "Connection"
+                errorTypeText.text = getString(R.string.empty)
                 errorTypeInfo.text = "Your connection is unavailable"
-                restartButton.text = "Refresh"
+                restartButton.text = getString(R.string.refresh)
                 restartButton.setOnClickListener {
                     adapter.refresh()
                 }
@@ -186,9 +186,9 @@ class StoreFragment : Fragment() {
 
                     if (errorMessage?.contains("404") == true) {
                         swiperefresh.visibility = View.GONE
-                        errorTypeText.text = "Empty"
-                        errorTypeInfo.text = "Your requested data is unavailable"
-                        restartButton.text = "Reset"
+                        errorTypeText.text = getString(R.string.empty)
+                        errorTypeInfo.text = getString(R.string.your_requested_data_is_unavailable)
+                        restartButton.text = getString(R.string.reset)
                         restartButton.setOnClickListener {
                             sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
                             chipGroup.removeAllViews()
@@ -200,8 +200,8 @@ class StoreFragment : Fragment() {
                     } else {
                         swiperefresh.visibility = View.GONE
                         errorTypeText.text = "500"
-                        errorTypeInfo.text = "Internal Server Error"
-                        restartButton.text = "Refresh"
+                        errorTypeInfo.text = getString(R.string.internal_error)
+                        restartButton.text = getString(R.string.refresh)
                         restartButton.setOnClickListener {
                             sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
                             adapter.refresh()

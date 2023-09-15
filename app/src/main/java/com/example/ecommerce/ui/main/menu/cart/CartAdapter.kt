@@ -11,9 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.ItemCartBinding
 import com.example.ecommerce.model.ProductLocalDb
-import com.example.ecommerce.model.WishlistProduct
 import com.example.ecommerce.ui.main.CurrencyUtils
-import com.example.ecommerce.ui.main.wishlist.WishlistAdapter
 import com.google.android.material.snackbar.Snackbar
 
 class CartAdapter(private val cartViewModel: CartViewModel) :
@@ -89,7 +87,7 @@ class CartAdapter(private val cartViewModel: CartViewModel) :
                         val contextView = binding.root
                         Snackbar.make(
                             contextView,
-                            "Stok Habis!",
+                            binding.root.context.getString(R.string.emptyStock),
                             Snackbar.LENGTH_SHORT
                         ).show()
                     }else{
