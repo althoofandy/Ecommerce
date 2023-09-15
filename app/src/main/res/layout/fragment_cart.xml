@@ -107,13 +107,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
-            android:text="Empty"
+            android:text="@string/empty"
             android:textSize="32sp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Your requested data is unavailable"/>
+            android:text="@string/your_requested_data_is_unavailable"/>
 
 
     </LinearLayout>

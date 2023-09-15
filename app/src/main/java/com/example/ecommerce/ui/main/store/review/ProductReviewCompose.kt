@@ -163,11 +163,12 @@ class ProductReviewCompose : Fragment() {
                 Column(
                     modifier = Modifier
                         .padding(innerPadding)
-                        .fillMaxSize()
-                        .background(Color.White),
+                        .fillMaxSize(),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    Review(listReview)
+                    EcommerceTheme {
+                        Review(listReview)
+                    }
                 }
             }
         )

@@ -33,7 +33,7 @@
             android:layout_marginTop="8dp"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center"
-            android:text="Empty"
+            android:text="@string/empty"
             android:textColor="?attr/colorOnSurface"
             android:textSize="32sp" />
 
@@ -41,7 +41,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:text="Your requested data is unavailable"
+            android:text="@string/your_requested_data_is_unavailable"
             android:textColor="?attr/colorOnSurface"
             android:textSize="16sp" />
 

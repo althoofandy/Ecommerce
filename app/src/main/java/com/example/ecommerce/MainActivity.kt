@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun logOut() {
-        sharedPref = SharedPref(this)
             sharedPref.logout()
             navController.navigate(R.id.action_main_to_prelog)
     }
