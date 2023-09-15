@@ -42,10 +42,10 @@ class ViewModelFactory(
                 SearchViewModel(repository) as T
             }
             modelClass.isAssignableFrom(DetailProductViewModel::class.java) -> {
-                DetailProductViewModel(repository) as T
+                DetailProductViewModel(repository,sharedPref) as T
             }
             modelClass.isAssignableFrom(ProductReviewViewModel::class.java) -> {
-                ProductReviewViewModel(repository) as T
+                ProductReviewViewModel(repository,sharedPref) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

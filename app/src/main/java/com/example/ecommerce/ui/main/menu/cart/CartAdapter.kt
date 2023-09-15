@@ -11,11 +11,21 @@ import com.bumptech.glide.Glide
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.ItemCartBinding
 import com.example.ecommerce.model.ProductLocalDb
+import com.example.ecommerce.model.WishlistProduct
 import com.example.ecommerce.ui.main.CurrencyUtils
+import com.example.ecommerce.ui.main.wishlist.WishlistAdapter
 import com.google.android.material.snackbar.Snackbar
 
 class CartAdapter(private val cartViewModel: CartViewModel) :
     ListAdapter<ProductLocalDb, CartAdapter.ProductCartViewHolder>(ProductReviewDiffCallback()) {
+    private var onItemClickCallback: OnItemClickCallback? = null
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+    interface OnItemClickCallback {
+        fun onItemClick(position: String)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductCartViewHolder {
         val binding = ItemCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ProductCartViewHolder(binding)
@@ -58,7 +68,9 @@ class CartAdapter(private val cartViewModel: CartViewModel) :
                 deleteButton.setOnClickListener {
                     cartViewModel.removeFromCart(item.productId)
                 }
-
+                binding.root.setOnClickListener {
+                    onItemClickCallback?.onItemClick(item.productId)
+                }
                 include.btnDecrease.setOnClickListener {
                     if(counterQuantity <= 1){
                         cartViewModel.removeFromCart(item.productId)

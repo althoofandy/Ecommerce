@@ -30,7 +30,7 @@ class TransactionAdapter(private val dataList: List<TransactionDataResponse>) :
                 tvNamaBarang.text = item.name
                 tvTotalBelanja.text = CurrencyUtils.formatRupiah(item.total)
                 val countItem = item.items?.size
-                tvJmlBarang.text = "$countItem Barang"
+                tvJmlBarang.text = countItem.toString()
 
                 Glide.with(binding.root.context)
                     .load(item.image)

@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?attr/colorSurfaceContainerLowest"
     tools:context=".ui.prelogin.profile.AddProfileFragment">
 
     <LinearLayout
@@ -22,7 +23,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
-                android:text="Profil"
+                android:text="@string/profil"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="22sp" />
         </com.google.android.material.appbar.AppBarLayout>
@@ -68,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_regular"
-                android:hint="Nama" />
+                android:hint="@string/name" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -80,7 +81,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_regular"
-            android:text="Selesai"
+            android:text="@string/done"
             android:textSize="14sp" />
 
         <TextView
@@ -92,7 +93,8 @@
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:text="@string/textPolicyDaftar"/>
 
     </LinearLayout>
 

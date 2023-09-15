@@ -2,6 +2,7 @@ package com.example.ecommerce.pref
 
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
 
 class SharedPref(context: Context) {
 
@@ -29,8 +30,18 @@ class SharedPref(context: Context) {
         editor.apply()
     }
 
+    fun saveDarkTheme(isDarkTheme: Boolean) {
+        val editor = sharedPreferences.edit()
+        editor.putBoolean("ID_DARK_THEME", isDarkTheme)
+        editor.apply()
+    }
+
     fun getNameProfile(): String? {
         return sharedPreferences.getString(ID_NAME, null)
+    }
+
+    fun getDarkTheme(): Boolean {
+        return sharedPreferences.getBoolean("ID_DARK_THEME", false)
     }
 
     fun saveFirstInstall(isFisrtInstall: Boolean) {
@@ -56,5 +67,6 @@ class SharedPref(context: Context) {
         private const val ID_FIRST_INSTALL = "id_first_install"
         private const val ID_NAME = "id_name"
         private const val ID_TOKEN_REFRESH = "id_token_refresh"
+        private const val ID_DARK_THEME = "id_dark_theme"
     }
 }

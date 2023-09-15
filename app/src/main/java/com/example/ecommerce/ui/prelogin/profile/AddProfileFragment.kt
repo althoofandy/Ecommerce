@@ -243,7 +243,7 @@ class AddProfileFragment : Fragment() {
     }
 
 
-     private fun checkUserSession() {
+    private fun checkUserSession() {
         val token = pref.getAccessToken()
         if (token == null) {
             findNavController().navigate(R.id.action_addProfileFragment_to_prelogin_navigation)

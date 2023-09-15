@@ -25,7 +25,7 @@
             android:imeOptions="actionSearch"
             android:inputType="text"
             android:layout_height="wrap_content"
-            android:hint="Search" />
+            android:hint="@string/search" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

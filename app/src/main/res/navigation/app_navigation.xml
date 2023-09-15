@@ -44,7 +44,7 @@
         app:destination="@id/cartFragment" />
     <action
         android:id="@+id/action_main_to_detailproductFragment"
-        app:destination="@id/detailProductFragment">
+        app:destination="@id/detailProductFragmentCompose">
         <argument
             android:name="id_product"
             app:argType="string" />
@@ -82,13 +82,9 @@
         <argument
             android:name="id_product"
             app:argType="string" />
-        <deepLink
-            android:id="@+id/deepLink"
-            android:autoVerify="true"
-            app:uri="http://ecommerce.com/products/{id_product}" />
         <action
             android:id="@+id/action_detailProductFragment_to_reviewFragment"
-            app:destination="@id/reviewFragment">
+            app:destination="@id/reviewFragmentCompose">
             <argument
                 android:name="id_product"
                 app:argType="string" />
@@ -104,8 +100,50 @@
     </fragment>
 
     <fragment
-        android:id="@+id/reviewFragment"
-        android:name="com.example.ecommerce.ui.main.store.review.ReviewFragment"
+        android:id="@+id/detailProductFragmentCompose"
+        android:name="com.example.ecommerce.ui.main.store.detailproduct.DetailProductFragmentCompose"
+        android:label="DetailProductFragmentCompose">
+        <action
+            android:id="@+id/action_detailProductFragment_to_cartFragment2"
+            app:destination="@id/cartFragment">
+            <argument
+                android:name="data_product"
+                app:argType="com.example.ecommerce.model.CheckoutProduct" />
+        </action>
+        <argument
+            android:name="id_product"
+            app:argType="string" />
+        <deepLink
+            android:id="@+id/deepLink"
+            android:autoVerify="true"
+            app:uri="http://ecommerce.com/products/{id_product}" />
+        <action
+            android:id="@+id/action_detailProductFragment_to_reviewFragment"
+            app:destination="@id/reviewFragmentCompose">
+            <argument
+                android:name="id_product"
+                app:argType="string" />
+        </action>
+
+        <action
+            android:id="@+id/action_detailProductFragment_to_checkoutFragment"
+            app:destination="@id/checkoutFragment">
+            <argument
+                android:name="data_product"
+                app:argType="com.example.ecommerce.model.CheckoutProduct" />
+        </action>
+        <action
+            android:id="@+id/action_detailProductFragmentCompose_to_detailProductFragment"
+            app:destination="@id/detailProductFragment">
+            <argument
+                android:name="id_product"
+                app:argType="string" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/reviewFragmentCompose"
+        android:name="com.example.ecommerce.ui.main.store.review.ProductReviewCompose"
         android:label="ReviewFragment"
         tools:layout="@layout/fragment_review">
         <argument
@@ -123,6 +161,13 @@
             <argument
                 android:name="data_product"
                 app:argType="com.example.ecommerce.model.CheckoutProduct" />
+        </action>
+        <action
+            android:id="@+id/action_cartFragment_to_detailtFragment"
+            app:destination="@id/detailProductFragmentCompose">
+            <argument
+                android:name="id_product"
+                app:argType="string" />
         </action>
     </fragment>
     <fragment

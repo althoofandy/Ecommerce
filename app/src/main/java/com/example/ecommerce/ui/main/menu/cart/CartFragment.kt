@@ -10,6 +10,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.FragmentCartBinding
 import com.example.ecommerce.model.CheckoutProduct
@@ -125,6 +126,13 @@ class CartFragment : Fragment() {
             val selectedIds = cartItems
                 .filter { it.selected }
                 .map { it.productId }
+            adapter.setOnItemClickCallback(object : CartAdapter.OnItemClickCallback{
+                override fun onItemClick(data: String) {
+                    val bundle = bundleOf("id_product" to data)
+                    (requireActivity() as MainActivity).goToDetailProductFromCart(bundle)
+                }
+
+            })
 
             binding.btnDeleteAll.setOnClickListener {
                 cartViewModel.removeFromCartAll(selectedIds)

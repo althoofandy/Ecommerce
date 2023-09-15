@@ -1,7 +1,10 @@
 <resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.Ecommerce" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="iconTint">@color/white</item>
+        <item name="navigationIconTint">@color/white</item>
+        <item name="android:statusBarColor">?attr/colorSurfaceContainerLowest</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowBackground">?attr/colorSurfaceContainerLowest</item>
     </style>
 </resources>

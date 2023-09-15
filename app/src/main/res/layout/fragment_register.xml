@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?attr/colorSurfaceContainerLowest"
     tools:context=".ui.prelogin.login.LoginFragment">
 
     <LinearLayout
@@ -22,7 +23,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:fontFamily="@font/poppins_regular"
                 android:gravity="center"
-                android:text="Daftar"
+                android:text="@string/register"
                 android:textColor="?attr/colorOnSurface"
                 android:textSize="22sp" />
         </com.google.android.material.appbar.AppBarLayout>
@@ -41,7 +42,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             app:errorEnabled="true"
-            app:helperText="Contoh: test@gmail.com"
+            app:helperText="@string/helperEmail"
             app:helperTextEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -63,7 +64,7 @@
             android:layout_marginEnd="16dp"
             app:endIconMode="password_toggle"
             app:errorEnabled="true"
-            app:helperText="Minimal 8 karakter"
+            app:helperText="@string/helperPassword"
             app:helperTextEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -85,7 +86,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Daftar"
+            android:text="@string/register"
             android:textSize="14sp" />
 
         <LinearLayout
@@ -107,7 +108,7 @@
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
                 android:fontFamily="@font/poppins_regular"
-                android:text="atau masuk dengan"
+                android:text="@string/or"
                 android:textSize="12sp" />
 
             <com.google.android.material.divider.MaterialDivider
@@ -128,7 +129,7 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Masuk"
+            android:text="@string/login"
             android:textSize="14sp" />
 
         <TextView
@@ -140,7 +141,8 @@
             android:layout_marginEnd="16dp"
             android:fontFamily="@font/poppins_regular"
             android:gravity="center"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:text="@string/textPolicyDaftar"/>
 
     </LinearLayout>
 

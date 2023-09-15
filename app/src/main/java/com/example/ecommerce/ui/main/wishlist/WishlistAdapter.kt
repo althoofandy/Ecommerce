@@ -87,6 +87,9 @@ class WishlistAdapter(
                 tvStore.text = product.store
                 tvRating.text = product.productRating.toString()
                 tvSell.text = product.sale.toString()
+                binding.root.setOnClickListener {
+                    onItemClickCallback?.onItemClickCard(product.productId)
+                }
                 btnAddToCart.setOnClickListener {
                     onItemClickCallback?.onItemClick(product)
                 }
@@ -112,6 +115,9 @@ class WishlistAdapter(
                 tvStore.text = product.store
                 tvRating.text = product.productRating.toString()
                 tvSell.text = product.sale.toString()
+                binding.root.setOnClickListener{
+                    onItemClickCallback?.onItemClickCard(product.productId)
+                }
                 btnAddToCart.setOnClickListener {
                     onItemClickCallback?.onItemClick(product)
                 }
@@ -125,6 +131,7 @@ class WishlistAdapter(
 
     interface OnItemClickCallback {
         fun onItemClick(position: WishlistProduct)
+        fun onItemClickCard(data:String)
     }
 
     companion object {

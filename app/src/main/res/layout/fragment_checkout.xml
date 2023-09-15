@@ -9,7 +9,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/colorSurfaceContainerLowest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,7 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/baseline_arrow_back_24"
-            app:title="Checkout" />
+            app:title="@string/checkout" />
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
@@ -137,6 +137,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
+                    android:background="?attr/colorSurfaceContainerLowest"
                     android:orientation="horizontal">
 
                     <ImageView
@@ -145,7 +146,8 @@
                         android:layout_height="32dp"
                         android:layout_marginStart="16dp"
                         android:scaleType="fitCenter"
-                        android:src="@drawable/baseline_add_card_24" />
+                        android:src="@drawable/baseline_add_card_24"
+                        app:tint="?attr/colorControlNormal" />
 
                     <TextView
                         android:id="@+id/tvBankName"
@@ -154,7 +156,7 @@
                         android:layout_margin="16dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="Pilih Pembayaran" />
+                        android:text="@string/choose_payment" />
 
                     <ImageView
                         android:layout_width="16dp"
@@ -185,7 +187,7 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/white"
+        android:background="?attr/colorSurfaceContainerLowest"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

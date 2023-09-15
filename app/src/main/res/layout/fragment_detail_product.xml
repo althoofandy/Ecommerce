@@ -135,7 +135,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="9dp"
-                android:text="Terjual "
+                android:text="@string/sold"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.043"
@@ -237,7 +237,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="12dp"
-                android:text="Pilih Varian"
+                android:text="@string/chooseVarian"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialDivider1" />
 
@@ -248,7 +248,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="12dp"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Deskripsi Produk"
+                android:text="@string/productDesc"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialDivider3" />
@@ -284,7 +284,7 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="12sp"
-                android:text="Ulasan Pembeli"
+                android:text="@string/buyerReview"
                 android:textSize="16sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/materialDivider4" />
@@ -297,7 +297,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="16dp"
                 android:includeFontPadding="false"
-                android:text="Lihat Semua"
+                android:text="@string/lookAll"
                 android:textColor="#6750A4"
                 android:textSize="12sp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -322,7 +322,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="8dp"
-                android:text="Pembeli merasa puas"
+                android:text="@string/buyerSatisfy"
                 android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/tvPercent"
                 app:layout_constraintTop_toBottomOf="@+id/tvReview" />
@@ -406,13 +406,6 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white">
 
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/topAppBar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                app:navigationIcon="@drawable/baseline_arrow_back_24"
-                app:title="Detail Produk" />
-
             <com.google.android.material.divider.MaterialDivider
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -422,6 +415,15 @@
                 app:layout_constraintTop_toTopOf="@+id/atau" />
 
         </com.google.android.material.appbar.AppBarLayout>
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/topAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:layout_anchor="@+id/appBarLayout"
+            app:layout_anchorGravity="center"
+            app:navigationIcon="@drawable/baseline_arrow_back_24"
+            app:title="@string/productDetail" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
@@ -452,7 +454,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:textSize="14sp"
-            android:text="Beli Langsung"
+            android:text="@string/buyASAP"
             style="@style/Widget.Material3.Button.IconButton.Outlined" />
 
         <Button
@@ -462,7 +464,7 @@
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:layout_marginHorizontal="12dp"
-            android:text="+ Keranjang" />
+            android:text="@string/addCart" />
 
 
     </LinearLayout>

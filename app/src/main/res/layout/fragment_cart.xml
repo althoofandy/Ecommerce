@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="?attr/colorSurfaceContainerLowest"
     android:layout_height="match_parent">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="?attr/colorSurfaceContainerLowest"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,7 +21,7 @@
             style="@style/Widget.AppCompat.Toolbar"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="@drawable/baseline_arrow_back_24"
-            app:title="Keranjang" />
+            app:title="@string/cart" />
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
@@ -64,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Pilih Semua"
+            android:text="@string/checkAll"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cbAllCheck"
             app:layout_constraintTop_toTopOf="parent"
@@ -75,7 +76,7 @@
             style="@style/Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hapus"
+            android:text="@string/deleteCart"
             android:textSize="14sp"
             android:visibility="gone"
             android:height="20px"
@@ -143,7 +144,7 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:background="@color/white"
+        android:background="?attr/colorSurfaceContainerLowest"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -155,7 +156,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:text="Total bayar"
+            android:text="@string/totalPrice"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -176,7 +177,7 @@
             android:layout_height="40dp"
             android:layout_marginHorizontal="12dp"
             android:layout_marginTop="20dp"
-            android:text="Beli"
+            android:text="@string/buy"
             android:enabled="false"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"

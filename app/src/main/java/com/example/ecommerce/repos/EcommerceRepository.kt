@@ -81,7 +81,7 @@ class EcommerceRepository(
                           lowest: Int?,
                           highest: Int?,
                           sort: String?,
-                          ): LiveData<PagingData<GetProductsItemResponse>> {
+    ): LiveData<PagingData<GetProductsItemResponse>> {
         return Pager(
             config = PagingConfig(pageSize = 10, prefetchDistance = 1),
             pagingSourceFactory = { ProductPagingSource(apiService, "Bearer $token",search,brand,lowest,highest,sort) }

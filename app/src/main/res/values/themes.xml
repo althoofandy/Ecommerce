@@ -1,5 +1,4 @@
 <resources>
-    <!-- Base application theme. -->
     <style name="Base.Theme.Ecommerce" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="android:statusBarColor">?attr/colorSurfaceContainerLowest</item>
         <item name="android:windowLightStatusBar">true</item>

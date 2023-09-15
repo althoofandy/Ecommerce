@@ -136,6 +136,7 @@ class CheckoutFragment : Fragment() {
 
                 btnBeliCheckout.setOnClickListener {
                     binding.progressCircular.visibility = View.VISIBLE
+                    cartViewModel.removeFromCartAll(dataProduct.map { it.productId })
                     viewModel.doBuyProducts(accessToken.toString(), Payment(dataPayment?.label!!, listPayment))
                         .observe(viewLifecycleOwner) {
                             when (it) {

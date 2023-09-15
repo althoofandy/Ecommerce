@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:backgroundTint="?attr/colorSurfaceContainerLowest"
     android:layout_marginHorizontal="1dp"
     android:layout_marginVertical="8dp"
     app:cardCornerRadius="8dp">
@@ -29,7 +30,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/poppins_medium"
-            android:text="Belanja"
+            android:text="@string/shopping"
             android:textSize="10sp"
             app:layout_constraintStart_toEndOf="@+id/imageView9"
             app:layout_constraintTop_toTopOf="parent"
@@ -65,7 +66,7 @@
                 android:fontFamily="@font/poppins_bold"
                 android:gravity="center"
                 android:padding="3dp"
-                android:text="Selesai"
+                android:text="@string/done"
                 android:textColor="?attr/colorPrimary"
                 android:textSize="10sp"
                 tools:ignore="SmallSp" />
@@ -120,10 +121,21 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/poppins_regular"
-            android:text="2 Barang"
             android:textSize="10sp"
+            android:text="10"
             app:layout_constraintStart_toEndOf="@+id/cvprod"
             app:layout_constraintTop_toBottomOf="@+id/tvNamaBarang"
+            tools:ignore="SmallSp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_regular"
+            android:text="@string/Stuff"
+            android:textSize="10sp"
+            android:layout_marginStart="2dp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvJmlBarang"
+            app:layout_constraintStart_toEndOf="@+id/tvJmlBarang"
             tools:ignore="SmallSp" />
 
         <TextView
@@ -132,7 +144,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/poppins_regular"
-            android:text="Total Belanja"
+            android:text="@string/total_bayar"
             android:textSize="10sp"
             app:layout_constraintStart_toStartOf="@+id/cvprod"
             app:layout_constraintTop_toBottomOf="@+id/cvprod"
@@ -159,7 +171,7 @@
             android:layout_marginBottom="6dp"
             android:insetTop="16dp"
             android:insetBottom="0dp"
-            android:text="Ulas"
+            android:text="@string/ulasan"
             android:textSize="12sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"

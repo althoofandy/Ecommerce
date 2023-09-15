@@ -8,6 +8,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="?attr/colorSurfaceContainerLowest"
         android:foreground="?selectableItemBackground"
         android:layout_margin="5dp"
         android:layout_marginTop="4dp"
@@ -69,6 +70,7 @@
                 <ImageView
                     android:layout_width="10dp"
                     android:layout_height="10dp"
+                    app:tint="?attr/colorControlNormal"
                     android:src="@drawable/outline_account_circle_24" />
 
                 <TextView
@@ -92,6 +94,7 @@
                 <ImageView
                     android:layout_width="10dp"
                     android:layout_height="10dp"
+                    app:tint="?attr/colorControlNormal"
                     android:src="@drawable/baseline_star_24" />
 
                 <TextView
@@ -114,7 +117,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
-                    android:text="Terjual"
+                    android:text="@string/sold"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="10sp" />
 
@@ -154,7 +157,7 @@
                     style="@style/Widget.Material3.Button.IconButton.Outlined"
                     android:textSize="14sp"
                     android:fontFamily="@font/poppins_medium"
-                    android:text="+ Keranjang"/>
+                    android:text="@string/addCart"/>
 
             </LinearLayout>
         </LinearLayout>

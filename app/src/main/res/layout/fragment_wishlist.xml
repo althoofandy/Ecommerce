@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,10 +21,16 @@
             android:id="@+id/tvTotalBarang"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="3 Barang"
+            android:text="3"
             android:textSize="14sp"
-            android:layout_margin="16dp"/>
+            android:layout_marginStart="16dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/Stuff"
+            android:textSize="14sp"
+            android:layout_marginStart="2dp" />
 
         <LinearLayout
             android:id="@+id/linearLayoutToogle"

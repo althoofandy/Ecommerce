@@ -1,16 +1,24 @@
 package com.example.ecommerce
 
+import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.navigation.fragment.NavHostFragment
 import com.example.ecommerce.databinding.ActivityMainBinding
 import com.example.ecommerce.pref.SharedPref
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPref: SharedPref
+
 
     private val navHost by lazy {
         supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
@@ -24,18 +32,25 @@ class MainActivity : AppCompatActivity() {
         installSplashScreen()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         sharedPref = SharedPref(this)
+        AppCompatDelegate.setDefaultNightMode(
+            if (sharedPref.getDarkTheme()) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+        )
+
         checkSession()
     }
 
     fun logOut() {
-        sharedPref.logout()
-        navController.navigate(R.id.action_main_to_prelog)
+        sharedPref = SharedPref(this)
+            sharedPref.logout()
+            navController.navigate(R.id.action_main_to_prelog)
     }
 
     fun goToDetailProduct(bundle: Bundle) {
         navController.navigate(R.id.action_main_to_detailproductFragment, bundle)
+    }
+    fun goToDetailProductFromCart(bundle: Bundle) {
+        navController.navigate(R.id.action_cartFragment_to_detailtFragment, bundle)
     }
 
     fun goToSuccess(bundle: Bundle) {
@@ -51,10 +66,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkSession() {
-        val token = sharedPref.getAccessToken()
-        if (token == null) {
-            navController.navigate(R.id.action_main_to_prelog)
-        }
+            val token = sharedPref.getAccessToken()
+            if (token == null) {
+                navController.navigate(R.id.action_main_to_prelog)
+            }
     }
 
     fun profileToPrelog() {

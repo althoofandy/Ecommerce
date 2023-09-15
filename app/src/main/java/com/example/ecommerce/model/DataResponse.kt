@@ -26,6 +26,7 @@ data class DataResponse(
     val data: ResultResponse?
 )
 
+
 data class ResultResponse(
     @SerializedName("userName")
     val userName: String,
@@ -77,6 +78,7 @@ data class RefreshDataResponse(
     @field:SerializedName("expiresAt")
     val expiresAt: Int
 )
+
 //STORE
 data class GetProductResponse(
     val code: Int,
@@ -103,6 +105,17 @@ data class GetProductsItemResponse(
     val productRating: Float
 )
 
+data class ProductDetailParam(
+    val token: String,
+    val productId: String? = null
+)
+
+data class ProductReviewParam(
+    val token: String,
+    val productId: String? = null
+)
+
+
 data class ProductParam(
     val token: String,
     val search: String? = null,
@@ -117,6 +130,7 @@ data class SearchResponse(
     val message: String,
     val data: List<String>
 )
+
 //DETAIL PRODUCT
 data class GetProductDetailResponse(
     val code: Int,
@@ -154,10 +168,10 @@ data class GetProductReviewResponse(
 )
 
 data class GetProductReviewItemResponse(
-    val userName : String,
-    val userImage : String,
-    val userRating : Int,
-    val userReview : String
+    val userName: String,
+    val userImage: String,
+    val userRating: Int,
+    val userReview: String
 )
 
 @Entity
@@ -262,12 +276,13 @@ data class PaymentMethodCategoryResponse(
     val title: String,
     val item: List<PaymentMethodItemResponse>
 )
+
 @Parcelize
 data class PaymentMethodItemResponse(
     val label: String,
     val image: String,
     val status: Boolean
-):Parcelable
+) : Parcelable
 
 data class Payment(
     val payment: String,
@@ -304,8 +319,7 @@ fun TransactionDataResponse.asPaymentDataResponse(
     review: String?,
     rating: Int?
 ):
-    PaymentDataResponse
- {
+        PaymentDataResponse {
     return PaymentDataResponse(
         invoiceId,
         status,
@@ -397,11 +411,12 @@ fun ProductLocalDb.asCheckoutProduct(
         quantity
     )
 }
+
 @Keep
 @Parcelize
 data class ListCheckout(
     val listCheckout: List<CheckoutProduct>? = emptyList()
-):Parcelable
+) : Parcelable
 
 
 

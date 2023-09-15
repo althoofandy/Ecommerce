@@ -110,7 +110,7 @@ class MainFragment : Fragment() {
     private fun checkUserNameExist() {
         val userName = sharedPref.getNameProfile()
         if (userName.isNullOrEmpty()) {
-           findNavController().navigate(R.id.action_main_to_profileFragment)
+            findNavController().navigate(R.id.action_main_to_profileFragment)
         } else {
             binding.tvUserName.text = userName
         }

@@ -1,25 +1,75 @@
 <resources>
     <string name="app_name">Ecommerce</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="error_password">Password tidak valid</string>
-    <string name="error_email">Email tidak valid</string>
-    <string name="choose_pict">Pilih Gambar</string>
-    <string name="camera">Kamera</string>
-    <string name="gallery">Galeri</string>
+    <string name="error_password">Password not valid</string>
+    <string name="error_email">Email not valid</string>
+    <string name="choose_pict">Choose Pict</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="snackbar_text">Add product success!</string>
+    <string name="total_bayar">Total Payment</string>
+    <string name="bayar">Pay</string>
+    <string name="pembayaran">Pembayaran</string>
+    <string name="barang_yang_dibeli">Barang yang dibeli</string>
+    <string name="your_requested_data_is_unavailable">Your requested data is unavailable</string>
+    <string name="empty">Empty</string>
+    <string name="login">Login</string>
+    <string name="or">or register with</string>
+    <string name="register">Register</string>
+    <string name="helperEmail">Example: test@gmail.com</string>
+    <string name="helperPassword">Minimum 8 characters</string>
+    <string name="cart">Cart</string>
+    <string name="checkout">Checkout</string>
+    <string name="productDetail">Product Detail</string>
+    <string name="join_now">Join Now</string>
+    <string name="skip">Skip</string>
+    <string name="next">Next</string>
+    <string name="done">Done</string>
+    <string name="name">Name</string>
+    <string name="profil">Profile</string>
+    <string name="checkAll">Choose All</string>
+    <string name="buy">Buy</string>
+    <string name="totalPrice">Total Payment</string>
+    <string name="deleteCart">Delete</string>
+    <string name="choose_payment">Choose Payment</string>
+    <string name="sold">Sold</string>
+    <string name="chooseVarian">Choose Varians</string>
+    <string name="productDesc">Product Varians</string>
+    <string name="buyerReview">Buyer Review</string>
+    <string name="lookAll">See all</string>
+    <string name="buyerSatisfy">Buyer feels satisfied</string>
+    <string name="buyASAP">Buy Direct</string>
+    <string name="addCart">+ Cart</string>
+    <string name="ulasan">Review</string>
+    <string name="rate">Rating</string>
+    <string name="emptyStock">Empty Stock!</string>
+    <string name="textPolicyDaftar">By registered in here, you agree to the  <font color="#4F378B">Terms &amp; Conditions</font> and <font color="#4F378B">Privacy Policy</font>of TokoPhincon.</string>
+    <string name="textPolicyLogin">By logging in here, you agree to the <font color="#4F378B">Terms &amp; Conditions</font> and <font color="#4F378B">Privacy Policy</font>of TokoPhincon.</string>
+
+    <string name="title_activity_detail">Detail</string>
+    <string name="title_activity_product_review_compose">ProductReviewCompose</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="id" translatable="false">Id</string>
+    <string name="en" translatable="false">En</string>
+    <string name="review_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="tanggal">07 September 2023</string>
     <string name="product_name">Lenovo Legion 7 16 I7 11800 16GB 1TB SSD RTX3070 8GB</string>
     <string name="product_price">Rp23.499.000</string>
     <string name="product_store">ProStoreComputer</string>
     <string name="product_rate">5.0</string>
     <string name="product_sale">15</string>
-    <string name="review_text">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
-    <string name="snackbar_text">Berhasil tambah barang!</string>
-    <string name="total_bayar">Total bayar</string>
-    <string name="bayar">Bayar</string>
-    <string name="pembayaran">Pembayaran</string>
-    <string name="barang_yang_dibeli">Barang yang dibeli</string>
-    <string name="your_requested_data_is_unavailable">Your requested data is unavailable</string>
-    <string name="empty">Empty</string>
-    <string name="tanggal">07 September 2023</string>
-    <string name="title_activity_detail">Detail</string>
+    <string name="search">Search</string>
+    <string name="success_payment">Payment Success</string>
+    <string name="give_review">Give Review</string>
+    <string name="detail_transaction">Transaction Detail</string>
+    <string name="id_transaksi">Transaction Id</string>
+    <string name="status">Status</string>
+    <string name="date">Date</string>
+    <string name="time">Time</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="total_price">Total Payment</string>
+    <string name="shopping">Shopping</string>
+    <string name="Stuff">Item(s)</string>
+    <string name="logout">Logout</string>
+
+
 </resources>

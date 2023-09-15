@@ -10,6 +10,7 @@
         android:layout_margin="5dp"
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp"
+        android:backgroundTint="?attr/colorSurfaceContainerLowest"
         android:foreground="?selectableItemBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -64,7 +65,7 @@
                     android:id="@+id/tvProductPrice"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_bold"
+                    android:textStyle="bold"
                     android:text="@string/product_price"
                     android:textColor="?attr/colorOnSurface"
                     android:textSize="14sp" />
@@ -78,7 +79,8 @@
                     <ImageView
                         android:layout_width="10dp"
                         android:layout_height="10dp"
-                        android:src="@drawable/outline_account_circle_24" />
+                        android:src="@drawable/outline_account_circle_24"
+                        app:tint="?attr/colorControlNormal"/>
 
                     <TextView
                         android:id="@+id/tvStore"
@@ -99,7 +101,8 @@
                     <ImageView
                         android:layout_width="10dp"
                         android:layout_height="10dp"
-                        android:src="@drawable/baseline_star_24" />
+                        android:src="@drawable/baseline_star_24"
+                        app:tint="?attr/colorControlNormal"/>
 
                     <TextView
                         android:id="@+id/tvRating"

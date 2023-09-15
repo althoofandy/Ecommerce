@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="?attr/colorSurfaceContainerLowest"
     tools:context=".ui.main.store.mainStore.StoreFragment">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -27,7 +28,7 @@
             android:cursorVisible="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Search" />
+            android:hint="@string/search" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -79,6 +80,7 @@
             android:textSize="14sp"
             app:checkedIconVisible="false"
             app:chipIcon="@drawable/baseline_tune_24"
+            app:chipIconTint="?colorControlNormal"
             app:closeIconVisible="false"
             app:ensureMinTouchTargetSize="true" />
 
@@ -121,11 +123,11 @@
                 android:layout_height="24dp"
                 android:layout_gravity="center"
                 android:layout_marginStart="6dp"
-                android:src="@drawable/baseline_format_list_bulleted_24"/>
+                android:src="@drawable/baseline_format_list_bulleted_24"
+                app:tint="?colorControlNormal" />
 
         </LinearLayout>
     </LinearLayout>
-
 
     <com.facebook.shimmer.ShimmerFrameLayout
         android:id="@+id/shimmer_linear"
@@ -134,7 +136,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/swiperefresh"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/shimmer_filter">
@@ -148,6 +150,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
@@ -163,15 +166,19 @@
                 <include
                     android:id="@+id/shimmer_linear_3"
                     layout="@layout/shimmer_linear" />
+
                 <include
                     android:id="@+id/shimmer_linear_4"
                     layout="@layout/shimmer_linear" />
+
                 <include
                     android:id="@+id/shimmer_linear_5"
                     layout="@layout/shimmer_linear" />
+
                 <include
                     android:id="@+id/shimmer_linear_6"
                     layout="@layout/shimmer_linear" />
+
                 <include
                     android:id="@+id/shimmer_linear_7"
                     layout="@layout/shimmer_linear" />
@@ -189,7 +196,7 @@
         android:visibility="gone"
         android:layout_marginTop="16dp"
         android:layout_marginHorizontal="11dp"
-        app:layout_constraintBottom_toBottomOf="@+id/swiperefresh"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/shimmer_filter">

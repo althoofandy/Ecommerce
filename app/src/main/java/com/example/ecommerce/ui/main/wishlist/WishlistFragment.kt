@@ -5,8 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.FragmentWishlistBinding
 import com.example.ecommerce.model.WishlistProduct
@@ -120,10 +122,14 @@ class WishlistFragment : Fragment() {
                                 ).show()
                             }
                         }
+                    }
 
+                    override fun onItemClickCard(data: String) {
+                        val bundle = bundleOf("id_product" to data)
+                       (requireActivity() as MainActivity).goToDetailProduct(bundle)
                     }
                 })
-                tvTotalBarang.text = "${it.size} Barang"
+                tvTotalBarang.text = "${it.size} "
             }
             gridLayoutManager = GridLayoutManager(requireContext(), 1)
             rvWishlist.layoutManager = gridLayoutManager
