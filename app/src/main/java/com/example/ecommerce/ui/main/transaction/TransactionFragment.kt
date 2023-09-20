@@ -14,6 +14,9 @@ import com.example.ecommerce.model.TransactionDataResponse
 import com.example.ecommerce.model.asPaymentDataResponse
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 
 class TransactionFragment : Fragment() {
     private var _binding: FragmentTransactionBinding? = null
@@ -26,6 +29,12 @@ class TransactionFragment : Fragment() {
     private lateinit var viewModel: TransactionViewModel
     private lateinit var sharedPref: SharedPref
     private lateinit var adapter: TransactionAdapter
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +71,15 @@ class TransactionFragment : Fragment() {
                                 val bundle = Bundle().apply {
                                     putParcelable("invoice",convert)
                                 }
-                                (requireActivity() as MainActivity).goToSuccess(bundle)
+                                val bundleId = Bundle().apply {
+                                    putString("originFragment", "transaction")
+                                }
+                                val combinedBundle = Bundle().apply {
+                                    putAll(bundle)
+                                    putAll(bundleId)
+                                }
+                                firebaseAnalytics.logEvent("btn_reviewProduct_clicked",null)
+                                (requireActivity() as MainActivity).goToSuccess(combinedBundle)
                             }
                         })
                     }else{
@@ -77,6 +94,8 @@ class TransactionFragment : Fragment() {
                     binding.progressCircular.hide()
                     binding.linearErrorLayout.visibility = View.VISIBLE
                 }
+
+                else -> {}
             }
         }
 

@@ -15,6 +15,9 @@ import com.example.ecommerce.model.WishlistProduct
 import com.example.ecommerce.ui.main.db.AppExecutor
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 
 class WishlistFragment : Fragment() {
     private var _binding: FragmentWishlistBinding? = null
@@ -27,6 +30,12 @@ class WishlistFragment : Fragment() {
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var appExecutors: AppExecutor
     private var counter = 0
+    private lateinit var firebaseAnalytics:FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -64,7 +73,7 @@ class WishlistFragment : Fragment() {
         appExecutors = AppExecutor()
         binding.apply {
             wishlistViewModel = WishlistViewModel(requireContext())
-            adapter = WishlistAdapter(requireContext(), wishlistViewModel)
+            adapter = WishlistAdapter(requireContext(), wishlistViewModel,firebaseAnalytics)
             cartViewModel = CartViewModel(requireContext())
 
             wishlistViewModel.getWishlistProduct()?.observe(viewLifecycleOwner) {
@@ -81,6 +90,7 @@ class WishlistFragment : Fragment() {
                 adapter.setOnItemClickCallback(object :
                     WishlistAdapter.OnItemClickCallback {
                     override fun onItemClick(wishListProduct: WishlistProduct) {
+                        firebaseAnalytics.logEvent("btn_addCart_from_wishlist_clicked",null)
                         appExecutors.diskIO.execute {
                             val checkCartProduct =
                                 cartViewModel.getCartById(wishListProduct.productId)

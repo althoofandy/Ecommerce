@@ -1,6 +1,7 @@
 package com.example.ecommerce.ui.main.transaction.paymentmethod
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,35 +9,39 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.ecommerce.MainActivity
-import com.example.ecommerce.api.Result
-import com.example.ecommerce.api.Retrofit
+import com.example.ecommerce.R
 import com.example.ecommerce.databinding.FragmentPaymentMethodBinding
 import com.example.ecommerce.model.PaymentMethodItemResponse
-import com.example.ecommerce.pref.SharedPref
-import com.example.ecommerce.repos.EcommerceRepository
+import com.example.ecommerce.model.PaymentMethodResponse
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.remoteconfig.ConfigUpdate
+import com.google.firebase.remoteconfig.ConfigUpdateListener
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
+import com.google.firebase.remoteconfig.ktx.get
+import com.google.firebase.remoteconfig.ktx.remoteConfig
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
+import com.google.gson.Gson
 
 class PaymentMethodFragment : Fragment() {
     private var _binding: FragmentPaymentMethodBinding? = null
-    private val binding get() = _binding!!
-    private val sharedPref by lazy {
-        SharedPref(requireContext())
-    }
-    private val repository by lazy {
-        val apiService = Retrofit(requireContext()).getApiService()
-        val sharedPref = SharedPref(requireContext())
-        EcommerceRepository(apiService, sharedPref)
-    }
-    private lateinit var viewModel: PaymentMethodViewModel
+    private val binding get() = _binding ?: throw Exception("null")
 
     private lateinit var adapter: PaymentMethodAdapter
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
+        getData()
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
 
         _binding = FragmentPaymentMethodBinding.inflate(inflater, container, false)
@@ -45,7 +50,6 @@ class PaymentMethodFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        getData()
         initEvent()
     }
 
@@ -58,44 +62,83 @@ class PaymentMethodFragment : Fragment() {
     }
 
     private fun getData() {
-        viewModel = PaymentMethodViewModel(repository)
-        val tokenAccess = sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
+        val remoteConfig: FirebaseRemoteConfig = Firebase.remoteConfig
+        val configSettings = remoteConfigSettings {
+            minimumFetchIntervalInSeconds = 3600
+        }
+        remoteConfig.setConfigSettingsAsync(configSettings)
+        remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
 
-        viewModel.getPaymentMethod(tokenAccess.toString()).observe(viewLifecycleOwner) {
-            when (it) {
-                is Result.Success -> {
-                    adapter = PaymentMethodAdapter(it.data.data)
-                    val linearLayout = LinearLayoutManager(requireContext())
-                    binding.rvPaymentMethods.layoutManager = linearLayout
-                    binding.rvPaymentMethods.adapter = adapter
+        remoteConfig.fetchAndActivate()
+            .addOnCompleteListener(requireActivity()) { task ->
+                if (task.isSuccessful) {
+                    val updated = task.result
+                    Log.d(TAG, "Config params updated: $updated")
+                }
+                displayListPayment()
 
-                    adapter.setItemClickListener(object :
-                        PaymentMethodAdapter.PaymentMethodItemClickListener {
-                        override fun onItemClick(item: PaymentMethodItemResponse) {
-                            val bundle = bundleOf("payment" to item)
-                            findNavController().previousBackStackEntry?.savedStateHandle?.set(
-                                "payment",
-                                bundle
-                            )
-                            findNavController().popBackStack()
+            }
+
+        remoteConfig.addOnConfigUpdateListener(object : ConfigUpdateListener {
+            override fun onUpdate(configUpdate: ConfigUpdate) {
+                Log.d(TAG, "Updated keys: " + configUpdate.updatedKeys);
+
+                if (configUpdate.updatedKeys.contains("payment")) {
+                    remoteConfig.activate().addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            displayListPayment()
                         }
 
-                    })
-                }
-
-                is Result.Loading -> {
-
-                }
-
-                is Result.Error -> {
-
+                    }
                 }
             }
-        }
+
+            override fun onError(error: FirebaseRemoteConfigException) {
+                Log.w(TAG, "Config update error with code: " + error.code, error)
+            }
+        })
     }
+
+    private fun displayListPayment() {
+        val remoteConfig = Firebase.remoteConfig
+        val dataPayment = remoteConfig[PAYMENT_PARAM].asString()
+
+        val gson = Gson()
+        val paymentMethodResponse = gson.fromJson(dataPayment, PaymentMethodResponse::class.java)
+        val paymentMethodCategories = paymentMethodResponse.data
+        binding.progressCircular.hide()
+
+        adapter = PaymentMethodAdapter(paymentMethodCategories)
+        val linearLayout = LinearLayoutManager(requireContext())
+        binding.rvPaymentMethods.layoutManager = linearLayout
+        binding.rvPaymentMethods.adapter = adapter
+
+        adapter.setItemClickListener(object :
+            PaymentMethodAdapter.PaymentMethodItemClickListener {
+            override fun onItemClick(item: PaymentMethodItemResponse) {
+            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_PAYMENT_INFO){
+                param(FirebaseAnalytics.Param.ITEM_NAME,item.label)
+            }
+                val bundle = bundleOf("payment" to item)
+                findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                    "payment",
+                    bundle
+                )
+                findNavController().popBackStack()
+            }
+
+        })
+
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+    }
+
+    companion object {
+        private const val TAG = "MainActivity"
+        private const val PAYMENT_PARAM = "payment"
     }
 }

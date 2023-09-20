@@ -7,4 +7,5 @@
 
     <color name="stockColor">#49454F</color>
     <color name="statusBarColor">?attr/colorSurfaceContainerLowest</color>
+    <color name="primaryContainer">?attr/colorPrimaryContainer</color>
 </resources>

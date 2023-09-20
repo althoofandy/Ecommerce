@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
@@ -12,6 +13,9 @@ import com.example.ecommerce.databinding.FragmentHomeBinding
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.ui.main.db.AppExecutor
 import com.example.ecommerce.ui.main.db.ProductDatabase
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -24,6 +28,11 @@ class HomeFragment : Fragment() {
         SharedPref(requireContext())
     }
     private lateinit var appExecutor: AppExecutor
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +57,7 @@ class HomeFragment : Fragment() {
     private fun logOut() {
         binding.apply {
             btnLogout.setOnClickListener {
+                firebaseAnalytics.logEvent("btn_logout_clicked",null)
                 (requireActivity() as MainActivity).logOut()
                 clearDb()
 

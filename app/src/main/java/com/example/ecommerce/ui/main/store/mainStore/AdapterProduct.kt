@@ -19,12 +19,14 @@ class AdapterProduct(
 ) : PagingDataAdapter<GetProductsItemResponse, RecyclerView.ViewHolder>(ProductComparator) {
     var item = true
     var currentViewType = ViewType.LINEAR
-    private var onItemClickCallback: SearchAdapter.OnItemClickCallback? = null
+    private var onItemClickCallback: OnItemClickCallback? = null
 
-    fun setOnItemClickCallback(onItemClickCallback: SearchAdapter.OnItemClickCallback) {
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
-
+    interface OnItemClickCallback {
+        fun onItemClicked(data: GetProductsItemResponse)
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (getItemViewType(viewType)) {
@@ -88,7 +90,7 @@ class AdapterProduct(
                 tvSell.text = product.sale.toString()
             }
             binding.root.setOnClickListener {
-                onItemClickCallback?.onItemClicked(product.productId)
+                onItemClickCallback?.onItemClicked(product)
             }
         }
     }
@@ -109,7 +111,7 @@ class AdapterProduct(
                 tvSell.text = product.sale.toString()
             }
             binding.root.setOnClickListener {
-                onItemClickCallback?.onItemClicked(product.productId)
+                onItemClickCallback?.onItemClicked(product)
             }
 
         }

@@ -86,4 +86,6 @@
     <string name="no_internet">Koneksi Anda tidak tersedia</string>
     <string name="success">Berhasil</string>
     <string name="failed">Gagal</string>
+    <string name="baseline_notifications_24">Ecommerce</string>
+    <string name="fcm_message">Promo dadakan</string>
 </resources>

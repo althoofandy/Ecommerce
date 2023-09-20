@@ -14,7 +14,7 @@ data class Auth(
     @SerializedName("password")
     val password: String,
     @SerializedName("firebaseToken")
-    val firebaseToken: String
+    val firebaseToken: String?
 )
 
 data class DataResponse(
@@ -417,6 +417,20 @@ fun ProductLocalDb.asCheckoutProduct(
 data class ListCheckout(
     val listCheckout: List<CheckoutProduct>? = emptyList()
 ) : Parcelable
+
+@Entity(tableName = "notification_table", primaryKeys = ["id"])
+@Keep
+@Parcelize
+data class Notification(
+    val id: String,
+    val type: String,
+    val date: String,
+    val title: String,
+    val body: String,
+    val image: String,
+    var isRead: Boolean
+) : Parcelable
+
 
 
 

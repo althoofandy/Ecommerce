@@ -3,6 +3,7 @@ package com.example.ecommerce.ui.prelogin.register
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,12 @@ import com.example.ecommerce.databinding.FragmentRegisterBinding
 import com.example.ecommerce.model.Auth
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 
 class RegisterFragment : Fragment() {
 
@@ -39,6 +46,14 @@ class RegisterFragment : Fragment() {
     }
 
     private val viewModel: RegisterViewModel by viewModels { factory }
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private var tokenFcm:String? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
+        getTokenFcm()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -61,9 +76,35 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 
+    fun getTokenFcm(){
+        Firebase.messaging.token.addOnCompleteListener(
+            OnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result
+                    tokenFcm = token
+                    val msg = "Generate Token succes, $token"
+                    Log.d("MainActivity", msg)
+
+                    Firebase.messaging.subscribeToTopic("promo")
+                        .addOnCompleteListener { task1 ->
+                            var msg1 = "Subscribed"
+                            if (!task1.isSuccessful) {
+                                msg1 = "Subscribe failed"
+                            }
+                            Log.d("MainActivity Subs", msg1)
+                        }
+                }else{
+                    Log.w("MainActivity", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+            },
+        )
+    }
+
     private fun doLogin() {
         binding.apply {
             btnLogin.setOnClickListener {
+                firebaseAnalytics.logEvent("btn_regis_toLogin_clicked",null)
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             }
         }
@@ -77,7 +118,7 @@ class RegisterFragment : Fragment() {
                 val password = binding.tiePassword.text.toString()
                 viewModel.doRegister(
                     "6f8856ed-9189-488f-9011-0ff4b6c08edc",
-                    Auth(email, password, "")
+                    Auth(email, password, tokenFcm)
                 ).observe(viewLifecycleOwner) {
                     when (it) {
                         is Result.Success -> {
@@ -100,6 +141,9 @@ class RegisterFragment : Fragment() {
                         }
 
                         else -> {}
+                    }
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP){
+                        param(FirebaseAnalytics.Param.METHOD,"email")
                     }
                 }
             }

@@ -85,5 +85,9 @@
     <string name="no_internet">Your connection is unavailable</string>
     <string name="success">Success</string>
     <string name="failed">Failed</string>
+    <string name="baseline_notifications_24">Ecommerce</string>
+    <string name="fcm_message">Promo dadakan</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

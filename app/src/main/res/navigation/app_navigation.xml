@@ -13,6 +13,9 @@
         android:id="@+id/action_mainTransac_to_successFragment"
         app:destination="@id/successPaymentFragment">
         <argument
+            android:name="originFragment"
+            app:argType="string" />
+        <argument
             android:name="invoice"
             app:argType="com.example.ecommerce.model.PaymentDataResponse" />
     </action>
@@ -42,6 +45,9 @@
     <action
         android:id="@+id/action_main_to_cartFragment"
         app:destination="@id/cartFragment" />
+    <action
+        android:id="@+id/action_main_to_notifFragment"
+        app:destination="@id/notificationFragment" />
     <action
         android:id="@+id/action_main_to_detailproductFragment"
         app:destination="@id/detailProductFragmentCompose">
@@ -222,7 +228,11 @@
             android:id="@+id/action_successPaymentFragment_to_main_navigation"
             app:destination="@id/main_navigation"
             app:popUpTo="@id/app_navigation"
-            app:popUpToInclusive="true" />
+            app:popUpToInclusive="true"/>
     </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.example.ecommerce.ui.main.menu.notification.NotificationFragment"
+        android:label="NotificationFragment" />
 
 </navigation>

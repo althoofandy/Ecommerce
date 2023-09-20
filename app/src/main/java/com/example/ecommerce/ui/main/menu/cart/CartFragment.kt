@@ -13,8 +13,13 @@ import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.databinding.FragmentCartBinding
 import com.example.ecommerce.model.CheckoutProduct
+import com.example.ecommerce.model.ProductLocalDb
 import com.example.ecommerce.model.asCheckoutProduct
 import com.example.ecommerce.ui.main.CurrencyUtils
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 
 class CartFragment : Fragment() {
     private var _binding: FragmentCartBinding? = null
@@ -26,8 +31,10 @@ class CartFragment : Fragment() {
     private var totalItemCount = 0
 
     private var listCart = listOf<CheckoutProduct>()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
     }
 
     override fun onCreateView(
@@ -133,8 +140,38 @@ class CartFragment : Fragment() {
 
             })
 
+            adapter.setOnItemClickCallback(object: CartAdapter.OnItemDeleteClickCallback{
+                override fun onItemDeleteClick(position: ProductLocalDb) {
+                    cartViewModel.removeFromCart(position.productId)
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.REMOVE_FROM_CART){
+                        param(FirebaseAnalytics.Param.ITEM_ID,position.productId)
+                        param(FirebaseAnalytics.Param.ITEM_NAME,position.productName)
+                    }
+
+                }
+            })
+
+            cartItems.forEach {
+                val viewCart = Bundle()
+                viewCart.putString(FirebaseAnalytics.Param.ITEM_ID, it.productId)
+                viewCart.putString(FirebaseAnalytics.Param.ITEM_NAME, it.productName)
+                viewCart.putString(FirebaseAnalytics.Param.VALUE, (it.quantity*it.productPrice).toString())
+                viewCart.putString(FirebaseAnalytics.Param.CURRENCY, "IDR")
+                val params = Bundle()
+                params.putParcelableArray(FirebaseAnalytics.Param.ITEMS, arrayOf(viewCart))
+
+                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_CART, params)
+
+
+            }
+
             binding.btnDeleteAll.setOnClickListener {
                 cartViewModel.removeFromCartAll(selectedIds)
+                selectedIds.map {
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.REMOVE_FROM_CART){
+                        param(FirebaseAnalytics.Param.ITEM_ID,it)
+                    }
+                }
             }
             val totalSelectedPrice = cartItems.filter { it.selected }
                 .sumBy { (it.productPrice + it.variantPrice!!) * it.quantity }

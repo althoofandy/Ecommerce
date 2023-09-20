@@ -23,6 +23,10 @@ import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 import com.example.ecommerce.ui.main.store.mainStore.StoreFragment
 import com.example.ecommerce.ui.main.store.mainStore.StoreFragment.Companion.SEARCH
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -47,9 +51,10 @@ class SearchDialogFragment : DialogFragment() {
     private lateinit var adapter: SearchAdapter
     private var searchString: String? = ""
     private var search: String? = ""
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        firebaseAnalytics = Firebase.analytics
     }
 
     override fun onCreateView(
@@ -116,6 +121,9 @@ class SearchDialogFragment : DialogFragment() {
                     }
                     adapter.setOnItemClickCallback(object : SearchAdapter.OnItemClickCallback {
                         override fun onItemClicked(data: String) {
+                            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS) {
+                                param(FirebaseAnalytics.Param.SEARCH_TERM, data)
+                            }
                             setData(data)
                             dismiss()
                         }

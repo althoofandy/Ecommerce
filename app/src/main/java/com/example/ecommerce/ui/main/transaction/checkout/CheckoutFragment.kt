@@ -21,6 +21,10 @@ import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 import com.example.ecommerce.ui.main.CurrencyUtils
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 
 class CheckoutFragment : Fragment() {
     private var _binding: FragmentCheckoutBinding? = null
@@ -39,9 +43,11 @@ class CheckoutFragment : Fragment() {
     private var dataPayment: PaymentMethodItemResponse? = null
     private var listPayment = listOf<PaymentItem>()
     private var itemCount: Int? = 0
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
     }
 
     override fun onCreateView(
@@ -141,6 +147,11 @@ class CheckoutFragment : Fragment() {
                         .observe(viewLifecycleOwner) {
                             when (it) {
                                 is Result.Success -> {
+                                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.PURCHASE){
+                                        param(FirebaseAnalytics.Param.TRANSACTION_ID,it.data.data.invoiceId)
+                                        param(FirebaseAnalytics.Param.SUCCESS,it.data.data.status.toString())
+                                        param(FirebaseAnalytics.Param.ITEM_NAME,it.data.data.payment)
+                                    }
                                     binding.progressCircular.hide()
                                     val bundle = Bundle().apply {
                                         putParcelable("invoice", it.data.data)

@@ -13,9 +13,10 @@ import com.example.ecommerce.databinding.ItemWishlistLinearBinding
 import com.example.ecommerce.model.WishlistProduct
 import com.example.ecommerce.ui.main.CurrencyUtils
 import com.example.ecommerce.ui.main.store.mainStore.ViewType
+import com.google.firebase.analytics.FirebaseAnalytics
 
 class WishlistAdapter(
-    private val context: Context, private val wishlistViewModel: WishlistViewModel
+    private val context: Context, private val wishlistViewModel: WishlistViewModel,private val firebaseAnalytics: FirebaseAnalytics
 ) : ListAdapter<WishlistProduct, RecyclerView.ViewHolder>(ProductComparator) {
     var item = true
     var currentViewType = ViewType.LINEAR
@@ -122,6 +123,7 @@ class WishlistAdapter(
                     onItemClickCallback?.onItemClick(product)
                 }
                 btnDelete.setOnClickListener {
+                    firebaseAnalytics.logEvent("btn_delete_wishlist_clicked",null)
                     wishlistViewModel.removeWishlist(product.productId)
                 }
             }

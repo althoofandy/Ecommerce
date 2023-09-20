@@ -105,6 +105,10 @@ import com.example.ecommerce.ui.main.db.AppExecutor
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
 import com.example.ecommerce.ui.main.store.ui.theme.EcommerceTheme
 import com.example.ecommerce.ui.main.wishlist.WishlistViewModel
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -134,16 +138,18 @@ class DetailProductFragmentCompose : Fragment() {
 
     private var counter = 0
     private lateinit var appExecutors: AppExecutor
-    private var product:GetProductDetailItemResponse? = null
+    private var product: GetProductDetailItemResponse? = null
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         id_product = arguments?.getString("id_product")
         return ComposeView(requireContext()).apply {
@@ -255,6 +261,10 @@ class DetailProductFragmentCompose : Fragment() {
                                     varianPrice
                                 )
                             )
+                            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT){
+                                param(FirebaseAnalytics.Param.ITEM_ID,productLocalDb?.productId!!)
+                                param(FirebaseAnalytics.Param.ITEM_NAME,productLocalDb.productName)
+                            }
                             val listCart = productCheckout
                             val bundle = bundleOf("data_product" to listCart)
                             findNavController().navigate(
@@ -284,6 +294,12 @@ class DetailProductFragmentCompose : Fragment() {
                                     product?.asProductLocalDb(varianName, varianPrice)
                                 val checkProductExist =
                                     cartViewModel.getCartById(productLocalDb?.productId!!)
+                                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART){
+                                    param(FirebaseAnalytics.Param.ITEM_ID, productLocalDb.productId)
+                                    param(FirebaseAnalytics.Param.ITEM_NAME, productLocalDb.productName)
+                                    param(FirebaseAnalytics.Param.CURRENCY, "IDR")
+                                }
+
                                 if (checkProductExist?.productId != null) {
                                     if (checkProductExist.quantity < checkProductExist.stock!!) {
                                         counter = checkProductExist.quantity
@@ -369,6 +385,12 @@ class DetailProductFragmentCompose : Fragment() {
             Font(R.font.poppins_semibold, FontWeight.SemiBold),
             Font(R.font.poppins_bold, FontWeight.Bold)
         )
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM){
+            param(FirebaseAnalytics.Param.ITEM_NAME, product.productName)
+            param(FirebaseAnalytics.Param.CURRENCY, product.productPrice.toString())
+            param(FirebaseAnalytics.Param.VALUE, product.productPrice.toString())
+        }
+
         var selectedVariantName: String by remember {
             mutableStateOf(
                 product.productVariant.firstOrNull()?.variantName ?: "16GB"
@@ -445,6 +467,7 @@ class DetailProductFragmentCompose : Fragment() {
 
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = {
+                        firebaseAnalytics.logEvent("btn_share_clicked",null)
                         val deepLink = "Product : ${product?.productName}\n" +
                                 "Price : ${CurrencyUtils.formatRupiah(product?.productPrice)}\n" +
                                 "Link : http://ecommerce.com/products/$id_product"
@@ -482,12 +505,18 @@ class DetailProductFragmentCompose : Fragment() {
                             isChecked = !isChecked
                             appExecutors = AppExecutor()
                             appExecutors.diskIO.execute {
+
                                 wishlistViewModel = WishlistViewModel(requireContext())
                                 val wishlistLocalDb =
                                     product.asWishlistProduct(
                                         selectedVariantName,
                                         selectedVariantPrice
                                     )
+                                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST){
+                                    param(FirebaseAnalytics.Param.ITEM_ID, wishlistLocalDb.productId)
+                                    param(FirebaseAnalytics.Param.ITEM_NAME, wishlistLocalDb.productName)
+                                    param(FirebaseAnalytics.Param.CURRENCY, "IDR")
+                                }
                                 if (isChecked) {
                                     wishlistViewModel.addToCart(
                                         wishlistLocalDb.productId,
@@ -640,6 +669,7 @@ class DetailProductFragmentCompose : Fragment() {
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         TextButton(onClick = {
+                            firebaseAnalytics.logEvent("btn_seeAll_review_clicked",null)
                             val bundle = bundleOf("id_product" to product.productId)
                             (requireActivity() as MainActivity).goToDetailReview(bundle)
                         })

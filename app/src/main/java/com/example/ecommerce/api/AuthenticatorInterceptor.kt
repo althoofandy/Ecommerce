@@ -52,7 +52,7 @@ class AuthenticatorInterceptor(private val pref: SharedPref,private val context:
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.153.125:5000/")
+            .baseUrl("http://192.168.153.125:5000")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

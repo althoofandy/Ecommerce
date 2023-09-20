@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.fragment.app.setFragmentResult
 import com.example.ecommerce.databinding.BottomSheetBinding
+import com.example.ecommerce.ui.main.CurrencyUtils
 import com.example.ecommerce.ui.main.store.mainStore.StoreFragment.Companion.CHIP_CATEGORY
 import com.example.ecommerce.ui.main.store.mainStore.StoreFragment.Companion.CHIP_HIGHEST
 import com.example.ecommerce.ui.main.store.mainStore.StoreFragment.Companion.CHIP_LOWEST
@@ -14,6 +15,10 @@ import com.example.ecommerce.ui.main.store.mainStore.StoreFragment.Companion.CHI
 import com.example.ecommerce.ui.main.store.mainStore.StoreFragment.Companion.FILTER
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 
 class BottomSheet : BottomSheetDialogFragment() {
     private var _binding: BottomSheetBinding? = null
@@ -23,6 +28,13 @@ class BottomSheet : BottomSheetDialogFragment() {
     private var category: String? = null
     private var lowest: String? = null
     private var highest: String? = null
+
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -39,14 +51,15 @@ class BottomSheet : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         loadFilter()
         btnReset()
-        btnShowProduct()
         showSelectedChip()
+        btnShowProduct()
     }
 
     private fun btnShowProduct() {
         binding.btnTampilkan.setOnClickListener {
             sendData()
             dismiss()
+            checkFirebaseAnalytic()
         }
     }
 
@@ -115,6 +128,35 @@ class BottomSheet : BottomSheetDialogFragment() {
                 putString(CHIP_HIGHEST, highest)
             }
             setFragmentResult(FILTER, bundle)
+        }
+    }
+
+    private fun checkFirebaseAnalytic(){
+        binding.apply {
+            val sort: Chip? = chipGroupUrutkan.findViewById(chipGroupUrutkan.checkedChipId)
+            val category: Chip? = chipGroupKategori.findViewById(chipGroupKategori.checkedChipId)
+            val lowest = tieLowest.text.toString()
+            val highest = tieHighest.text.toString()
+
+            val sorts = Bundle()
+            sorts.putString(FirebaseAnalytics.Param.ITEM_NAME, "sort")
+            sorts.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "${sort?.text.toString()}")
+            val cat = Bundle()
+            cat.putString(FirebaseAnalytics.Param.ITEM_NAME, "category")
+            cat.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "${category?.text.toString()}")
+            val lowestAnalytics = Bundle()
+            lowestAnalytics.putString(FirebaseAnalytics.Param.ITEM_NAME, "lowest")
+            lowestAnalytics.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "${CurrencyUtils.formatRupiah(lowest.toInt())}")
+            val highestAnalytics = Bundle()
+            highestAnalytics.putString(FirebaseAnalytics.Param.ITEM_NAME, "highest")
+            highestAnalytics.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "${CurrencyUtils.formatRupiah(highest.toInt())}")
+            val params = Bundle()
+            params.putParcelableArray(
+                FirebaseAnalytics.Param.ITEMS,
+                arrayOf(sorts, cat, lowestAnalytics, highestAnalytics)
+            )
+
+            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, params)
         }
     }
 

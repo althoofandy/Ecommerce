@@ -23,11 +23,16 @@ import com.example.ecommerce.R
 import com.example.ecommerce.ViewModelFactory
 import com.example.ecommerce.api.Retrofit
 import com.example.ecommerce.databinding.FragmentStoreBinding
+import com.example.ecommerce.model.GetProductsItemResponse
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 import com.example.ecommerce.ui.main.store.search.SearchAdapter
 import com.example.ecommerce.ui.main.store.search.SearchDialogFragment
 import com.google.android.material.chip.Chip
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -61,10 +66,11 @@ class StoreFragment : Fragment() {
     private var highest: String? = null
     private var isList: Boolean = true
     private lateinit var gridLayoutManager: GridLayoutManager
+    private lateinit var firebaseAnalytics:FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        firebaseAnalytics = Firebase.analytics
     }
 
     override fun onCreateView(
@@ -89,6 +95,7 @@ class StoreFragment : Fragment() {
                     binding.swiperefresh.isRefreshing = false
                 }
                 chipFilter.setOnClickListener {
+                    firebaseAnalytics.logEvent("chipFilter_clicked",null)
                     val bottomSheet = BottomSheet.newInstance(
                         category.toString(),
                         sort.toString(),
@@ -163,15 +170,32 @@ class StoreFragment : Fragment() {
             adapter = AdapterProduct(requireContext())
             viewModel.products.observe(viewLifecycleOwner) { pagingData ->
                 adapter.submitData(viewLifecycleOwner.lifecycle, pagingData)
+                val bundle = Bundle().apply {
+                    adapter.snapshot().items.forEach {
+                        putString(FirebaseAnalytics.Param.ITEM_ID, it.productId)
+                        putString(FirebaseAnalytics.Param.ITEM_NAME, it.productName)
+                        putInt(FirebaseAnalytics.Param.PRICE, it.productPrice)
+                        putString(FirebaseAnalytics.Param.ITEM_BRAND, it.brand)
+                    }
+                }
+
+                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM_LIST) {
+                    param(FirebaseAnalytics.Param.ITEMS, arrayOf(bundle))
+                }
             }
             gridLayoutManager = GridLayoutManager(requireContext(), 1)
             binding.rvProduct.layoutManager = gridLayoutManager
             rvProduct.adapter = adapter
 
-            adapter.setOnItemClickCallback(object : SearchAdapter.OnItemClickCallback {
-                override fun onItemClicked(data: String) {
-                    val bundle = bundleOf("id_product" to data)
+            adapter.setOnItemClickCallback(object : AdapterProduct.OnItemClickCallback {
+                override fun onItemClicked(data: GetProductsItemResponse) {
+                    val bundle = bundleOf("id_product" to data.productId)
                     (requireActivity() as MainActivity).goToDetailProduct(bundle)
+
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM){
+                        param(FirebaseAnalytics.Param.ITEM_LIST_ID, data.productId)
+                        param(FirebaseAnalytics.Param.ITEM_NAME, data.productName)
+                    }
                 }
             })
 
@@ -238,6 +262,7 @@ class StoreFragment : Fragment() {
             }
             val footerAdapter = LoadingStateAdapter { adapter.retry() }
             rvProduct.adapter = adapter.withLoadStateFooter(footer = footerAdapter)
+
             gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
                 override fun getSpanSize(position: Int): Int {
                     return if (position < adapter.itemCount) {

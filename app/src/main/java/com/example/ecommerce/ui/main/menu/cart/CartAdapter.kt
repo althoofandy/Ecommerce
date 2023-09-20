@@ -13,16 +13,24 @@ import com.example.ecommerce.databinding.ItemCartBinding
 import com.example.ecommerce.model.ProductLocalDb
 import com.example.ecommerce.ui.main.CurrencyUtils
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
 
 class CartAdapter(private val cartViewModel: CartViewModel) :
     ListAdapter<ProductLocalDb, CartAdapter.ProductCartViewHolder>(ProductReviewDiffCallback()) {
     private var onItemClickCallback: OnItemClickCallback? = null
+    private var onItemDeleteClickCallback: OnItemDeleteClickCallback? = null
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
+    fun setOnItemClickCallback(onItemClickCallback: OnItemDeleteClickCallback) {
+        this.onItemDeleteClickCallback = onItemClickCallback
+    }
     interface OnItemClickCallback {
         fun onItemClick(position: String)
+    }
+    interface OnItemDeleteClickCallback {
+        fun onItemDeleteClick(position: ProductLocalDb)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductCartViewHolder {
         val binding = ItemCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -66,7 +74,7 @@ class CartAdapter(private val cartViewModel: CartViewModel) :
                     .into(ivProductCart)
 
                 deleteButton.setOnClickListener {
-                    cartViewModel.removeFromCart(item.productId)
+                    onItemDeleteClickCallback?.onItemDeleteClick(item)
                 }
                 binding.root.setOnClickListener {
                     onItemClickCallback?.onItemClick(item.productId)

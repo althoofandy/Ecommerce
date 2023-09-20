@@ -29,6 +29,10 @@ import com.example.ecommerce.databinding.FragmentAddProfileBinding
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
@@ -57,6 +61,7 @@ class AddProfileFragment : Fragment() {
     }
 
     private val viewModel: ProfileViewModel by viewModels { factory }
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private fun generateFilename() = "photos-${System.currentTimeMillis()}.jpg"
 
@@ -99,6 +104,7 @@ class AddProfileFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         instance = this
+        firebaseAnalytics = Firebase.analytics
 
     }
 
@@ -154,6 +160,10 @@ class AddProfileFragment : Fragment() {
                         is Result.Loading -> {
                             progressCircular.show()
                         }
+                    }
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM){
+                        param(FirebaseAnalytics.Param.ITEM_NAME, binding.tieNama.text.toString())
+                        param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
                     }
                 }
         }

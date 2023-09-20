@@ -3,6 +3,7 @@ package com.example.ecommerce.ui.prelogin.login
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,12 @@ import com.example.ecommerce.databinding.FragmentLoginBinding
 import com.example.ecommerce.model.Auth
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.ktx.logEvent
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -31,14 +38,17 @@ class LoginFragment : Fragment() {
         val sharedPref = SharedPref(requireContext())
         EcommerceRepository(apiService, sharedPref)
     }
-
     private val factory by lazy {
         ViewModelFactory(repository,sharedPref)
     }
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
+    private var tokenFcm:String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        firebaseAnalytics = Firebase.analytics
         checkFirstInstall()
+        getTokenFcm()
     }
 
     private val viewModel: LoginViewModel by viewModels { factory }
@@ -63,13 +73,38 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 
+    fun getTokenFcm(){
+        Firebase.messaging.token.addOnCompleteListener(
+            OnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val token = task.result
+                    tokenFcm = token
+                    val msg = "Generate Token succes, $token"
+                    Log.d("MainActivity", msg)
+
+                    Firebase.messaging.subscribeToTopic("promo")
+                        .addOnCompleteListener { task1 ->
+                            var msg1 = "Subscribed"
+                            if (!task1.isSuccessful) {
+                                msg1 = "Subscribe failed"
+                            }
+                            Log.d("MainActivity Subs", msg1)
+                        }
+                }else{
+                    Log.w("MainActivity", "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+            },
+        )
+    }
+
     private fun doLogin() {
         binding.apply {
             btnLogin.setOnClickListener {
                 progressCircular.visibility = View.VISIBLE
                 val email = binding.tieEmail.text.toString()
                 val password = binding.tiePassword.text.toString()
-                viewModel.doLogin("6f8856ed-9189-488f-9011-0ff4b6c08edc", Auth(email, password, ""))
+                viewModel.doLogin("6f8856ed-9189-488f-9011-0ff4b6c08edc", Auth(email, password, tokenFcm))
                     .observe(viewLifecycleOwner) {
                         when (it) {
                             is Result.Success -> {
@@ -90,8 +125,11 @@ class LoginFragment : Fragment() {
                             is Result.Loading -> {
                                 progressCircular.show()
                             }
-                        }
 
+                        }
+                        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN){
+                            param(FirebaseAnalytics.Param.METHOD,"email")
+                        }
                     }
             }
         }
@@ -100,6 +138,7 @@ class LoginFragment : Fragment() {
     private fun doRegister() {
         binding.apply {
             btnRegister.setOnClickListener {
+                firebaseAnalytics.logEvent("btn_login_toRegiste_clicked",null)
                 findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
             }
         }
