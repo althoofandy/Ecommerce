@@ -155,13 +155,15 @@ class DetailProductFragmentCompose : Fragment() {
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                if (!id_product.isNullOrBlank()) {
-                    viewModel.setProductId(id_product)
-                }
                 EcommerceTheme {
                     wishlistViewModel = WishlistViewModel(requireContext())
-                    val productDetailState by viewModel.getDetailProduct.observeAsState()
-                    productDetailState.let {
+                    val productDetailState by viewModel.productDetail.observeAsState()
+                    if (productDetailState == null) {
+                        if (!id_product.isNullOrBlank()) {
+                            viewModel.setProductId(id_product)
+                        }
+                    }
+                    productDetailState?.let {
                         when (it) {
                             is Result.Success -> {
                                 LoadingScreen(isLoading = false)
@@ -181,10 +183,8 @@ class DetailProductFragmentCompose : Fragment() {
                                             isChecked
                                         }
                                     }
-
                                 }
                             }
-
                             is Result.Loading -> {
                                 LoadingScreen(isLoading = true)
                             }
@@ -192,15 +192,13 @@ class DetailProductFragmentCompose : Fragment() {
                             is Result.Error -> {
                                 LoadingScreen(isLoading = false)
                             }
-
-                            null -> {
-                            }
                         }
                     }
                 }
             }
         }
     }
+
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -765,8 +763,8 @@ class DetailProductFragmentCompose : Fragment() {
         }
     }
 
-    private @Composable
-    fun RatingChipText(text: String) {
+     @Composable
+    private fun RatingChipText(text: String) {
         Text(
             text = text,
             fontSize = 12.sp,

@@ -15,15 +15,22 @@ class DetailProductViewModel(
 ) : ViewModel() {
 
     private val accessToken = sharedPref.getAccessToken() ?: throw Exception("null token")
-    private val _param = MutableLiveData(ProductDetailParam(accessToken))
-    val param: LiveData<ProductDetailParam> = _param
+    private var productId: String? = null
 
+    private val _productDetail = MutableLiveData<com.example.ecommerce.api.Result<GetProductDetailResponse>>()
+    val productDetail: LiveData<com.example.ecommerce.api.Result<GetProductDetailResponse>> = _productDetail
 
     fun setProductId(idProduct: String?) {
-        _param.value = _param.value?.copy(productId = idProduct)
+        if (idProduct != productId) {
+            productId = idProduct
+            fetchData()
+        }
     }
 
-    val getDetailProduct: LiveData<com.example.ecommerce.api.Result<GetProductDetailResponse>> = param.switchMap { query ->
-        repository.getProductDetail(query.token, query.productId!!)
+    private fun fetchData() {
+        val query = ProductDetailParam(accessToken, productId)
+        repository.getProductDetail(query.token, query.productId!!).observeForever { result ->
+            _productDetail.value = result
+        }
     }
 }

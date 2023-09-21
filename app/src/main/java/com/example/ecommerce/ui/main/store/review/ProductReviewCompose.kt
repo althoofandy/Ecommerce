@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -38,6 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -95,6 +98,7 @@ class ProductReviewCompose : Fragment() {
                     productDetailReviewState.let {
                         when (it) {
                             is Result.Success -> {
+                                LoadingScreen(false)
                                 val data = it.data.data
                                 MaterialTheme {
                                     ReviewCompose(data)
@@ -102,11 +106,11 @@ class ProductReviewCompose : Fragment() {
                             }
 
                             is Result.Loading -> {
-
+                                LoadingScreen(true)
                             }
 
                             is Result.Error -> {
-
+                                LoadingScreen(false)
                             }
 
                             null -> {
@@ -288,6 +292,26 @@ class ProductReviewCompose : Fragment() {
                 )
             }
         }
+    }
+    @Composable
+    fun LoadingScreen(isLoading: Boolean) {
+        if (isLoading) {
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator(
+                    modifier = Modifier
+                        .size(48.dp),
+                    color = primaryColor(),
+                    strokeWidth = 4.dp
+                )
+            }
+        }
+    }
+    @Composable
+    fun primaryColor(): Color {
+        return colorResource(id = R.color.purple)
     }
 
     @Preview(showBackground = true)

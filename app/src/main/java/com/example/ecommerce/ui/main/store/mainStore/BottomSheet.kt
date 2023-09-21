@@ -144,16 +144,16 @@ class BottomSheet : BottomSheetDialogFragment() {
             val cat = Bundle()
             cat.putString(FirebaseAnalytics.Param.ITEM_NAME, "category")
             cat.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "${category?.text.toString()}")
-            val lowestAnalytics = Bundle()
-            lowestAnalytics.putString(FirebaseAnalytics.Param.ITEM_NAME, "lowest")
-            lowestAnalytics.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "${CurrencyUtils.formatRupiah(lowest.toInt())}")
-            val highestAnalytics = Bundle()
-            highestAnalytics.putString(FirebaseAnalytics.Param.ITEM_NAME, "highest")
-            highestAnalytics.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "${CurrencyUtils.formatRupiah(highest.toInt())}")
+//            val lowestAnalytics = Bundle()
+//            lowestAnalytics.putString(FirebaseAnalytics.Param.ITEM_NAME, "lowest")
+//            lowestAnalytics.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "${CurrencyUtils.formatRupiah(lowest.toInt())}")
+//            val highestAnalytics = Bundle()
+//            highestAnalytics.putString(FirebaseAnalytics.Param.ITEM_NAME, "highest")
+//            highestAnalytics.putString(FirebaseAnalytics.Param.ITEM_CATEGORY, "${CurrencyUtils.formatRupiah(highest.toInt())}")
             val params = Bundle()
             params.putParcelableArray(
                 FirebaseAnalytics.Param.ITEMS,
-                arrayOf(sorts, cat, lowestAnalytics, highestAnalytics)
+                arrayOf(sorts, cat)
             )
 
             firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, params)
