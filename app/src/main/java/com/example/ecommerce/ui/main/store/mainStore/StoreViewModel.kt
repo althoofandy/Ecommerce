@@ -14,12 +14,10 @@ import com.example.ecommerce.repos.EcommerceRepository
 class StoreViewModel(private val repository: EcommerceRepository, sharedPref: SharedPref) :
     ViewModel() {
     private val accesToken = sharedPref.getAccessToken() ?: MainActivity().logOut()
-
     private val _param = MutableLiveData(ProductParam(accesToken.toString()))
     val param: LiveData<ProductParam> = _param
-
     fun setSearch(
-        search: String? = null
+        search: String? = null,
     ) {
         _param.value = _param.value?.copy(
             search = search,
@@ -30,7 +28,7 @@ class StoreViewModel(private val repository: EcommerceRepository, sharedPref: Sh
         brand: String? = null,
         lowest: Int? = null,
         highest: Int? = null,
-        sort: String? = null
+        sort: String? = null,
     ) {
         _param.value = _param.value?.copy(
             brand = brand,
@@ -39,7 +37,8 @@ class StoreViewModel(private val repository: EcommerceRepository, sharedPref: Sh
             sort = sort
         )
     }
-    fun resetParam(){
+
+    fun resetParam() {
         _param.value = _param.value?.copy(
             search = null,
             brand = null,
@@ -59,7 +58,4 @@ class StoreViewModel(private val repository: EcommerceRepository, sharedPref: Sh
             query.sort
         )
     }.cachedIn(viewModelScope)
-
-
 }
-

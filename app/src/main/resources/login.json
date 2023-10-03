@@ -1,0 +1,11 @@
+{
+  "code": 200,
+  "message": "OK",
+  "data": {
+    "userName": "uname",
+    "userImage": "image",
+    "accessToken": "accesstoken",
+    "refreshToken": "refreshtoken",
+    "expiresAt": 600
+  }
+}

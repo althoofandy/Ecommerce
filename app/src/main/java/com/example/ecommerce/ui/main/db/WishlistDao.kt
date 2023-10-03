@@ -20,8 +20,4 @@ interface WishlistDao {
 
     @Query("SELECT * FROM WishlistProduct WHERE productId = :productId")
     fun getProductWishlistById(productId: String): WishlistProduct?
-
-
-
-
 }

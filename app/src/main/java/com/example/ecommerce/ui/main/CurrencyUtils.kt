@@ -9,6 +9,7 @@ object CurrencyUtils {
         val format = NumberFormat.getCurrencyInstance(Locale("id", "ID"))
         return format.format(amount)
     }
+
     fun formatRupiah(amount: Int?): String? {
         return formatRupiah(amount?.toDouble())
     }

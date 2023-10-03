@@ -8,7 +8,4 @@ class ProfileViewModel(private val repository: EcommerceRepository) : ViewModel(
 
     fun doProfile(token: String, name: MultipartBody.Part, image: MultipartBody.Part?) =
         repository.saveToProfile(token, name, image)
-//    fun getUserToken():LiveData<String>{
-//        return repository.sharedPref.getUserToken().asLiveData()
-//    }
 }

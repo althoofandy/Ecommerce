@@ -1,13 +1,11 @@
 package com.example.ecommerce.ui.main.transaction.successpayment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.ecommerce.MainFragment
 import com.example.ecommerce.R
 import com.example.ecommerce.api.Result
 import com.example.ecommerce.api.Retrofit
@@ -22,7 +20,8 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 
-@ExperimentalBadgeUtils class SuccessPaymentFragment : Fragment() {
+@ExperimentalBadgeUtils
+class SuccessPaymentFragment : Fragment() {
     private var _binding: FragmentSuccessPaymentBinding? = null
     private val binding get() = _binding!!
 
@@ -48,8 +47,9 @@ import com.google.firebase.ktx.Firebase
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentSuccessPaymentBinding.inflate(inflater, container, false)
         return binding.root
@@ -60,19 +60,19 @@ import com.google.firebase.ktx.Firebase
         getData()
     }
 
-private fun getData() {
+    private fun getData() {
         viewModel = SuccessPaymentViewModel(repository)
         sharedPref = SharedPref(requireContext())
         val accessToken = sharedPref.getAccessToken() ?: throw Exception("token is null")
 
         binding.apply {
             btnBeliCheckout.setOnClickListener {
-                firebaseAnalytics.logEvent("btn_checkout_clicked",null)
+                firebaseAnalytics.logEvent("btn_checkout_clicked", null)
                 progressCircular.visibility = View.VISIBLE
                 val ratings = rbReview.rating.toInt()
-                if(ratings == 0){
+                if (ratings == 0) {
                     rating = null
-                }else{
+                } else {
                     rating = ratings
                 }
 
@@ -90,25 +90,31 @@ private fun getData() {
                     when (it) {
                         is Result.Success -> {
                             progressCircular.hide()
-                            if(originFragment!=null){
+                            if (originFragment != null) {
                                 findNavController().navigateUp()
-                            }else{
-                                findNavController().navigate(R.id.action_successPaymentFragment_to_main_navigation,null)
+                            } else {
+                                findNavController().navigate(
+                                    R.id.action_successPaymentFragment_to_main_navigation,
+                                    null
+                                )
                             }
-
                         }
 
                         is Result.Error -> {
                             progressCircular.hide()
                         }
+
                         is Result.Loading -> {
                             progressCircular.show()
                         }
                     }
                 }
             }
-            if(dataPayment?.rating != null){
+            if (dataPayment?.rating != null) {
                 rbReview.rating = dataPayment?.rating!!.toFloat()
+            }
+            if (dataPayment?.review != null) {
+                tieReviewDescription.setText(dataPayment?.review ?: "")
             }
             tvIdTransaksi.text = dataPayment?.invoiceId
             tvTanggal.text = dataPayment?.date
@@ -127,6 +133,4 @@ private fun getData() {
         super.onDestroy()
         _binding = null
     }
-
-
 }

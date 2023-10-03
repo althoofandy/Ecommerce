@@ -20,6 +20,7 @@
             android:layout_height="182dp"
             android:layout_margin="16dp"
             app:lottie_autoPlay="true"
+            app:lottie_loop="true"
             app:lottie_fileName="animation_welcome.json" />
 
         <Button

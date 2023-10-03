@@ -11,6 +11,7 @@ import com.example.ecommerce.model.PaymentMethodItemResponse
 class PaymentMethodAdapter(private val dataList: List<PaymentMethodCategoryResponse>) :
     RecyclerView.Adapter<PaymentMethodAdapter.MainViewHolder>() {
     private var itemClickListener: PaymentMethodItemClickListener? = null
+
     interface PaymentMethodItemClickListener {
         fun onItemClick(label: PaymentMethodItemResponse)
     }
@@ -21,19 +22,22 @@ class PaymentMethodAdapter(private val dataList: List<PaymentMethodCategoryRespo
 
     inner class MainViewHolder(private val binding: ItemListPaymentmethodBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item:PaymentMethodCategoryResponse){
+        fun bind(item: PaymentMethodCategoryResponse) {
             binding.apply {
                 tvPaymentMethods.text = item.title
-                val adapter = PaymentAdapter(item.item, object : PaymentAdapter.PaymentItemClickListener {
-                    override fun onItemClick(item: PaymentMethodItemResponse) {
-                        if(item.status){
-                            itemClickListener?.onItemClick(item)
-                        }else{
-                            binding.root.setOnClickListener(null)
+                val adapter =
+                    PaymentAdapter(
+                        item.item,
+                        object : PaymentAdapter.PaymentItemClickListener {
+                            override fun onItemClick(item: PaymentMethodItemResponse) {
+                                if (item.status) {
+                                    itemClickListener?.onItemClick(item)
+                                } else {
+                                    binding.root.setOnClickListener(null)
+                                }
+                            }
                         }
-
-                    }
-                })
+                    )
                 val linearLayout = LinearLayoutManager(binding.root.context)
                 binding.rvPaymentMethods.layoutManager = linearLayout
                 binding.rvPaymentMethods.adapter = adapter
@@ -42,7 +46,8 @@ class PaymentMethodAdapter(private val dataList: List<PaymentMethodCategoryRespo
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MainViewHolder {
-        val binding = ItemListPaymentmethodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding =
+            ItemListPaymentmethodBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MainViewHolder(binding)
     }
 

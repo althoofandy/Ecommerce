@@ -1,0 +1,33 @@
+{
+  "code": 200,
+  "message": "OK",
+  "data": {
+    "productId": "productId",
+    "productName": "ASUS",
+    "productPrice": 5000,
+    "image": [
+      "image1",
+      "image2",
+      "image3"
+    ],
+    "brand": "Asus",
+    "description": "ASUS",
+    "store": "AsusStore",
+    "sale": 12,
+    "stock": 2,
+    "totalRating": 7,
+    "totalReview": 5,
+    "totalSatisfaction": 100,
+    "productRating": 5.0,
+    "productVariant": [
+      {
+        "variantName": "16GB",
+        "variantPrice": 0
+      },
+      {
+        "variantName": "32GB",
+        "variantPrice": 5000
+      }
+    ]
+  }
+}

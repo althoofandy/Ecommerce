@@ -7,7 +7,10 @@ import com.bumptech.glide.Glide
 import com.example.ecommerce.databinding.ItemListPaymentBinding
 import com.example.ecommerce.model.PaymentMethodItemResponse
 
-class PaymentAdapter(private val nestedDataList: List<PaymentMethodItemResponse>, private var itemClickListener: PaymentItemClickListener) :
+class PaymentAdapter(
+    private val nestedDataList: List<PaymentMethodItemResponse>,
+    private var itemClickListener: PaymentItemClickListener,
+) :
     RecyclerView.Adapter<PaymentAdapter.NestedViewHolder>() {
     interface PaymentItemClickListener {
         fun onItemClick(item: PaymentMethodItemResponse)
@@ -20,7 +23,7 @@ class PaymentAdapter(private val nestedDataList: List<PaymentMethodItemResponse>
     inner class NestedViewHolder(private val binding: ItemListPaymentBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: PaymentMethodItemResponse) {
-            if (item.status == false){
+            if (item.status == false) {
                 binding.root.alpha = 0.5f
                 binding.root.setOnClickListener(null)
             }
@@ -55,4 +58,3 @@ class PaymentAdapter(private val nestedDataList: List<PaymentMethodItemResponse>
 
     override fun getItemCount() = nestedDataList.size
 }
-

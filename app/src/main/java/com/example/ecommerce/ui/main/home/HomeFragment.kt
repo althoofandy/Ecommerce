@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
@@ -35,10 +34,10 @@ class HomeFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -57,10 +56,9 @@ class HomeFragment : Fragment() {
     private fun logOut() {
         binding.apply {
             btnLogout.setOnClickListener {
-                firebaseAnalytics.logEvent("btn_logout_clicked",null)
+                firebaseAnalytics.logEvent("btn_logout_clicked", null)
                 (requireActivity() as MainActivity).logOut()
                 clearDb()
-
             }
         }
     }
@@ -100,5 +98,4 @@ class HomeFragment : Fragment() {
             viewModel.clearDb()
         }
     }
-
 }

@@ -10,7 +10,10 @@ import com.example.ecommerce.model.ProductReviewParam
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 
-class ProductReviewViewModel(private val repository: EcommerceRepository,private val sharedPref: SharedPref):ViewModel() {
+class ProductReviewViewModel(
+    private val repository: EcommerceRepository,
+    private val sharedPref: SharedPref,
+) : ViewModel() {
     private val accessToken = sharedPref.getAccessToken() ?: throw Exception("null token")
     private val _param = MutableLiveData(ProductReviewParam(accessToken))
     val param: LiveData<ProductReviewParam> = _param

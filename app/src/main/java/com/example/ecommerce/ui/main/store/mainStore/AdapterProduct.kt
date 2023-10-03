@@ -12,10 +12,9 @@ import com.example.ecommerce.databinding.ItemProductGridBinding
 import com.example.ecommerce.databinding.ItemProductLinearBinding
 import com.example.ecommerce.model.GetProductsItemResponse
 import com.example.ecommerce.ui.main.CurrencyUtils
-import com.example.ecommerce.ui.main.store.search.SearchAdapter
 
 class AdapterProduct(
-    private val context: Context
+    private val context: Context,
 ) : PagingDataAdapter<GetProductsItemResponse, RecyclerView.ViewHolder>(ProductComparator) {
     var item = true
     var currentViewType = ViewType.LINEAR
@@ -24,9 +23,11 @@ class AdapterProduct(
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
+
     interface OnItemClickCallback {
         fun onItemClicked(data: GetProductsItemResponse)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         return when (getItemViewType(viewType)) {
@@ -44,7 +45,6 @@ class AdapterProduct(
                 throw IllegalArgumentException("Invalid ViewType")
             }
         }
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -59,7 +59,6 @@ class AdapterProduct(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = getItem(position)
         if (data != null) {
@@ -98,7 +97,6 @@ class AdapterProduct(
     inner class GridViewHolder(private val binding: ItemProductGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: GetProductsItemResponse) {
-
             item = false
             binding.apply {
                 Glide.with(context)
@@ -113,9 +111,7 @@ class AdapterProduct(
             binding.root.setOnClickListener {
                 onItemClickCallback?.onItemClicked(product)
             }
-
         }
-
     }
 
     companion object {
@@ -127,19 +123,15 @@ class AdapterProduct(
 object ProductComparator : DiffUtil.ItemCallback<GetProductsItemResponse>() {
     override fun areItemsTheSame(
         oldItem: GetProductsItemResponse,
-        newItem: GetProductsItemResponse
+        newItem: GetProductsItemResponse,
     ): Boolean {
         return oldItem.productId == newItem.productId
     }
 
     override fun areContentsTheSame(
         oldItem: GetProductsItemResponse,
-        newItem: GetProductsItemResponse
+        newItem: GetProductsItemResponse,
     ): Boolean {
         return oldItem == newItem
     }
 }
-
-
-
-

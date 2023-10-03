@@ -38,8 +38,9 @@ class CartFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         _binding = FragmentCartBinding.inflate(inflater, container, false)
         return binding.root
@@ -125,29 +126,27 @@ class CartFragment : Fragment() {
             }
 
             val selectedProduct = cartItems.filter { it.selected }.map {
-                it.asCheckoutProduct(it.variantName,it.variantPrice)
+                it.asCheckoutProduct(it.variantName, it.variantPrice)
             }
             listCart = selectedProduct
 
             val selectedIds = cartItems
                 .filter { it.selected }
                 .map { it.productId }
-            adapter.setOnItemClickCallback(object : CartAdapter.OnItemClickCallback{
+            adapter.setOnItemClickCallback(object : CartAdapter.OnItemClickCallback {
                 override fun onItemClick(data: String) {
                     val bundle = bundleOf("id_product" to data)
                     (requireActivity() as MainActivity).goToDetailProductFromCart(bundle)
                 }
-
             })
 
-            adapter.setOnItemClickCallback(object: CartAdapter.OnItemDeleteClickCallback{
+            adapter.setOnItemClickCallback(object : CartAdapter.OnItemDeleteClickCallback {
                 override fun onItemDeleteClick(position: ProductLocalDb) {
                     cartViewModel.removeFromCart(position.productId)
-                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.REMOVE_FROM_CART){
-                        param(FirebaseAnalytics.Param.ITEM_ID,position.productId)
-                        param(FirebaseAnalytics.Param.ITEM_NAME,position.productName)
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.REMOVE_FROM_CART) {
+                        param(FirebaseAnalytics.Param.ITEM_ID, position.productId)
+                        param(FirebaseAnalytics.Param.ITEM_NAME, position.productName)
                     }
-
                 }
             })
 
@@ -155,21 +154,22 @@ class CartFragment : Fragment() {
                 val viewCart = Bundle()
                 viewCart.putString(FirebaseAnalytics.Param.ITEM_ID, it.productId)
                 viewCart.putString(FirebaseAnalytics.Param.ITEM_NAME, it.productName)
-                viewCart.putString(FirebaseAnalytics.Param.VALUE, (it.quantity*it.productPrice).toString())
+                viewCart.putString(
+                    FirebaseAnalytics.Param.VALUE,
+                    (it.quantity * it.productPrice).toString()
+                )
                 viewCart.putString(FirebaseAnalytics.Param.CURRENCY, "IDR")
                 val params = Bundle()
                 params.putParcelableArray(FirebaseAnalytics.Param.ITEMS, arrayOf(viewCart))
 
                 firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_CART, params)
-
-
             }
 
             binding.btnDeleteAll.setOnClickListener {
                 cartViewModel.removeFromCartAll(selectedIds)
                 selectedIds.map {
-                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.REMOVE_FROM_CART){
-                        param(FirebaseAnalytics.Param.ITEM_ID,it)
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.REMOVE_FROM_CART) {
+                        param(FirebaseAnalytics.Param.ITEM_ID, it)
                     }
                 }
             }

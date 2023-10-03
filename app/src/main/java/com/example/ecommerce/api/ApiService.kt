@@ -30,13 +30,13 @@ interface ApiService {
     @POST("login")
     suspend fun doLogin(
         @Header("API_KEY") auth: String,
-        @Body user: Auth
+        @Body user: Auth,
     ): DataResponse
 
     @POST("register")
     suspend fun doRegister(
         @Header("API_KEY") auth: String,
-        @Body user: Auth
+        @Body user: Auth,
     ): DataResponse
 
     @Multipart
@@ -44,13 +44,13 @@ interface ApiService {
     suspend fun saveToProfile(
         @Header("Authorization") auth: String,
         @Part userName: MultipartBody.Part,
-        @Part userImage: MultipartBody.Part?
+        @Part userImage: MultipartBody.Part?,
     ): ProfileResponse
 
     @POST("refresh")
     suspend fun refreshToken(
         @Header("API_KEY") auth: String,
-        @Body token: TokenRequest
+        @Body token: TokenRequest,
     ): RefreshResponse
 
     @POST("products")
@@ -68,41 +68,41 @@ interface ApiService {
     @POST("search")
     suspend fun doSearch(
         @Header("Authorization") auth: String,
-        @Query("query") query: String
+        @Query("query") query: String,
     ): SearchResponse
 
     @GET("products/{id}")
     suspend fun getProductDetail(
         @Header("Authorization") auth: String,
-        @Path("id") id: String
+        @Path("id") id: String,
     ): GetProductDetailResponse
 
     @GET("review/{id}")
     suspend fun getProductReview(
         @Header("Authorization") auth: String,
-        @Path("id") id: String?
+        @Path("id") id: String?,
     ): GetProductReviewResponse
 
-    //PAYMENT and TRANSACTION
+    // PAYMENT and TRANSACTION
     @GET("payment")
     suspend fun getPaymentMethods(
-        @Header("Authorization") auth: String
+        @Header("Authorization") auth: String,
     ): PaymentMethodResponse
 
     @POST("fulfillment")
     suspend fun doBuyProducts(
         @Header("Authorization") auth: String,
-        @Body payment: Payment
+        @Body payment: Payment,
     ): PaymentResponse
 
     @POST("rating")
     suspend fun doGiveRating(
         @Header("Authorization") auth: String,
-        @Body rating: Rating
+        @Body rating: Rating,
     ): RatingResponse
 
     @GET("transaction")
     suspend fun getTransactionHistory(
-        @Header("Authorization") auth: String
+        @Header("Authorization") auth: String,
     ): TransactionResponse
 }

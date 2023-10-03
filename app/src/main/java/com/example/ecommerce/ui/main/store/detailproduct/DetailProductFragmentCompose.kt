@@ -185,6 +185,7 @@ class DetailProductFragmentCompose : Fragment() {
                                     }
                                 }
                             }
+
                             is Result.Loading -> {
                                 LoadingScreen(isLoading = true)
                             }
@@ -198,7 +199,6 @@ class DetailProductFragmentCompose : Fragment() {
             }
         }
     }
-
 
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
@@ -241,7 +241,8 @@ class DetailProductFragmentCompose : Fragment() {
                         .fillMaxWidth()
                         .padding(top = 62.dp)
                 )
-            }, bottomBar = {
+            },
+            bottomBar = {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -259,9 +260,9 @@ class DetailProductFragmentCompose : Fragment() {
                                     varianPrice
                                 )
                             )
-                            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT){
-                                param(FirebaseAnalytics.Param.ITEM_ID,productLocalDb?.productId!!)
-                                param(FirebaseAnalytics.Param.ITEM_NAME,productLocalDb.productName)
+                            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT) {
+                                param(FirebaseAnalytics.Param.ITEM_ID, productLocalDb?.productId!!)
+                                param(FirebaseAnalytics.Param.ITEM_NAME, productLocalDb.productName)
                             }
                             val listCart = productCheckout
                             val bundle = bundleOf("data_product" to listCart)
@@ -280,7 +281,8 @@ class DetailProductFragmentCompose : Fragment() {
                         Text(
                             text = stringResource(id = R.string.buyASAP),
                             fontSize = 14.sp,
-                            fontFamily = poppins, fontWeight = FontWeight.Normal
+                            fontFamily = poppins,
+                            fontWeight = FontWeight.Normal
                         )
                     }
                     Button(
@@ -292,9 +294,12 @@ class DetailProductFragmentCompose : Fragment() {
                                     product?.asProductLocalDb(varianName, varianPrice)
                                 val checkProductExist =
                                     cartViewModel.getCartById(productLocalDb?.productId!!)
-                                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART){
+                                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART) {
                                     param(FirebaseAnalytics.Param.ITEM_ID, productLocalDb.productId)
-                                    param(FirebaseAnalytics.Param.ITEM_NAME, productLocalDb.productName)
+                                    param(
+                                        FirebaseAnalytics.Param.ITEM_NAME,
+                                        productLocalDb.productName
+                                    )
                                     param(FirebaseAnalytics.Param.CURRENCY, "IDR")
                                 }
 
@@ -343,13 +348,12 @@ class DetailProductFragmentCompose : Fragment() {
                             .padding(start = 8.dp)
                             .weight(1F, true)
                     ) {
-
                         Text(
                             text = stringResource(id = R.string.addCart),
                             fontSize = 14.sp,
-                            fontFamily = poppins, fontWeight = FontWeight.Normal
+                            fontFamily = poppins,
+                            fontWeight = FontWeight.Normal
                         )
-
                     }
                 }
                 Divider(
@@ -369,12 +373,15 @@ class DetailProductFragmentCompose : Fragment() {
                         DetailContent(product)
                     }
                 }
-            })
+            }
+        )
     }
 
     @OptIn(
-        ExperimentalFoundationApi::class, ExperimentalGlideComposeApi::class,
-        ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class
+        ExperimentalFoundationApi::class,
+        ExperimentalGlideComposeApi::class,
+        ExperimentalLayoutApi::class,
+        ExperimentalMaterial3Api::class
     )
     @Composable
     fun DetailContent(product: GetProductDetailItemResponse) {
@@ -383,7 +390,7 @@ class DetailProductFragmentCompose : Fragment() {
             Font(R.font.poppins_semibold, FontWeight.SemiBold),
             Font(R.font.poppins_bold, FontWeight.Bold)
         )
-        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM){
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM) {
             param(FirebaseAnalytics.Param.ITEM_NAME, product.productName)
             param(FirebaseAnalytics.Param.CURRENCY, product.productPrice.toString())
             param(FirebaseAnalytics.Param.VALUE, product.productPrice.toString())
@@ -465,10 +472,10 @@ class DetailProductFragmentCompose : Fragment() {
 
                     Spacer(modifier = Modifier.weight(1f))
                     IconButton(onClick = {
-                        firebaseAnalytics.logEvent("btn_share_clicked",null)
+                        firebaseAnalytics.logEvent("btn_share_clicked", null)
                         val deepLink = "Product : ${product?.productName}\n" +
-                                "Price : ${CurrencyUtils.formatRupiah(product?.productPrice)}\n" +
-                                "Link : http://ecommerce.com/products/$id_product"
+                            "Price : ${CurrencyUtils.formatRupiah(product?.productPrice)}\n" +
+                            "Link : http://ecommerce.com/products/$id_product"
 
                         val shareIntent = Intent(Intent.ACTION_SEND)
                         shareIntent.type = "text/plain"
@@ -503,16 +510,21 @@ class DetailProductFragmentCompose : Fragment() {
                             isChecked = !isChecked
                             appExecutors = AppExecutor()
                             appExecutors.diskIO.execute {
-
                                 wishlistViewModel = WishlistViewModel(requireContext())
                                 val wishlistLocalDb =
                                     product.asWishlistProduct(
                                         selectedVariantName,
                                         selectedVariantPrice
                                     )
-                                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST){
-                                    param(FirebaseAnalytics.Param.ITEM_ID, wishlistLocalDb.productId)
-                                    param(FirebaseAnalytics.Param.ITEM_NAME, wishlistLocalDb.productName)
+                                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST) {
+                                    param(
+                                        FirebaseAnalytics.Param.ITEM_ID,
+                                        wishlistLocalDb.productId
+                                    )
+                                    param(
+                                        FirebaseAnalytics.Param.ITEM_NAME,
+                                        wishlistLocalDb.productName
+                                    )
                                     param(FirebaseAnalytics.Param.CURRENCY, "IDR")
                                 }
                                 if (isChecked) {
@@ -599,7 +611,6 @@ class DetailProductFragmentCompose : Fragment() {
                                 },
                             )
                         }
-
                     }
                     Divider(
                         color = Color.Gray,
@@ -667,18 +678,16 @@ class DetailProductFragmentCompose : Fragment() {
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         TextButton(onClick = {
-                            firebaseAnalytics.logEvent("btn_seeAll_review_clicked",null)
+                            firebaseAnalytics.logEvent("btn_seeAll_review_clicked", null)
                             val bundle = bundleOf("id_product" to product.productId)
                             (requireActivity() as MainActivity).goToDetailReview(bundle)
-                        })
-                        {
+                        }) {
                             Text(
                                 text = stringResource(id = R.string.lookAll),
                                 fontFamily = poppins,
                                 fontWeight = FontWeight.SemiBold,
                                 fontSize = 12.sp
                             )
-
                         }
                     }
                 }
@@ -738,7 +747,8 @@ class DetailProductFragmentCompose : Fragment() {
                             )
                         }
                         Row(
-                            horizontalArrangement = Arrangement.Center, modifier = Modifier
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier
                         ) {
                             Text(
                                 text = "${product.totalRating} " + stringResource(id = R.string.rate),
@@ -763,14 +773,13 @@ class DetailProductFragmentCompose : Fragment() {
         }
     }
 
-     @Composable
+    @Composable
     private fun RatingChipText(text: String) {
         Text(
             text = text,
             fontSize = 12.sp,
             style = MaterialTheme.typography.bodyLarge
         )
-
     }
 
     fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
@@ -789,7 +798,6 @@ class DetailProductFragmentCompose : Fragment() {
         @Composable
         override fun rippleAlpha(): RippleAlpha = RippleAlpha(0.0f, 0.0f, 0.0f, 0.0f)
     }
-
 
     @Composable
     fun LoadingScreen(isLoading: Boolean) {
@@ -812,7 +820,6 @@ class DetailProductFragmentCompose : Fragment() {
     fun primaryColor(): Color {
         return colorResource(id = R.color.purple)
     }
-
 
     @Preview(showBackground = true)
     @Composable

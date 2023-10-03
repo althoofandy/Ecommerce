@@ -25,7 +25,7 @@ interface ProductDAO {
     suspend fun updateCartItemCheckbox(productId: List<String>, isSelected: Boolean)
 
     @Query("DELETE FROM ProductLocalDb WHERE ProductLocalDb.productId = :id")
-    suspend fun removeFromCart(id: String): Int
+    suspend fun removeFromCart(id: String)
 
     @Query("DELETE FROM ProductLocalDb WHERE ProductLocalDb.productId IN (:productId)")
     suspend fun removeFromCartAll(productId: List<String>)

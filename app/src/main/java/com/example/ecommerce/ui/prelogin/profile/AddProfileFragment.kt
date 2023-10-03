@@ -57,7 +57,7 @@ class AddProfileFragment : Fragment() {
     }
 
     private val factory by lazy {
-        ViewModelFactory(repository,pref)
+        ViewModelFactory(repository, pref)
     }
 
     private val viewModel: ProfileViewModel by viewModels { factory }
@@ -105,12 +105,12 @@ class AddProfileFragment : Fragment() {
         super.onCreate(savedInstanceState)
         instance = this
         firebaseAnalytics = Firebase.analytics
-
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentAddProfileBinding.inflate(inflater, container, false)
         return binding.root
@@ -161,16 +161,18 @@ class AddProfileFragment : Fragment() {
                             progressCircular.show()
                         }
                     }
-                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM){
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
                         param(FirebaseAnalytics.Param.ITEM_NAME, binding.tieNama.text.toString())
                         param(FirebaseAnalytics.Param.CONTENT_TYPE, "image")
                     }
                 }
         }
     }
+
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(requireContext(), it) == PackageManager.PERMISSION_GRANTED
     }
+
     private fun choosePhoto() {
         binding.apply {
             cvPhoto.setOnClickListener {
@@ -210,13 +212,12 @@ class AddProfileFragment : Fragment() {
                 s: CharSequence,
                 start: Int,
                 count: Int,
-                after: Int
+                after: Int,
             ) {
             }
 
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
         })
-
     }
 
     private fun startCamera() {
@@ -227,7 +228,6 @@ class AddProfileFragment : Fragment() {
     private fun startGallery() {
         startGallery.launch("image/*")
     }
-
 
     private fun checkUserSession() {
         val token = pref.getAccessToken()
@@ -240,6 +240,7 @@ class AddProfileFragment : Fragment() {
         super.onDestroy()
         _binding = null
     }
+
     companion object {
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10

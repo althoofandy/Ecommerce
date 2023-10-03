@@ -24,7 +24,8 @@ class ProductPagerAdapter(private val items: List<String>) :
         return items.size
     }
 
-    inner class ViewHolder(private val binding: ItemProductDetailBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemProductDetailBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: String) {
             Glide.with(binding.root.context)
                 .load(item)

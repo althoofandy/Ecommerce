@@ -23,9 +23,9 @@ class SharedPref(context: Context) {
         return sharedPreferences.getString(ID_TOKEN_REFRESH, null)
     }
 
-    fun saveNameProfile(token: String) {
+    fun saveNameProfile(name: String) {
         val editor = sharedPreferences.edit()
-        editor.putString(ID_NAME, token)
+        editor.putString(ID_NAME, name)
         editor.apply()
     }
 
@@ -66,6 +66,5 @@ class SharedPref(context: Context) {
         private const val ID_FIRST_INSTALL = "id_first_install"
         private const val ID_NAME = "id_name"
         private const val ID_TOKEN_REFRESH = "id_token_refresh"
-        private const val ID_DARK_THEME = "id_dark_theme"
     }
 }

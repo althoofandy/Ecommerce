@@ -23,7 +23,8 @@ class MyPagerAdapter(private val items: List<Int>) :
         return items.size
     }
 
-    inner class ViewHolder(private val binding: ItemOnboardingBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemOnboardingBinding) :
+        RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Int) {
             binding.ivOnboardingPhotos.setImageResource(item)
         }

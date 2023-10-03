@@ -32,15 +32,15 @@ class ProductReviewAdapter :
             binding.tvBuyerName.text = item.userName
             binding.tvReviewBuyer.text = item.userReview
             binding.tvRatingBuyer.rating = item.userRating.toFloat()
-             Glide.with(binding.root.context)
-                 .load(item.userImage)
-                 .into(binding.ivImageBuyer)
+            Glide.with(binding.root.context)
+                .load(item.userImage)
+                .into(binding.ivImageBuyer)
 
-            if(item.userImage.isNullOrEmpty()){
+            if (item.userImage.isNullOrEmpty()) {
                 Glide.with(binding.root.context)
                     .load(R.drawable.default_product)
                     .into(binding.ivImageBuyer)
-            }else{
+            } else {
                 Glide.with(binding.root.context)
                     .load(item.userImage)
                     .into(binding.ivImageBuyer)
@@ -52,14 +52,14 @@ class ProductReviewAdapter :
 class ProductReviewDiffCallback : DiffUtil.ItemCallback<GetProductReviewItemResponse>() {
     override fun areItemsTheSame(
         oldItem: GetProductReviewItemResponse,
-        newItem: GetProductReviewItemResponse
+        newItem: GetProductReviewItemResponse,
     ): Boolean {
         return oldItem.userName == newItem.userName
     }
 
     override fun areContentsTheSame(
         oldItem: GetProductReviewItemResponse,
-        newItem: GetProductReviewItemResponse
+        newItem: GetProductReviewItemResponse,
     ): Boolean {
         return oldItem == newItem
     }

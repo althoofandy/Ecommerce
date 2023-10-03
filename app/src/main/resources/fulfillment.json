@@ -1,0 +1,12 @@
+{
+  "code": 200,
+  "message": "OK",
+  "data": {
+    "invoiceId": "invoiceId",
+    "status": true,
+    "date": "09 Jun 2023",
+    "time": "08:53",
+    "payment": "Bank BCA",
+    "total": 10000
+  }
+}

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -36,14 +37,13 @@ class PaymentMethodFragment : Fragment() {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
         getData()
-
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
-
         _binding = FragmentPaymentMethodBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -72,8 +72,9 @@ class PaymentMethodFragment : Fragment() {
         remoteConfig.fetchAndActivate()
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    val updated = task.result
-                    Log.d(TAG, "Config params updated: $updated")
+                    Toast.makeText(requireContext(),"fetch success",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(requireContext(),"fetch failed",Toast.LENGTH_SHORT).show()
                 }
                 displayListPayment()
 
@@ -81,14 +82,12 @@ class PaymentMethodFragment : Fragment() {
 
         remoteConfig.addOnConfigUpdateListener(object : ConfigUpdateListener {
             override fun onUpdate(configUpdate: ConfigUpdate) {
-                Log.d(TAG, "Updated keys: " + configUpdate.updatedKeys);
-
+                Log.d(TAG, "Updated keys: " + configUpdate.updatedKeys)
                 if (configUpdate.updatedKeys.contains("payment")) {
                     remoteConfig.activate().addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             displayListPayment()
                         }
-
                     }
                 }
             }
@@ -116,9 +115,9 @@ class PaymentMethodFragment : Fragment() {
         adapter.setItemClickListener(object :
             PaymentMethodAdapter.PaymentMethodItemClickListener {
             override fun onItemClick(item: PaymentMethodItemResponse) {
-            firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_PAYMENT_INFO){
-                param(FirebaseAnalytics.Param.ITEM_NAME,item.label)
-            }
+                firebaseAnalytics.logEvent(FirebaseAnalytics.Event.ADD_PAYMENT_INFO) {
+                    param(FirebaseAnalytics.Param.ITEM_NAME, item.label)
+                }
                 val bundle = bundleOf("payment" to item)
                 findNavController().previousBackStackEntry?.savedStateHandle?.set(
                     "payment",
@@ -126,11 +125,8 @@ class PaymentMethodFragment : Fragment() {
                 )
                 findNavController().popBackStack()
             }
-
         })
-
     }
-
 
     override fun onDestroy() {
         super.onDestroy()

@@ -2,7 +2,6 @@ package com.example.ecommerce.ui.main.store.review
 
 import androidx.fragment.app.Fragment
 
-
 class ReviewFragment : Fragment() {
 //    private var _binding: FragmentReviewBinding? = null
 //    private val binding get() = _binding!!

@@ -1,8 +1,8 @@
 package com.example.ecommerce
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -37,13 +37,15 @@ class MainFragment : Fragment() {
     private lateinit var cartViewModel: CartViewModel
     private lateinit var wishViewModel: WishlistViewModel
     private lateinit var notificationViewModel: NotificationViewModel
+    private var lastSelectedItem: MenuItem? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
@@ -71,11 +73,13 @@ class MainFragment : Fragment() {
                 }
                 true
             }
-            binding.bottomNav.setupWithNavController(navController)
-            binding.bottomNav.setOnItemReselectedListener { }
+            binding.navRail?.setupWithNavController(navController)
+            binding.navview840?.setupWithNavController(navController)
+            binding.bottomNav?.setupWithNavController(navController)
+            binding.bottomNav?.setOnItemReselectedListener { }
+            binding.navRail?.setOnItemReselectedListener { }
         }
     }
-
 
     private fun setBadge() {
         cartViewModel = CartViewModel(requireContext())
@@ -96,18 +100,25 @@ class MainFragment : Fragment() {
 
         wishViewModel.getWishlistProduct()?.observe(viewLifecycleOwner) {
             val numberOfItemsInCart = it.size
-            val bottomBadge = binding.bottomNav.getOrCreateBadge(R.id.wishlistFragment)
+            val bottomBadge = binding.bottomNav?.getOrCreateBadge(R.id.wishlistFragment)
+            val navRail = binding.navRail?.getOrCreateBadge(R.id.wishlistFragment)
             if (numberOfItemsInCart > 0) {
-                bottomBadge.number = numberOfItemsInCart
-                bottomBadge.isVisible = true
+                bottomBadge?.number = numberOfItemsInCart
+                bottomBadge?.isVisible = true
+
+                navRail?.number = numberOfItemsInCart
+                navRail?.isVisible = true
             } else {
-                bottomBadge.isVisible = false
-                bottomBadge.clearNumber()
+                bottomBadge?.isVisible = false
+                bottomBadge?.clearNumber()
+
+                navRail?.isVisible = false
+                navRail?.clearNumber()
             }
         }
 
         notificationViewModel.getAllNotification()?.observe(viewLifecycleOwner) {
-            val unread = it.filter {  !it.isRead }
+            val unread = it.filter { !it.isRead }
             val badgeDrawable = BadgeDrawable.create(requireContext())
             val numberOfItemsInCart = unread.size
             badgeDrawable.number = numberOfItemsInCart
@@ -118,7 +129,6 @@ class MainFragment : Fragment() {
                 badgeDrawable.clearNumber()
             }
         }
-
     }
 
     private fun checkSession() {
@@ -136,5 +146,4 @@ class MainFragment : Fragment() {
             binding.tvUserName.text = userName
         }
     }
-
 }

@@ -14,7 +14,7 @@ import com.example.ecommerce.ui.prelogin.register.RegisterViewModel
 
 class ViewModelFactory(
     private val repository: EcommerceRepository,
-    private val sharedPref: SharedPref
+    private val sharedPref: SharedPref,
 ) : ViewModelProvider.NewInstanceFactory() {
 
     @Suppress("UNCHECKED_CAST")
@@ -33,17 +33,19 @@ class ViewModelFactory(
             }
 
             modelClass.isAssignableFrom(StoreViewModel::class.java) -> {
-                StoreViewModel(repository,sharedPref) as T
+                StoreViewModel(repository, sharedPref) as T
             }
 
             modelClass.isAssignableFrom(SearchViewModel::class.java) -> {
                 SearchViewModel(repository) as T
             }
+
             modelClass.isAssignableFrom(DetailProductViewModel::class.java) -> {
-                DetailProductViewModel(repository,sharedPref) as T
+                DetailProductViewModel(repository, sharedPref) as T
             }
+
             modelClass.isAssignableFrom(ProductReviewViewModel::class.java) -> {
-                ProductReviewViewModel(repository,sharedPref) as T
+                ProductReviewViewModel(repository, sharedPref) as T
             }
 
             else -> throw IllegalArgumentException("Unknown ViewModel class: " + modelClass.name)

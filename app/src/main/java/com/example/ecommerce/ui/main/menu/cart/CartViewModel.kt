@@ -8,22 +8,24 @@ import com.example.ecommerce.ui.main.db.ProductDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
+
 class CartViewModel(context: Context) : ViewModel() {
 
     private var cartDb: ProductDatabase? = ProductDatabase.getDatabase(context)
     private var cartDAO = cartDb?.productDao()
-
 
     fun addToCart(
         productId: String,
         productName: String,
         productPrice: Int,
         image: String,
-        store:String,
-        sale:Int,
+        store: String,
+        sale: Int,
         stock: Int?,
-        rating:Int,
-        productRating:Float,
+        rating: Int,
+        productRating: Float,
         variantName: String,
         variantPrice: Int?,
     ) {
@@ -48,12 +50,21 @@ class CartViewModel(context: Context) : ViewModel() {
             cartDAO?.addToCart(productItem)
         }
     }
-    fun getCartById(id:String): ProductLocalDb? {
-        return cartDAO?.getProductById(id)
+
+    fun getCartById(id: String): ProductLocalDb? {
+        return runBlocking {
+            withContext(Dispatchers.IO) {
+                cartDAO?.getProductById(id)
+            }
+        }
     }
 
     fun getCartItem(): LiveData<List<ProductLocalDb>>? {
-        return cartDAO?.getCartProducts()
+        return runBlocking {
+            withContext(Dispatchers.IO) {
+                cartDAO?.getCartProducts()
+            }
+        }
     }
 
     fun removeFromCart(id: String) {
@@ -79,7 +90,4 @@ class CartViewModel(context: Context) : ViewModel() {
             cartDAO?.updateCartItemCheckbox(productId, isSelected)
         }
     }
-
-
 }
-

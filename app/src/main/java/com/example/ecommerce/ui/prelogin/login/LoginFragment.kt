@@ -39,10 +39,10 @@ class LoginFragment : Fragment() {
         EcommerceRepository(apiService, sharedPref)
     }
     private val factory by lazy {
-        ViewModelFactory(repository,sharedPref)
+        ViewModelFactory(repository, sharedPref)
     }
     private lateinit var firebaseAnalytics: FirebaseAnalytics
-    private var tokenFcm:String? = null
+    private var tokenFcm: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,8 +61,9 @@ class LoginFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
@@ -73,7 +74,7 @@ class LoginFragment : Fragment() {
         _binding = null
     }
 
-    fun getTokenFcm(){
+    fun getTokenFcm() {
         Firebase.messaging.token.addOnCompleteListener(
             OnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -90,7 +91,7 @@ class LoginFragment : Fragment() {
                             }
                             Log.d("MainActivity Subs", msg1)
                         }
-                }else{
+                } else {
                     Log.w("MainActivity", "Fetching FCM registration token failed", task.exception)
                     return@OnCompleteListener
                 }
@@ -104,7 +105,10 @@ class LoginFragment : Fragment() {
                 progressCircular.visibility = View.VISIBLE
                 val email = binding.tieEmail.text.toString()
                 val password = binding.tiePassword.text.toString()
-                viewModel.doLogin("6f8856ed-9189-488f-9011-0ff4b6c08edc", Auth(email, password, tokenFcm))
+                viewModel.doLogin(
+                    "6f8856ed-9189-488f-9011-0ff4b6c08edc",
+                    Auth(email, password, tokenFcm)
+                )
                     .observe(viewLifecycleOwner) {
                         when (it) {
                             is Result.Success -> {
@@ -119,16 +123,14 @@ class LoginFragment : Fragment() {
                                     "Invalid email or password!",
                                     Toast.LENGTH_SHORT
                                 ).show()
-
                             }
 
                             is Result.Loading -> {
                                 progressCircular.show()
                             }
-
                         }
-                        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN){
-                            param(FirebaseAnalytics.Param.METHOD,"email")
+                        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.LOGIN) {
+                            param(FirebaseAnalytics.Param.METHOD, "email")
                         }
                     }
             }
@@ -138,7 +140,7 @@ class LoginFragment : Fragment() {
     private fun doRegister() {
         binding.apply {
             btnRegister.setOnClickListener {
-                firebaseAnalytics.logEvent("btn_login_toRegiste_clicked",null)
+                firebaseAnalytics.logEvent("btn_login_toRegiste_clicked", null)
                 findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
             }
         }
@@ -158,14 +160,13 @@ class LoginFragment : Fragment() {
     val LoginWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
         override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-
             binding.tiePassword.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable) {}
                 override fun beforeTextChanged(
                     s: CharSequence,
                     start: Int,
                     count: Int,
-                    after: Int
+                    after: Int,
                 ) {
                 }
 
@@ -196,7 +197,7 @@ class LoginFragment : Fragment() {
                     s: CharSequence,
                     start: Int,
                     count: Int,
-                    after: Int
+                    after: Int,
                 ) {
                 }
 
@@ -205,18 +206,17 @@ class LoginFragment : Fragment() {
 
             val email: String = binding.tieEmail.text.toString()
             val password: String = binding.tiePassword.text.toString()
-            binding.btnLogin.isEnabled = email.isNotEmpty() && isValidEmail(email) && password.length >= 8
-
+            binding.btnLogin.isEnabled =
+                email.isNotEmpty() && isValidEmail(email) && password.length >= 8
         }
 
         override fun afterTextChanged(editable: Editable) {}
     }
+
     private fun checkFirstInstall() {
         val isFirstInstall = sharedPref.getIsFirstInstall()
         if (isFirstInstall) {
             findNavController().navigate(R.id.action_loginFragment_to_onboardingFragment)
         }
     }
-
-
 }

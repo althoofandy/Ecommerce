@@ -5,18 +5,14 @@ import android.content.res.Configuration
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.view.menu.MenuView.ItemView
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ecommerce.R
-import com.example.ecommerce.databinding.ItemCartBinding
 import com.example.ecommerce.databinding.ItemNotificationBinding
 import com.example.ecommerce.model.Notification
-import com.google.android.material.color.MaterialColors
 
 class NotificationAdapter() :
     ListAdapter<Notification, NotificationAdapter.NotificationViewHolder>(ProductReviewDiffCallback()) {
@@ -25,9 +21,11 @@ class NotificationAdapter() :
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
+
     interface OnItemClickCallback {
         fun onItemClick(position: Notification)
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotificationViewHolder {
         return NotificationViewHolder(
             ItemNotificationBinding.inflate(
@@ -38,16 +36,15 @@ class NotificationAdapter() :
         )
     }
 
-
-
     override fun onBindViewHolder(holder: NotificationViewHolder, position: Int) {
         val item = getItem(position)
         holder.bind(item)
     }
 
-    inner class NotificationViewHolder(itemView : View) :
+    inner class NotificationViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
         private val binding = ItemNotificationBinding.bind(itemView)
+
         @SuppressLint("ResourceType")
         fun bind(item: Notification) {
             binding.apply {
@@ -58,7 +55,7 @@ class NotificationAdapter() :
                 Glide.with(binding.root.context)
                     .load(item.image)
                     .into(ivNotification)
-                if(item.isRead){
+                if (item.isRead) {
                     when (itemView.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                         Configuration.UI_MODE_NIGHT_YES ->
                             binding.notificationListItem.setBackgroundColor(
@@ -67,11 +64,17 @@ class NotificationAdapter() :
                                     null
                                 )
                             )
-                        else ->{
-                            notificationListItem.setBackgroundColor(ContextCompat.getColor(itemView.getContext(), android.R.color.white));
+
+                        else -> {
+                            notificationListItem.setBackgroundColor(
+                                ContextCompat.getColor(
+                                    itemView.getContext(),
+                                    android.R.color.white
+                                )
+                            )
                         }
                     }
-                }else{
+                } else {
                     when (itemView.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) {
                         Configuration.UI_MODE_NIGHT_YES ->
                             binding.notificationListItem.setBackgroundColor(
@@ -81,15 +84,12 @@ class NotificationAdapter() :
                                 )
                             )
                     }
-
                 }
 
-                binding.root.setOnClickListener{
+                binding.root.setOnClickListener {
                     onItemClickCallback?.onItemClick(item)
                 }
-
             }
-
         }
     }
 }
@@ -97,14 +97,14 @@ class NotificationAdapter() :
 class ProductReviewDiffCallback : DiffUtil.ItemCallback<Notification>() {
     override fun areItemsTheSame(
         oldItem: Notification,
-        newItem: Notification
+        newItem: Notification,
     ): Boolean {
         return oldItem.id == newItem.id
     }
 
     override fun areContentsTheSame(
         oldItem: Notification,
-        newItem: Notification
+        newItem: Notification,
     ): Boolean {
         return oldItem == newItem
     }

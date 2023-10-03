@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.api.Result
@@ -37,9 +39,16 @@ class TransactionFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigateUp()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         _binding = FragmentTransactionBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -53,23 +62,26 @@ class TransactionFragment : Fragment() {
         binding.progressCircular.visibility = View.VISIBLE
         viewModel = TransactionViewModel(repository)
         sharedPref = SharedPref(requireContext())
-        val accessToken = sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
+        val accessToken =
+            sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
         viewModel.getTransactionHistory(accessToken.toString()).observe(viewLifecycleOwner) {
             when (it) {
                 is Result.Success -> {
                     binding.progressCircular.hide()
-                    if(it!=null){
+                    if (it != null) {
                         binding.linearErrorLayout.visibility = View.GONE
                         adapter = TransactionAdapter(it.data.data)
                         val linearLayout = LinearLayoutManager(requireContext())
                         binding.rvTransaction.layoutManager = linearLayout
                         binding.rvTransaction.adapter = adapter
 
-                        adapter.setItemClickListener(object : TransactionAdapter.TransactionDataClickListener{
+                        adapter.setItemClickListener(object :
+                            TransactionAdapter.TransactionDataClickListener {
                             override fun onItemClick(label: TransactionDataResponse) {
-                                val convert = label.asPaymentDataResponse(label.review,label.rating)
+                                val convert =
+                                    label.asPaymentDataResponse(label.review, label.rating)
                                 val bundle = Bundle().apply {
-                                    putParcelable("invoice",convert)
+                                    putParcelable("invoice", convert)
                                 }
                                 val bundleId = Bundle().apply {
                                     putString("originFragment", "transaction")
@@ -78,14 +90,15 @@ class TransactionFragment : Fragment() {
                                     putAll(bundle)
                                     putAll(bundleId)
                                 }
-                                firebaseAnalytics.logEvent("btn_reviewProduct_clicked",null)
+                                firebaseAnalytics.logEvent("btn_reviewProduct_clicked", null)
                                 (requireActivity() as MainActivity).goToSuccess(combinedBundle)
                             }
                         })
-                    }else{
+                    } else {
                         binding.linearErrorLayout.visibility = View.VISIBLE
                     }
                 }
+
                 is Result.Loading -> {
                     binding.progressCircular.show()
                 }
@@ -98,7 +111,5 @@ class TransactionFragment : Fragment() {
                 else -> {}
             }
         }
-
     }
-
 }

@@ -51,8 +51,9 @@ class CheckoutFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         arguments?.let {
             dataProduct = it.getParcelableArrayList("data_product") ?: emptyList()
@@ -84,7 +85,6 @@ class CheckoutFragment : Fragment() {
 
             adapter.setItemClickListener(object : CheckoutAdapter.CheckoutClickListener {
                 override fun onItemClick(item: List<PaymentItem>) {
-
                     item.forEach { paymentItem ->
                         val productToUpdate =
                             dataProduct.find { it.productId == paymentItem.productId }
@@ -99,7 +99,8 @@ class CheckoutFragment : Fragment() {
 
                     val totalSelectedPrice =
                         dataProduct.sumBy { (it.productPrice + it.variantPrice!!) * it.quantity }
-                    listPayment = dataProduct.map { PaymentItem(it.productId, it.variantName, it.quantity) }
+                    listPayment =
+                        dataProduct.map { PaymentItem(it.productId, it.variantName, it.quantity) }
                     updateTotalPrice(totalSelectedPrice)
                 }
             })
@@ -127,7 +128,8 @@ class CheckoutFragment : Fragment() {
     private fun initEvent() {
         viewModel = CheckoutViewModel(repository)
         sharedPref = SharedPref(requireContext())
-        val accessToken = sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
+        val accessToken =
+            sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
 
         binding.apply {
             topAppBar.setNavigationOnClickListener {
@@ -143,14 +145,26 @@ class CheckoutFragment : Fragment() {
                 btnBeliCheckout.setOnClickListener {
                     binding.progressCircular.visibility = View.VISIBLE
                     cartViewModel.removeFromCartAll(dataProduct.map { it.productId })
-                    viewModel.doBuyProducts(accessToken.toString(), Payment(dataPayment?.label!!, listPayment))
+                    viewModel.doBuyProducts(
+                        accessToken.toString(),
+                        Payment(dataPayment?.label!!, listPayment)
+                    )
                         .observe(viewLifecycleOwner) {
                             when (it) {
                                 is Result.Success -> {
-                                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.PURCHASE){
-                                        param(FirebaseAnalytics.Param.TRANSACTION_ID,it.data.data.invoiceId)
-                                        param(FirebaseAnalytics.Param.SUCCESS,it.data.data.status.toString())
-                                        param(FirebaseAnalytics.Param.ITEM_NAME,it.data.data.payment)
+                                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.PURCHASE) {
+                                        param(
+                                            FirebaseAnalytics.Param.TRANSACTION_ID,
+                                            it.data.data?.invoiceId!!
+                                        )
+                                        param(
+                                            FirebaseAnalytics.Param.SUCCESS,
+                                            it.data.data.status.toString()
+                                        )
+                                        param(
+                                            FirebaseAnalytics.Param.ITEM_NAME,
+                                            it.data.data.payment
+                                        )
                                     }
                                     binding.progressCircular.hide()
                                     val bundle = Bundle().apply {
@@ -170,13 +184,11 @@ class CheckoutFragment : Fragment() {
                                     binding.progressCircular.hide()
                                 }
                             }
-
                         }
                 }
             } else {
                 btnBeliCheckout.isEnabled = false
             }
-
         }
     }
 

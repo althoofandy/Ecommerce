@@ -4,9 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
@@ -30,7 +32,7 @@ class WishlistFragment : Fragment() {
     private lateinit var gridLayoutManager: GridLayoutManager
     private lateinit var appExecutors: AppExecutor
     private var counter = 0
-    private lateinit var firebaseAnalytics:FirebaseAnalytics
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +40,16 @@ class WishlistFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigateUp()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
         _binding = FragmentWishlistBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -56,10 +65,14 @@ class WishlistFragment : Fragment() {
     private fun changeToggle() {
         isList = !isList
         val imageRes =
-            if (isList) ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.baseline_format_list_bulleted_24
-            ) else ContextCompat.getDrawable(requireContext(), R.drawable.baseline_grid_view_24)
+            if (isList) {
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.baseline_format_list_bulleted_24
+                )
+            } else {
+                ContextCompat.getDrawable(requireContext(), R.drawable.baseline_grid_view_24)
+            }
         binding.ivLayout.setImageDrawable(imageRes)
         if (isList) {
             gridLayoutManager.spanCount = 1
@@ -73,16 +86,16 @@ class WishlistFragment : Fragment() {
         appExecutors = AppExecutor()
         binding.apply {
             wishlistViewModel = WishlistViewModel(requireContext())
-            adapter = WishlistAdapter(requireContext(), wishlistViewModel,firebaseAnalytics)
+            adapter = WishlistAdapter(requireContext(), wishlistViewModel, firebaseAnalytics)
             cartViewModel = CartViewModel(requireContext())
 
             wishlistViewModel.getWishlistProduct()?.observe(viewLifecycleOwner) {
                 adapter.submitList(it)
 
-                if(it.isEmpty()){
+                if (it.isEmpty()) {
                     binding.linearErrorLayout.visibility = View.VISIBLE
                     binding.rvWishlist.visibility = View.GONE
-                }else{
+                } else {
                     binding.linearErrorLayout.visibility = View.GONE
                     binding.rvWishlist.visibility = View.VISIBLE
                 }
@@ -90,7 +103,7 @@ class WishlistFragment : Fragment() {
                 adapter.setOnItemClickCallback(object :
                     WishlistAdapter.OnItemClickCallback {
                     override fun onItemClick(wishListProduct: WishlistProduct) {
-                        firebaseAnalytics.logEvent("btn_addCart_from_wishlist_clicked",null)
+                        firebaseAnalytics.logEvent("btn_addCart_from_wishlist_clicked", null)
                         appExecutors.diskIO.execute {
                             val checkCartProduct =
                                 cartViewModel.getCartById(wishListProduct.productId)
@@ -136,7 +149,7 @@ class WishlistFragment : Fragment() {
 
                     override fun onItemClickCard(data: String) {
                         val bundle = bundleOf("id_product" to data)
-                       (requireActivity() as MainActivity).goToDetailProduct(bundle)
+                        (requireActivity() as MainActivity).goToDetailProduct(bundle)
                     }
                 })
                 tvTotalBarang.text = "${it.size} "

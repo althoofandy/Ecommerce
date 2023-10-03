@@ -84,7 +84,7 @@ class ProductReviewCompose : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View? {
         id_product = arguments?.getString("id_product")
         return ComposeView(requireContext()).apply {
@@ -114,7 +114,6 @@ class ProductReviewCompose : Fragment() {
                             }
 
                             null -> {
-
                             }
                         }
                     }
@@ -175,9 +174,7 @@ class ProductReviewCompose : Fragment() {
                 }
             }
         )
-
     }
-
 
     @Composable
     fun Review(listReview: List<GetProductReviewItemResponse>) {
@@ -244,10 +241,8 @@ class ProductReviewCompose : Fragment() {
                                 },
                                 modifier = Modifier.size(12.dp)
                             )
-
                         }
                     }
-
                 }
             }
 
@@ -293,6 +288,7 @@ class ProductReviewCompose : Fragment() {
             }
         }
     }
+
     @Composable
     fun LoadingScreen(isLoading: Boolean) {
         if (isLoading) {
@@ -309,6 +305,7 @@ class ProductReviewCompose : Fragment() {
             }
         }
     }
+
     @Composable
     fun primaryColor(): Color {
         return colorResource(id = R.color.purple)
@@ -320,4 +317,3 @@ class ProductReviewCompose : Fragment() {
 //        ListItem()
     }
 }
-

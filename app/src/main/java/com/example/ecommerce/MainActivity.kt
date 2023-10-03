@@ -15,7 +15,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var sharedPref: SharedPref
 
-
     private val navHost by lazy {
         supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
     }
@@ -50,15 +49,15 @@ class MainActivity : AppCompatActivity() {
         checkSession()
     }
 
-
     fun logOut() {
-            sharedPref.logout()
-            navController.navigate(R.id.action_main_to_prelog)
+        sharedPref.logout()
+        navController.navigate(R.id.action_main_to_prelog)
     }
 
     fun goToDetailProduct(bundle: Bundle) {
         navController.navigate(R.id.action_main_to_detailproductFragment, bundle)
     }
+
     fun goToDetailProductFromCart(bundle: Bundle) {
         navController.navigate(R.id.action_cartFragment_to_detailtFragment, bundle)
     }
@@ -76,15 +75,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun checkSession() {
-            val token = sharedPref.getAccessToken()
-            if (token == null) {
-                navController.navigate(R.id.action_main_to_prelog)
-            }
+        val token = sharedPref.getAccessToken()
+        if (token == null) {
+            navController.navigate(R.id.action_main_to_prelog)
+        }
     }
 
     fun profileToPrelog() {
-            navController.navigate(R.id.action_addProfileFragment_to_prelogin_navigation)
+        navController.navigate(R.id.action_addProfileFragment_to_prelogin_navigation)
     }
-
-
 }

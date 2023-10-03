@@ -14,18 +14,27 @@ class ProductPagingSource(
     private val highest: Int?,
     private val sort: String?,
 
-
 ) : PagingSource<Int, GetProductsItemResponse>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GetProductsItemResponse> {
         val currentPage = params.key ?: 1
 
         return try {
-            val response = apiService.getProducts(token, search, brand, lowest, highest, sort, null, currentPage)
+            val response = apiService.getProducts(
+                token,
+                search,
+                brand,
+                lowest,
+                highest,
+                sort,
+                null,
+                currentPage
+            )
             if (response.code == 200) {
                 val productsResponse = response.data
                 val prevPage = if (currentPage == 1) null else currentPage - 1
-                val nextPage = if (currentPage < productsResponse.totalPages) currentPage + 1 else null
+                val nextPage =
+                    if (currentPage < productsResponse.totalPages) currentPage + 1 else null
 
                 LoadResult.Page(
                     data = productsResponse.items,

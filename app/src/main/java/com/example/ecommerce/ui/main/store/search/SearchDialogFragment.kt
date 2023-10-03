@@ -60,7 +60,7 @@ class SearchDialogFragment : DialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View {
         search = arguments?.getString(SEARCH)
         _binding = FragmentSearchDialogBinding.inflate(inflater, container, false)
@@ -115,10 +115,11 @@ class SearchDialogFragment : DialogFragment() {
                 job?.cancel()
                 job = lifecycleScope.launch {
                     delay(1000)
-                    viewModel.doSearch(accessToken.toString(), s.toString()).observe(viewLifecycleOwner) {
-                        adapter.setSearchProducts(it)
-                        binding.progressBar.visibility = View.GONE
-                    }
+                    viewModel.doSearch(accessToken.toString(), s.toString())
+                        .observe(viewLifecycleOwner) {
+                            adapter.setSearchProducts(it.data)
+                            binding.progressBar.visibility = View.GONE
+                        }
                     adapter.setOnItemClickCallback(object : SearchAdapter.OnItemClickCallback {
                         override fun onItemClicked(data: String) {
                             firebaseAnalytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS) {
@@ -136,12 +137,14 @@ class SearchDialogFragment : DialogFragment() {
     }
 
     private fun initEvent() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
+        requireActivity().onBackPressedDispatcher.addCallback(
+            viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
                     dismiss()
                 }
-            })
+            }
+        )
     }
 
     private fun setData(data: String) {
@@ -154,7 +157,6 @@ class SearchDialogFragment : DialogFragment() {
         )
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
@@ -165,7 +167,7 @@ class SearchDialogFragment : DialogFragment() {
 
         @JvmStatic
         fun newInstance(
-            search: String?
+            search: String?,
 
         ): SearchDialogFragment {
             val myFragment = SearchDialogFragment()
@@ -179,4 +181,3 @@ class SearchDialogFragment : DialogFragment() {
         }
     }
 }
-

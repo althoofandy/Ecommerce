@@ -65,7 +65,7 @@
 
     </LinearLayout>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView3"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -174,7 +174,7 @@
         </LinearLayout>
 
 
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/materialDivider6"

@@ -53,7 +53,6 @@ class CheckoutAdapter(private val cartViewModel: CartViewModel) :
 
         @SuppressLint("ResourceAsColor")
         fun bind(item: CheckoutProduct) {
-
             binding.apply {
                 counterQuantity = item.quantity
                 updateCounter()
@@ -76,7 +75,6 @@ class CheckoutAdapter(private val cartViewModel: CartViewModel) :
 
                 include.btnDecrease.setOnClickListener {
                     if (counterQuantity <= 1) {
-
                     } else {
                         counterQuantity--
                         updateCounter()
@@ -126,14 +124,14 @@ class CheckoutAdapter(private val cartViewModel: CartViewModel) :
 class ProductCheckoutDiffCallback : DiffUtil.ItemCallback<CheckoutProduct>() {
     override fun areItemsTheSame(
         oldItem: CheckoutProduct,
-        newItem: CheckoutProduct
+        newItem: CheckoutProduct,
     ): Boolean {
         return oldItem.productId == newItem.productId
     }
 
     override fun areContentsTheSame(
         oldItem: CheckoutProduct,
-        newItem: CheckoutProduct
+        newItem: CheckoutProduct,
     ): Boolean {
         return oldItem == newItem
     }

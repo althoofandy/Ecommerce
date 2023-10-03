@@ -16,7 +16,9 @@ import com.example.ecommerce.ui.main.store.mainStore.ViewType
 import com.google.firebase.analytics.FirebaseAnalytics
 
 class WishlistAdapter(
-    private val context: Context, private val wishlistViewModel: WishlistViewModel,private val firebaseAnalytics: FirebaseAnalytics
+    private val context: Context,
+    private val wishlistViewModel: WishlistViewModel,
+    private val firebaseAnalytics: FirebaseAnalytics,
 ) : ListAdapter<WishlistProduct, RecyclerView.ViewHolder>(ProductComparator) {
     var item = true
     var currentViewType = ViewType.LINEAR
@@ -44,7 +46,6 @@ class WishlistAdapter(
                 throw IllegalArgumentException("Invalid ViewType")
             }
         }
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -59,7 +60,6 @@ class WishlistAdapter(
     }
 
     @SuppressLint("NotifyDataSetChanged")
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val data = getItem(position)
         if (data != null) {
@@ -98,14 +98,12 @@ class WishlistAdapter(
                     wishlistViewModel.removeWishlist(product.productId)
                 }
             }
-
         }
     }
 
     inner class GridViewHolder(private val binding: ItemWishlistGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(product: WishlistProduct) {
-
             item = false
             binding.apply {
                 Glide.with(context)
@@ -116,24 +114,23 @@ class WishlistAdapter(
                 tvStore.text = product.store
                 tvRating.text = product.productRating.toString()
                 tvSell.text = product.sale.toString()
-                binding.root.setOnClickListener{
+                binding.root.setOnClickListener {
                     onItemClickCallback?.onItemClickCard(product.productId)
                 }
                 btnAddToCart.setOnClickListener {
                     onItemClickCallback?.onItemClick(product)
                 }
                 btnDelete.setOnClickListener {
-                    firebaseAnalytics.logEvent("btn_delete_wishlist_clicked",null)
+                    firebaseAnalytics.logEvent("btn_delete_wishlist_clicked", null)
                     wishlistViewModel.removeWishlist(product.productId)
                 }
             }
-
         }
     }
 
     interface OnItemClickCallback {
         fun onItemClick(position: WishlistProduct)
-        fun onItemClickCard(data:String)
+        fun onItemClickCard(data: String)
     }
 
     companion object {
@@ -145,14 +142,14 @@ class WishlistAdapter(
 object ProductComparator : DiffUtil.ItemCallback<WishlistProduct>() {
     override fun areItemsTheSame(
         oldItem: WishlistProduct,
-        newItem: WishlistProduct
+        newItem: WishlistProduct,
     ): Boolean {
         return oldItem.productId == newItem.productId
     }
 
     override fun areContentsTheSame(
         oldItem: WishlistProduct,
-        newItem: WishlistProduct
+        newItem: WishlistProduct,
     ): Boolean {
         return oldItem == newItem
     }

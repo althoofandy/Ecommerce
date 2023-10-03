@@ -15,16 +15,20 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class AuthenticatorInterceptor(private val pref: SharedPref,private val context: Context) : Authenticator {
+class AuthenticatorInterceptor(private val pref: SharedPref, private val context: Context) :
+    Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
         val refreshToken = pref.getRefreshToken().toString()
         synchronized(this) {
             return runBlocking {
                 try {
-                    val newToken = getToken(refreshToken,context)
+                    val newToken = getToken(refreshToken, context)
                     if (newToken != null) {
-                        pref.saveAccessToken(newToken.data?.accessToken,newToken.data?.refreshToken)
+                        pref.saveAccessToken(
+                            newToken.data?.accessToken,
+                            newToken.data?.refreshToken
+                        )
                         response.request
                             .newBuilder()
                             .header("Authorization", "Bearer ${newToken.data?.accessToken}")
@@ -37,12 +41,10 @@ class AuthenticatorInterceptor(private val pref: SharedPref,private val context:
                     null
                 }
             }
-
         }
     }
 
-
-    private suspend fun getToken(token: String,context: Context):RefreshResponse {
+    private suspend fun getToken(token: String, context: Context): RefreshResponse {
         val loggingInterceptor =
             HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
 
@@ -52,7 +54,7 @@ class AuthenticatorInterceptor(private val pref: SharedPref,private val context:
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.153.125:5000")
+            .baseUrl("http://172.17.20.208:5000/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

@@ -13,16 +13,9 @@ interface NotificationDao {
     @Query("SELECT * FROM notification_table")
     fun getNotification(): LiveData<List<Notification>>
 
-    @Query("SELECT * FROM notification_table WHERE isRead = 0")
-    fun getUnreadNotification(): LiveData<List<Notification>>
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addToNotification(notification: Notification)
 
     @Update
     suspend fun updateNotification(notification: Notification)
-
-    @Query("DELETE FROM notification_table")
-    suspend fun deleteAllNotification()
 }
-

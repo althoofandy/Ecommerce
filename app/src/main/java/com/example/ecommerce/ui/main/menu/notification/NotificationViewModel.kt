@@ -6,21 +6,32 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.ecommerce.model.Notification
 import com.example.ecommerce.ui.main.db.ProductDatabase
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
-class NotificationViewModel(context: Context): ViewModel() {
+class NotificationViewModel(context: Context) : ViewModel() {
     private var productDb: ProductDatabase? = ProductDatabase.getDatabase(context)
     private var notificationDao = productDb?.notificationDao()
 
-    fun getAllNotification():LiveData<List<Notification>>?{
-        return notificationDao?.getNotification()
+    fun getAllNotification(): LiveData<List<Notification>>? {
+        return runBlocking {
+            withContext(Dispatchers.IO) {
+                notificationDao?.getNotification()
+            }
+        }
     }
 
-    fun addNotification(notification: Notification){
-        notificationDao?.addToNotification(notification)
+    fun addNotification(notification: Notification) {
+        return runBlocking {
+            withContext(Dispatchers.IO) {
+                notificationDao?.addToNotification(notification)
+            }
+        }
     }
 
-    fun updateNotification(notification: Notification){
+    fun updateNotification(notification: Notification) {
         viewModelScope.launch {
             notificationDao?.updateNotification(notification)
         }

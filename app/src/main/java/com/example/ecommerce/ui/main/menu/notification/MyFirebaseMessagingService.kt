@@ -9,8 +9,6 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.example.ecommerce.R
 import com.example.ecommerce.model.Notification
-import com.example.ecommerce.ui.main.db.NotificationDao
-import com.example.ecommerce.ui.main.db.ProductDatabase
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import java.util.UUID
@@ -32,12 +30,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         val title = message.data["title"] ?: ""
         val body = message.data["body"] ?: ""
 
-
         val pendingIntent = NavDeepLinkBuilder(this)
             .setGraph(R.navigation.app_navigation)
             .setDestination(R.id.notificationFragment)
             .createPendingIntent()
-
 
         val channelId = getString(R.string.baseline_notifications_24)
         val defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -49,7 +45,8 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setSound(defaultSoundUri)
             .setContentIntent(pendingIntent)
 
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -74,7 +71,5 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         )
         notificationViewModel.addNotification(notifEntity)
-
-
     }
 }

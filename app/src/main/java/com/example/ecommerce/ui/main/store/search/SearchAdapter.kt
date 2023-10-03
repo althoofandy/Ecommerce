@@ -23,7 +23,6 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
         notifyDataSetChanged()
     }
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchViewHolder {
         val binding =
             ItemSearchBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -33,7 +32,6 @@ class SearchAdapter : RecyclerView.Adapter<SearchAdapter.SearchViewHolder>() {
     override fun onBindViewHolder(holder: SearchViewHolder, position: Int) {
         val data = search[position]
         holder.bind(data)
-
     }
 
     override fun getItemCount() = search.size

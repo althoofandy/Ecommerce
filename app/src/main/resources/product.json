@@ -1,0 +1,22 @@
+{
+  "code": 200,
+  "message": "OK",
+  "data": {
+    "itemsPerPage": 10,
+    "currentItemCount": 10,
+    "pageIndex": 1,
+    "totalPages": 3,
+    "items": [
+      {
+        "productId": "productId",
+        "productName": "Lenovo",
+        "productPrice": 5000,
+        "image": "image1",
+        "brand": "Lenovo",
+        "store": "LenovoStore",
+        "sale": 2,
+        "productRating": 4.0
+      }
+    ]
+  }
+}

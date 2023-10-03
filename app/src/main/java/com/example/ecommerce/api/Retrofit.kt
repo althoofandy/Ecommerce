@@ -11,7 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 class Retrofit(private val context: Context) {
     val pref = SharedPref(context)
 
-    private val authenticatorInterceptor = AuthenticatorInterceptor(pref,context)
+    private val authenticatorInterceptor = AuthenticatorInterceptor(pref, context)
 
     fun getApiService(): ApiService {
         val loggingInterceptor =
@@ -24,7 +24,7 @@ class Retrofit(private val context: Context) {
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://192.168.153.125:5000")
+            .baseUrl("http://172.17.20.208:5000/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
             .build()

@@ -6,15 +6,18 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
@@ -26,7 +29,6 @@ import com.example.ecommerce.databinding.FragmentStoreBinding
 import com.example.ecommerce.model.GetProductsItemResponse
 import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
-import com.example.ecommerce.ui.main.store.search.SearchAdapter
 import com.example.ecommerce.ui.main.store.search.SearchDialogFragment
 import com.google.android.material.chip.Chip
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -65,8 +67,9 @@ class StoreFragment : Fragment() {
     private var lowest: String? = null
     private var highest: String? = null
     private var isList: Boolean = true
+    private var chipData = mutableListOf<String>()
     private lateinit var gridLayoutManager: GridLayoutManager
-    private lateinit var firebaseAnalytics:FirebaseAnalytics
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,8 +77,16 @@ class StoreFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                findNavController().navigateUp()
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, callback)
 
         _binding = FragmentStoreBinding.inflate(inflater, container, false)
         return binding.root
@@ -95,7 +106,7 @@ class StoreFragment : Fragment() {
                     binding.swiperefresh.isRefreshing = false
                 }
                 chipFilter.setOnClickListener {
-                    firebaseAnalytics.logEvent("chipFilter_clicked",null)
+                    firebaseAnalytics.logEvent("chipFilter_clicked", null)
                     val bottomSheet = BottomSheet.newInstance(
                         category.toString(),
                         sort.toString(),
@@ -105,6 +116,11 @@ class StoreFragment : Fragment() {
                     bottomSheet.show(parentFragmentManager, BottomSheet.TAG)
                 }
                 tieSearch.setOnClickListener {
+                    if (search == null) {
+                        viewModel.param.observe(viewLifecycleOwner) {
+                            search = it.search
+                        }
+                    }
                     val fragmentManager = requireActivity().supportFragmentManager
                     val newFragment = SearchDialogFragment.newInstance(
                         search.toString()
@@ -138,23 +154,32 @@ class StoreFragment : Fragment() {
         }
     }
 
-    private fun cekParam() {
+    private fun cekParam(): Boolean {
+        var hasData = false
         viewModel.param.observe(viewLifecycleOwner) {
             search = it.search
             sort = it.sort
-            category = it.sort
+            category = it.brand
             lowest = it.lowest.toString()
             highest = it.highest.toString()
+
+            hasData = true
         }
+
+        return hasData
     }
 
     private fun changeToggle() {
         isList = !isList
         val imageRes =
-            if (isList) ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.baseline_format_list_bulleted_24
-            ) else ContextCompat.getDrawable(requireContext(), R.drawable.baseline_grid_view_24)
+            if (isList) {
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.baseline_format_list_bulleted_24
+                )
+            } else {
+                ContextCompat.getDrawable(requireContext(), R.drawable.baseline_grid_view_24)
+            }
         binding.ivLayout.setImageDrawable(imageRes)
         if (isList) {
             gridLayoutManager.spanCount = 1
@@ -192,7 +217,7 @@ class StoreFragment : Fragment() {
                     val bundle = bundleOf("id_product" to data.productId)
                     (requireActivity() as MainActivity).goToDetailProduct(bundle)
 
-                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM){
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
                         param(FirebaseAnalytics.Param.ITEM_LIST_ID, data.productId)
                         param(FirebaseAnalytics.Param.ITEM_NAME, data.productName)
                     }
@@ -214,7 +239,8 @@ class StoreFragment : Fragment() {
                         errorTypeInfo.text = getString(R.string.your_requested_data_is_unavailable)
                         restartButton.text = getString(R.string.reset)
                         restartButton.setOnClickListener {
-                            sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
+                            sharedPref.getAccessToken()
+                                ?: (requireActivity() as MainActivity).logOut()
                             chipGroup.removeAllViews()
                             viewModel.resetParam()
                             cekParam()
@@ -227,7 +253,8 @@ class StoreFragment : Fragment() {
                         errorTypeInfo.text = getString(R.string.internal_error)
                         restartButton.text = getString(R.string.refresh)
                         restartButton.setOnClickListener {
-                            sharedPref.getAccessToken() ?: (requireActivity() as MainActivity).logOut()
+                            sharedPref.getAccessToken()
+                                ?: (requireActivity() as MainActivity).logOut()
                             adapter.refresh()
                         }
                     }
@@ -249,7 +276,6 @@ class StoreFragment : Fragment() {
                     horizontalScrollView.visibility = View.GONE
                     chipFilter.visibility = View.GONE
                     linearLayoutToogle.visibility = View.GONE
-
                 } else {
                     shimmerGrid.visibility = View.GONE
                     shimmerLinear.visibility = View.GONE
@@ -277,6 +303,9 @@ class StoreFragment : Fragment() {
 
     private fun setChiperandFilter() {
         binding.apply {
+//            if(chipData.isEmpty()){
+//
+//            }
             adapter = AdapterProduct(requireContext())
             setFragmentResultListener(FILTER) { _, bundle ->
                 sort = bundle.getString(CHIP_SORT)
@@ -289,7 +318,13 @@ class StoreFragment : Fragment() {
                     highest?.toIntOrNull(),
                     sort
                 )
-                val chipData = mutableListOf<String>()
+            }
+            viewModel.param.observe(viewLifecycleOwner){
+                sort = it.sort
+                category = it.brand
+                lowest = it.lowest.toString()
+                highest = it.highest.toString()
+                chipData.clear()
                 if (!category.isNullOrEmpty()) {
                     category.let { chipData.add(it!!) }
                 }
@@ -305,7 +340,6 @@ class StoreFragment : Fragment() {
                             StringBuilder().append("> ").append("Rp").append(lowestFormat)
                                 .toString()
                         lowestRp.let { chipData.add(it) }
-
                     }
                 }
                 if (!highest.isNullOrEmpty()) {
@@ -337,7 +371,7 @@ class StoreFragment : Fragment() {
 
     private fun intentChip(names: List<String>) {
         binding.apply {
-            chipGroup.removeAllViews()
+            chipGroup.removeAllViewsInLayout()
             for (name in names) {
                 val chip = Chip(requireContext())
                 chip.apply {
@@ -371,7 +405,6 @@ class StoreFragment : Fragment() {
         _binding = null
     }
 
-
     companion object {
         const val FILTER = "filter"
         const val CHIP_SORT = "chipSort"
@@ -381,4 +414,3 @@ class StoreFragment : Fragment() {
         const val SEARCH = "search"
     }
 }
-

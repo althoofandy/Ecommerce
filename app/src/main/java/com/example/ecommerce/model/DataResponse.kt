@@ -14,18 +14,17 @@ data class Auth(
     @SerializedName("password")
     val password: String,
     @SerializedName("firebaseToken")
-    val firebaseToken: String?
+    val firebaseToken: String?,
 )
 
 data class DataResponse(
     @SerializedName("id")
-    val code: Int,
+    var code: Int,
     @SerializedName("message")
     val message: String,
     @SerializedName("data")
-    val data: ResultResponse?
+    val data: ResultResponse?,
 )
-
 
 data class ResultResponse(
     @SerializedName("userName")
@@ -37,28 +36,28 @@ data class ResultResponse(
     @SerializedName("refreshToken")
     val refreshToken: String,
     @SerializedName("expiresAt")
-    val expiresAt: Int
+    val expiresAt: Int,
 )
 
 data class ProfileResponse(
     @SerializedName("code")
-    val code: Int,
+    var code: Int,
     @SerializedName("message")
     val message: String,
     @SerializedName("data")
-    val data: ProfileResultResponse?
+    val data: ProfileResultResponse?,
 )
 
 data class ProfileResultResponse(
     @SerializedName("userName")
     val userName: String,
     @SerializedName("userImage")
-    val userImage: String? = null
+    val userImage: String? = null,
 )
 
 data class TokenRequest(
     @field:SerializedName("token")
-    val token: String?
+    val token: String?,
 )
 
 data class RefreshResponse(
@@ -67,7 +66,7 @@ data class RefreshResponse(
     @field:SerializedName("message")
     val message: String,
     @field:SerializedName("data")
-    val data: RefreshDataResponse?
+    val data: RefreshDataResponse?,
 )
 
 data class RefreshDataResponse(
@@ -76,14 +75,14 @@ data class RefreshDataResponse(
     @field:SerializedName("refreshToken")
     val refreshToken: String,
     @field:SerializedName("expiresAt")
-    val expiresAt: Int
+    val expiresAt: Int,
 )
 
-//STORE
+// STORE
 data class GetProductResponse(
     val code: Int,
     val message: String,
-    val data: GetProductsResultResponse
+    val data: GetProductsResultResponse,
 )
 
 data class GetProductsResultResponse(
@@ -91,7 +90,7 @@ data class GetProductsResultResponse(
     val currentItemCount: Int,
     val pageIndex: Int,
     val totalPages: Int,
-    val items: List<GetProductsItemResponse>
+    val items: List<GetProductsItemResponse>,
 )
 
 data class GetProductsItemResponse(
@@ -102,19 +101,18 @@ data class GetProductsItemResponse(
     val brand: String,
     val store: String,
     val sale: Int,
-    val productRating: Float
+    val productRating: Float,
 )
 
 data class ProductDetailParam(
     val token: String,
-    val productId: String? = null
+    val productId: String? = null,
 )
 
 data class ProductReviewParam(
     val token: String,
-    val productId: String? = null
+    val productId: String? = null,
 )
-
 
 data class ProductParam(
     val token: String,
@@ -122,20 +120,20 @@ data class ProductParam(
     val brand: String? = null,
     val lowest: Int? = null,
     val highest: Int? = null,
-    val sort: String? = null
+    val sort: String? = null,
 )
 
 data class SearchResponse(
     val code: Int,
     val message: String,
-    val data: List<String>
+    val data: List<String>,
 )
 
-//DETAIL PRODUCT
+// DETAIL PRODUCT
 data class GetProductDetailResponse(
     val code: Int,
     val message: String,
-    val data: GetProductDetailItemResponse
+    val data: GetProductDetailItemResponse,
 )
 
 data class GetProductDetailItemResponse(
@@ -152,28 +150,29 @@ data class GetProductDetailItemResponse(
     val totalReview: Int,
     val totalSatisfaction: Int,
     val productRating: Float,
-    val productVariant: List<ProductVariant>
+    val productVariant: List<ProductVariant>,
 )
 
 data class ProductVariant(
     val variantName: String,
-    val variantPrice: Int
+    val variantPrice: Int,
 )
 
-//REVIEW PRODUCT
+// REVIEW PRODUCT
 data class GetProductReviewResponse(
     val code: Int,
     val message: String,
-    val data: List<GetProductReviewItemResponse>
+    val data: List<GetProductReviewItemResponse>,
 )
 
 data class GetProductReviewItemResponse(
     val userName: String,
     val userImage: String,
     val userRating: Int,
-    val userReview: String
+    val userReview: String,
 )
 
+@Keep
 @Entity
 @Parcelize
 data class ProductLocalDb(
@@ -194,12 +193,12 @@ data class ProductLocalDb(
     var variantName: String,
     var variantPrice: Int?,
     var quantity: Int = 1,
-    var selected: Boolean = false
+    var selected: Boolean = false,
 ) : Parcelable
 
 fun GetProductDetailItemResponse.asProductLocalDb(
     variantName: String?,
-    variantPrice: Int?
+    variantPrice: Int?,
 ): ProductLocalDb {
     return ProductLocalDb(
         productId,
@@ -220,6 +219,7 @@ fun GetProductDetailItemResponse.asProductLocalDb(
     )
 }
 
+@Keep
 @Entity
 @Parcelize
 data class WishlistProduct(
@@ -240,12 +240,12 @@ data class WishlistProduct(
     var variantName: String,
     var variantPrice: Int?,
     var quantity: Int = 1,
-    var selected: Boolean = false
+    var selected: Boolean = false,
 ) : Parcelable
 
 fun GetProductDetailItemResponse.asWishlistProduct(
     variantName: String?,
-    variantPrice: Int?
+    variantPrice: Int?,
 ): WishlistProduct {
     return WishlistProduct(
         productId,
@@ -269,40 +269,44 @@ fun GetProductDetailItemResponse.asWishlistProduct(
 data class PaymentMethodResponse(
     val code: Int,
     val message: String,
-    val data: List<PaymentMethodCategoryResponse>
+    val data: List<PaymentMethodCategoryResponse>,
 )
 
 data class PaymentMethodCategoryResponse(
     val title: String,
-    val item: List<PaymentMethodItemResponse>
+    val item: List<PaymentMethodItemResponse>,
 )
 
+@Keep
 @Parcelize
 data class PaymentMethodItemResponse(
     val label: String,
     val image: String,
-    val status: Boolean
+    val status: Boolean,
 ) : Parcelable
 
 data class Payment(
     val payment: String,
-    val items: @RawValue List<PaymentItem>
+    val items: @RawValue List<PaymentItem>,
 )
 
+@Keep
 @Parcelize
 data class PaymentItem(
     val productId: String,
     val variantName: String,
-    val quantity: Int
+    val quantity: Int,
 ) : Parcelable
 
+@Keep
 @Parcelize
 data class PaymentResponse(
     val code: Int,
     val message: String,
-    val data: @RawValue PaymentDataResponse
+    val data: @RawValue PaymentDataResponse?,
 ) : Parcelable
 
+@Keep
 @Parcelize
 data class PaymentDataResponse(
     val invoiceId: String,
@@ -312,14 +316,13 @@ data class PaymentDataResponse(
     val payment: String,
     val total: Int,
     val review: String?,
-    val rating: Int?
+    val rating: Int?,
 ) : Parcelable
 
 fun TransactionDataResponse.asPaymentDataResponse(
     review: String?,
-    rating: Int?
-):
-        PaymentDataResponse {
+    rating: Int?,
+): PaymentDataResponse {
     return PaymentDataResponse(
         invoiceId,
         status,
@@ -335,20 +338,21 @@ fun TransactionDataResponse.asPaymentDataResponse(
 data class Rating(
     val invoiceId: String,
     val rating: Int? = null,
-    val review: String? = null
+    val review: String? = null,
 )
 
 data class RatingResponse(
     val code: String,
-    val message: String
+    val message: String,
 )
 
 data class TransactionResponse(
     val code: String,
     val message: String,
-    val data: List<TransactionDataResponse>
+    val data: List<TransactionDataResponse>,
 )
 
+@Keep
 @Parcelize
 data class TransactionDataResponse(
     val invoiceId: String,
@@ -361,10 +365,10 @@ data class TransactionDataResponse(
     val rating: Int,
     val review: String?,
     val image: String,
-    val name: String
+    val name: String,
 ) : Parcelable
 
-
+@Keep
 @Entity
 @Parcelize
 data class CheckoutProduct(
@@ -385,12 +389,12 @@ data class CheckoutProduct(
     var variantName: String,
     var variantPrice: Int?,
     var quantity: Int = 1,
-    var selected: Boolean = false
+    var selected: Boolean = false,
 ) : Parcelable
 
 fun ProductLocalDb.asCheckoutProduct(
     variantName: String?,
-    variantPrice: Int?
+    variantPrice: Int?,
 ): CheckoutProduct {
     return CheckoutProduct(
         productId,
@@ -415,7 +419,7 @@ fun ProductLocalDb.asCheckoutProduct(
 @Keep
 @Parcelize
 data class ListCheckout(
-    val listCheckout: List<CheckoutProduct>? = emptyList()
+    val listCheckout: List<CheckoutProduct>? = emptyList(),
 ) : Parcelable
 
 @Entity(tableName = "notification_table", primaryKeys = ["id"])
@@ -428,17 +432,12 @@ data class Notification(
     val title: String,
     val body: String,
     val image: String,
-    var isRead: Boolean
+    var isRead: Boolean,
 ) : Parcelable
 
-
-
-
-
-
-
-
-
-
-
-
+data class FilterResults(
+    val sort: String?,
+    val category: String?,
+    val lowest: String?,
+    val highest: String?,
+)

@@ -42,12 +42,12 @@ class RegisterFragment : Fragment() {
     }
 
     private val factory by lazy {
-        ViewModelFactory(repository,sharedPref)
+        ViewModelFactory(repository, sharedPref)
     }
 
     private val viewModel: RegisterViewModel by viewModels { factory }
     private lateinit var firebaseAnalytics: FirebaseAnalytics
-    private var tokenFcm:String? = null
+    private var tokenFcm: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,8 +64,9 @@ class RegisterFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View {
         _binding = FragmentRegisterBinding.inflate(inflater, container, false)
         return binding.root
@@ -76,7 +77,7 @@ class RegisterFragment : Fragment() {
         _binding = null
     }
 
-    fun getTokenFcm(){
+    fun getTokenFcm() {
         Firebase.messaging.token.addOnCompleteListener(
             OnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -93,7 +94,7 @@ class RegisterFragment : Fragment() {
                             }
                             Log.d("MainActivity Subs", msg1)
                         }
-                }else{
+                } else {
                     Log.w("MainActivity", "Fetching FCM registration token failed", task.exception)
                     return@OnCompleteListener
                 }
@@ -104,7 +105,7 @@ class RegisterFragment : Fragment() {
     private fun doLogin() {
         binding.apply {
             btnLogin.setOnClickListener {
-                firebaseAnalytics.logEvent("btn_regis_toLogin_clicked",null)
+                firebaseAnalytics.logEvent("btn_regis_toLogin_clicked", null)
                 findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
             }
         }
@@ -137,13 +138,12 @@ class RegisterFragment : Fragment() {
 
                         is Result.Loading -> {
                             progressCircular.show()
-
                         }
 
                         else -> {}
                     }
-                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP){
-                        param(FirebaseAnalytics.Param.METHOD,"email")
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SIGN_UP) {
+                        param(FirebaseAnalytics.Param.METHOD, "email")
                     }
                 }
             }
@@ -164,14 +164,13 @@ class RegisterFragment : Fragment() {
     val LoginWatcher: TextWatcher = object : TextWatcher {
         override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
         override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {
-
             binding.tiePassword.addTextChangedListener(object : TextWatcher {
                 override fun afterTextChanged(s: Editable) {}
                 override fun beforeTextChanged(
                     s: CharSequence,
                     start: Int,
                     count: Int,
-                    after: Int
+                    after: Int,
                 ) {
                 }
 
@@ -203,7 +202,7 @@ class RegisterFragment : Fragment() {
                     s: CharSequence,
                     start: Int,
                     count: Int,
-                    after: Int
+                    after: Int,
                 ) {
                 }
 

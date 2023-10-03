@@ -1,0 +1,51 @@
+{
+  "code": 200,
+  "message": "OK",
+  "data": [
+    {
+      "title": "Transfer Virtual Account",
+      "item": [
+        {
+          "label": "BCA Virtual Account",
+          "image": "image1",
+          "status": true
+        },
+        {
+          "label": "BNI Virtual Account",
+          "image": "image2",
+          "status": true
+        }
+      ]
+    },
+    {
+      "title": "Transfer Bank",
+      "item": [
+        {
+          "label": "Bank BCA",
+          "image": "image3",
+          "status": true
+        },
+        {
+          "label": "Bank BNI",
+          "image": "image4",
+          "status": true
+        }
+      ]
+    },
+    {
+      "title": "Pembayaran Instan",
+      "item": [
+        {
+          "label": "GoPay",
+          "image": "image5",
+          "status": true
+        },
+        {
+          "label": "OVO",
+          "image": "image6",
+          "status": true
+        }
+      ]
+    }
+  ]
+}
