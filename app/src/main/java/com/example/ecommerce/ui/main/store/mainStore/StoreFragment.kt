@@ -6,7 +6,6 @@ import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -144,7 +143,7 @@ class StoreFragment : Fragment() {
 
                 linearErrorLayout.visibility = View.VISIBLE
                 errorTypeText.text = getString(R.string.empty)
-                errorTypeInfo.text = "Your connection is unavailable"
+                errorTypeInfo.text = getString(R.string.no_internet)
                 restartButton.text = getString(R.string.refresh)
                 restartButton.setOnClickListener {
                     adapter.refresh()
@@ -154,19 +153,14 @@ class StoreFragment : Fragment() {
         }
     }
 
-    private fun cekParam(): Boolean {
-        var hasData = false
+    private fun cekParam() {
         viewModel.param.observe(viewLifecycleOwner) {
             search = it.search
             sort = it.sort
             category = it.brand
             lowest = it.lowest.toString()
             highest = it.highest.toString()
-
-            hasData = true
         }
-
-        return hasData
     }
 
     private fun changeToggle() {
@@ -303,9 +297,6 @@ class StoreFragment : Fragment() {
 
     private fun setChiperandFilter() {
         binding.apply {
-//            if(chipData.isEmpty()){
-//
-//            }
             adapter = AdapterProduct(requireContext())
             setFragmentResultListener(FILTER) { _, bundle ->
                 sort = bundle.getString(CHIP_SORT)
@@ -319,41 +310,45 @@ class StoreFragment : Fragment() {
                     sort
                 )
             }
-            viewModel.param.observe(viewLifecycleOwner){
-                sort = it.sort
-                category = it.brand
-                lowest = it.lowest.toString()
-                highest = it.highest.toString()
-                chipData.clear()
-                if (!category.isNullOrEmpty()) {
-                    category.let { chipData.add(it!!) }
-                }
-                if (!sort.isNullOrEmpty()) {
-                    sort.let { chipData.add(it!!) }
-                }
-                if (!lowest.isNullOrEmpty()) {
-                    val lowestValue = lowest!!.toDoubleOrNull()
-                    if (lowestValue != null) {
-                        val lowestFormat =
-                            NumberFormat.getNumberInstance(Locale("id", "ID")).format(lowestValue)
-                        val lowestRp =
-                            StringBuilder().append("> ").append("Rp").append(lowestFormat)
-                                .toString()
-                        lowestRp.let { chipData.add(it) }
+            viewModel.param.observe(viewLifecycleOwner) {
+                if (it != null) {
+                    sort = it.sort
+                    category = it.brand
+                    lowest = it.lowest.toString()
+                    highest = it.highest.toString()
+                    chipData.clear()
+                    if (!category.isNullOrEmpty()) {
+                        category.let { chipData.add(it!!) }
                     }
-                }
-                if (!highest.isNullOrEmpty()) {
-                    val highestValue = highest!!.toDoubleOrNull()
-                    if (highestValue != null) {
-                        val highestFormat =
-                            NumberFormat.getNumberInstance(Locale("id", "ID")).format(highestValue)
-                        val highestRp =
-                            StringBuilder().append("< ").append("Rp").append(highestFormat)
-                                .toString()
-                        highestRp.let { chipData.add(it) }
+                    if (!sort.isNullOrEmpty()) {
+                        sort.let { chipData.add(it!!) }
                     }
+                    if (!lowest.isNullOrEmpty()) {
+                        val lowestValue = lowest!!.toDoubleOrNull()
+                        if (lowestValue != null) {
+                            val lowestFormat =
+                                NumberFormat.getNumberInstance(Locale("id", "ID"))
+                                    .format(lowestValue)
+                            val lowestRp =
+                                StringBuilder().append("> ").append("Rp").append(lowestFormat)
+                                    .toString()
+                            lowestRp.let { chipData.add(it) }
+                        }
+                    }
+                    if (!highest.isNullOrEmpty()) {
+                        val highestValue = highest!!.toDoubleOrNull()
+                        if (highestValue != null) {
+                            val highestFormat =
+                                NumberFormat.getNumberInstance(Locale("id", "ID"))
+                                    .format(highestValue)
+                            val highestRp =
+                                StringBuilder().append("< ").append("Rp").append(highestFormat)
+                                    .toString()
+                            highestRp.let { chipData.add(it) }
+                        }
+                    }
+                    intentChip(chipData)
                 }
-                intentChip(chipData)
             }
         }
     }

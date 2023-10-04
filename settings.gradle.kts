@@ -17,4 +17,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "Ecommerce"
 include(":app")
-include(":app:screen")
+include(":screen")
+include(":core")
