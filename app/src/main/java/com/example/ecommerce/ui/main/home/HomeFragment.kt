@@ -8,10 +8,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
 import com.example.ecommerce.MainActivity
+import com.example.ecommerce.core.AppExecutor
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.db.ProductDatabase
 import com.example.ecommerce.databinding.FragmentHomeBinding
-import com.example.ecommerce.pref.SharedPref
-import com.example.ecommerce.ui.main.db.AppExecutor
-import com.example.ecommerce.ui.main.db.ProductDatabase
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase

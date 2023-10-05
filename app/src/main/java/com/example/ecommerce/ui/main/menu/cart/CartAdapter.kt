@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ecommerce.R
+import com.example.ecommerce.core.model.ProductLocalDb
 import com.example.ecommerce.databinding.ItemCartBinding
-import com.example.ecommerce.model.ProductLocalDb
 import com.example.ecommerce.ui.main.CurrencyUtils
 import com.google.android.material.snackbar.Snackbar
 
@@ -28,7 +28,7 @@ class CartAdapter(private val cartViewModel: CartViewModel) :
     }
 
     interface OnItemClickCallback {
-        fun onItemClick(position: String)
+        fun onItemClick(position: ProductLocalDb)
     }
 
     interface OnItemDeleteClickCallback {
@@ -80,7 +80,7 @@ class CartAdapter(private val cartViewModel: CartViewModel) :
                     onItemDeleteClickCallback?.onItemDeleteClick(item)
                 }
                 binding.root.setOnClickListener {
-                    onItemClickCallback?.onItemClick(item.productId)
+                    onItemClickCallback?.onItemClick(item)
                 }
                 include.btnDecrease.setOnClickListener {
                     if (counterQuantity <= 1) {
@@ -94,7 +94,7 @@ class CartAdapter(private val cartViewModel: CartViewModel) :
                 }
 
                 include.btnIncrease.setOnClickListener {
-                    if (item.stock <= counterQuantity) {
+                    if (item.stock!! <= counterQuantity) {
                         val contextView = binding.root
                         Snackbar.make(
                             contextView,

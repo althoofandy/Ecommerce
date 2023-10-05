@@ -1,19 +1,20 @@
 package com.example.ecommerce.ui.main.transaction.successpayment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.ecommerce.R
-import com.example.ecommerce.api.Result
-import com.example.ecommerce.api.Retrofit
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.di.Retrofit
+import com.example.ecommerce.core.model.PaymentDataResponse
+import com.example.ecommerce.core.model.Rating
 import com.example.ecommerce.databinding.FragmentSuccessPaymentBinding
-import com.example.ecommerce.model.PaymentDataResponse
-import com.example.ecommerce.model.Rating
-import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
+import com.example.ecommerce.ui.Result
 import com.example.ecommerce.ui.main.CurrencyUtils
 import com.google.android.material.badge.ExperimentalBadgeUtils
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -113,8 +114,12 @@ class SuccessPaymentFragment : Fragment() {
             if (dataPayment?.rating != null) {
                 rbReview.rating = dataPayment?.rating!!.toFloat()
             }
+            Log.d("cek isi",dataPayment?.review.toString())
             if (dataPayment?.review != null) {
-                tieReviewDescription.setText(dataPayment?.review ?: "")
+                tieReviewDescription.setText(dataPayment?.review)
+            }
+            if(dataPayment?.review == "null"){
+                tieReviewDescription.setText("")
             }
             tvIdTransaksi.text = dataPayment?.invoiceId
             tvTanggal.text = dataPayment?.date

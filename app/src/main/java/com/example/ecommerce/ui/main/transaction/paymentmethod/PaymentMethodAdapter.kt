@@ -4,9 +4,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ecommerce.core.model.PaymentMethodCategoryResponse
+import com.example.ecommerce.core.model.PaymentMethodItemResponse
 import com.example.ecommerce.databinding.ItemListPaymentmethodBinding
-import com.example.ecommerce.model.PaymentMethodCategoryResponse
-import com.example.ecommerce.model.PaymentMethodItemResponse
 
 class PaymentMethodAdapter(private val dataList: List<PaymentMethodCategoryResponse>) :
     RecyclerView.Adapter<PaymentMethodAdapter.MainViewHolder>() {

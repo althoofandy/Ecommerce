@@ -2,9 +2,9 @@ package com.example.ecommerce.viewmodel.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.ecommerce.Utils.MainDispatcherRule
-import com.example.ecommerce.api.ApiService
-import com.example.ecommerce.model.SearchResponse
-import com.example.ecommerce.pref.SharedPref
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.di.ApiService
+import com.example.ecommerce.core.model.SearchResponse
 import com.example.ecommerce.repos.EcommerceRepository
 import com.example.ecommerce.ui.main.store.search.SearchViewModel
 import kotlinx.coroutines.runBlocking

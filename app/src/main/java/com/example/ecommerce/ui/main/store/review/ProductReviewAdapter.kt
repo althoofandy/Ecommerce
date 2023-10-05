@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ecommerce.R
+import com.example.ecommerce.core.model.GetProductReviewItemResponse
 import com.example.ecommerce.databinding.ItemReviewProductBinding
-import com.example.ecommerce.model.GetProductReviewItemResponse
 
 class ProductReviewAdapter :
     ListAdapter<GetProductReviewItemResponse, ProductReviewAdapter.ProductReviewViewHolder>(

@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import com.example.ecommerce.core.SharedPref
 import com.example.ecommerce.databinding.FragmentMainBinding
-import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
 import com.example.ecommerce.ui.main.menu.notification.NotificationViewModel
 import com.example.ecommerce.ui.main.wishlist.WishlistViewModel
@@ -69,7 +69,9 @@ class MainFragment : Fragment() {
                         findNavController().navigate(R.id.action_main_to_cartFragment)
                     }
 
-                    R.id.menu -> {}
+                    R.id.menu -> {
+                        findNavController().navigate(R.id.action_main_to_screenFragment)
+                    }
                 }
                 true
             }

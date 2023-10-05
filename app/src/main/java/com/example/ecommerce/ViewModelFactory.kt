@@ -2,7 +2,7 @@ package com.example.ecommerce
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.example.ecommerce.pref.SharedPref
+import com.example.ecommerce.core.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 import com.example.ecommerce.ui.main.store.detailproduct.DetailProductViewModel
 import com.example.ecommerce.ui.main.store.mainStore.StoreViewModel

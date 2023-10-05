@@ -7,8 +7,8 @@ import androidx.lifecycle.switchMap
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
 import com.example.ecommerce.MainActivity
-import com.example.ecommerce.model.ProductParam
-import com.example.ecommerce.pref.SharedPref
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.model.ProductParam
 import com.example.ecommerce.repos.EcommerceRepository
 
 class StoreViewModel(private val repository: EcommerceRepository, sharedPref: SharedPref) :

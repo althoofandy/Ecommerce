@@ -8,8 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.ecommerce.R
+import com.example.ecommerce.core.SharedPref
 import com.example.ecommerce.databinding.FragmentOnboardingBinding
-import com.example.ecommerce.pref.SharedPref
 import com.google.android.material.tabs.TabLayoutMediator
 
 class OnboardingFragment : Fragment() {

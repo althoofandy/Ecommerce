@@ -14,12 +14,12 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.example.ecommerce.R
 import com.example.ecommerce.ViewModelFactory
-import com.example.ecommerce.api.Result
-import com.example.ecommerce.api.Retrofit
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.di.Retrofit
+import com.example.ecommerce.core.model.Auth
 import com.example.ecommerce.databinding.FragmentLoginBinding
-import com.example.ecommerce.model.Auth
-import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
+import com.example.ecommerce.ui.Result
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics

@@ -2,8 +2,8 @@ package com.example.ecommerce.ui.main.store.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.example.ecommerce.api.ApiService
-import com.example.ecommerce.model.GetProductsItemResponse
+import com.example.ecommerce.core.di.ApiService
+import com.example.ecommerce.core.model.GetProductsItemResponse
 
 class ProductPagingSource(
     private val apiService: ApiService,
@@ -14,7 +14,7 @@ class ProductPagingSource(
     private val highest: Int?,
     private val sort: String?,
 
-) : PagingSource<Int, GetProductsItemResponse>() {
+    ) : PagingSource<Int, GetProductsItemResponse>() {
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, GetProductsItemResponse> {
         val currentPage = params.key ?: 1

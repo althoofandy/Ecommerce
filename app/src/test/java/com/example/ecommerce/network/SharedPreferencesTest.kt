@@ -3,7 +3,7 @@ package com.example.ecommerce.network
 import android.content.Context
 import androidx.test.core.app.ApplicationProvider
 import com.example.ecommerce.Utils.MainDispatcherRule
-import com.example.ecommerce.pref.SharedPref
+import com.example.ecommerce.core.SharedPref
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Rule

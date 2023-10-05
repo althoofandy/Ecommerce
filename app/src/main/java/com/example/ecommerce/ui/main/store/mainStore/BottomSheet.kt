@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.children
 import androidx.fragment.app.setFragmentResult
-import com.example.ecommerce.api.Retrofit
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.di.Retrofit
 import com.example.ecommerce.databinding.BottomSheetBinding
-import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 import com.example.ecommerce.ui.main.store.mainStore.StoreFragment.Companion.CHIP_CATEGORY
 import com.example.ecommerce.ui.main.store.mainStore.StoreFragment.Companion.CHIP_HIGHEST

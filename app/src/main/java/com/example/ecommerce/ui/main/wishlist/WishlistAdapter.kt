@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ecommerce.core.model.WishlistProduct
 import com.example.ecommerce.databinding.ItemWishlistGridBinding
 import com.example.ecommerce.databinding.ItemWishlistLinearBinding
-import com.example.ecommerce.model.WishlistProduct
 import com.example.ecommerce.ui.main.CurrencyUtils
 import com.example.ecommerce.ui.main.store.mainStore.ViewType
 import com.google.firebase.analytics.FirebaseAnalytics

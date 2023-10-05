@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.ecommerce.model.Notification
-import com.example.ecommerce.ui.main.db.ProductDatabase
+import com.example.ecommerce.core.db.ProductDatabase
+import com.example.ecommerce.core.model.Notification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking

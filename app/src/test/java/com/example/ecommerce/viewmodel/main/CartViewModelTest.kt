@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import com.example.ecommerce.Utils.MainDispatcherRule
-import com.example.ecommerce.model.ProductLocalDb
-import com.example.ecommerce.ui.main.db.ProductDAO
-import com.example.ecommerce.ui.main.db.ProductDatabase
+import com.example.ecommerce.core.db.ProductDAO
+import com.example.ecommerce.core.db.ProductDatabase
+import com.example.ecommerce.core.model.ProductLocalDb
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest

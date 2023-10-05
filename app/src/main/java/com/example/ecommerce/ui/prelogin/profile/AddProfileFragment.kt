@@ -23,11 +23,11 @@ import com.bumptech.glide.Glide
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.ViewModelFactory
-import com.example.ecommerce.api.Result
-import com.example.ecommerce.api.Retrofit
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.di.Retrofit
 import com.example.ecommerce.databinding.FragmentAddProfileBinding
-import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
+import com.example.ecommerce.ui.Result
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics

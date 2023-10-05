@@ -23,10 +23,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.ViewModelFactory
-import com.example.ecommerce.api.Retrofit
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.di.Retrofit
+import com.example.ecommerce.core.model.GetProductsItemResponse
 import com.example.ecommerce.databinding.FragmentStoreBinding
-import com.example.ecommerce.model.GetProductsItemResponse
-import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 import com.example.ecommerce.ui.main.store.search.SearchDialogFragment
 import com.google.android.material.chip.Chip

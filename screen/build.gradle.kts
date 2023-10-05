@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.screen"
+    namespace = "com.example.ecommerce.screen"
     compileSdk = 33
 
     defaultConfig {

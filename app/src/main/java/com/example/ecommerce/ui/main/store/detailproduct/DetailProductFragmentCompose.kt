@@ -92,16 +92,17 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.ViewModelFactory
-import com.example.ecommerce.api.Result
-import com.example.ecommerce.api.Retrofit
-import com.example.ecommerce.model.GetProductDetailItemResponse
-import com.example.ecommerce.model.asCheckoutProduct
-import com.example.ecommerce.model.asProductLocalDb
-import com.example.ecommerce.model.asWishlistProduct
-import com.example.ecommerce.pref.SharedPref
+import com.example.ecommerce.core.AppExecutor
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.di.Retrofit
+import com.example.ecommerce.core.model.GetProductDetailItemResponse
+import com.example.ecommerce.core.model.ProductLocalDb
+import com.example.ecommerce.core.model.asCheckoutProduct
+import com.example.ecommerce.core.model.asProductLocalDb
+import com.example.ecommerce.core.model.asWishlistProduct
 import com.example.ecommerce.repos.EcommerceRepository
+import com.example.ecommerce.ui.Result
 import com.example.ecommerce.ui.main.CurrencyUtils
-import com.example.ecommerce.ui.main.db.AppExecutor
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
 import com.example.ecommerce.ui.main.store.ui.theme.EcommerceTheme
 import com.example.ecommerce.ui.main.wishlist.WishlistViewModel
@@ -127,6 +128,7 @@ class DetailProductFragmentCompose : Fragment() {
         ViewModelFactory(repository, sharedPref)
     }
     private val viewModel: DetailProductViewModel by viewModels { factory }
+    private var data_product: ProductLocalDb? = null
     private var id_product: String? = null
 
     private lateinit var cartViewModel: CartViewModel
@@ -151,7 +153,9 @@ class DetailProductFragmentCompose : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View? {
+        data_product = arguments?.getParcelable("data_product")
         id_product = arguments?.getString("id_product")
+
         return ComposeView(requireContext()).apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
@@ -159,7 +163,9 @@ class DetailProductFragmentCompose : Fragment() {
                     wishlistViewModel = WishlistViewModel(requireContext())
                     val productDetailState by viewModel.productDetail.observeAsState()
                     if (productDetailState == null) {
-                        if (!id_product.isNullOrBlank()) {
+                        if (data_product != null) {
+                            viewModel.setProductId(data_product?.productId)
+                        } else {
                             viewModel.setProductId(id_product)
                         }
                     }
@@ -397,11 +403,25 @@ class DetailProductFragmentCompose : Fragment() {
         }
 
         var selectedVariantName: String by remember {
+            var data = ""
+            if(data_product!=null){
+                data = data_product?.variantName!!
+            }else{
+                data = product.productVariant.firstOrNull()?.variantName ?: "16GB"
+            }
             mutableStateOf(
-                product.productVariant.firstOrNull()?.variantName ?: "16GB"
+                data
             )
         }
-        var selectedVariantPrice: Int by remember { mutableStateOf(0) }
+        var selectedVariantPrice: Int by remember {
+            var data = 0
+            if(data_product!=null){
+                data = data_product?.variantPrice!!
+            }else{
+                data = 0
+            }
+            mutableStateOf(data)
+        }
         varianName = selectedVariantName
         varianPrice = selectedVariantPrice
 
@@ -474,8 +494,8 @@ class DetailProductFragmentCompose : Fragment() {
                     IconButton(onClick = {
                         firebaseAnalytics.logEvent("btn_share_clicked", null)
                         val deepLink = "Product : ${product?.productName}\n" +
-                            "Price : ${CurrencyUtils.formatRupiah(product?.productPrice)}\n" +
-                            "Link : http://ecommerce.com/products/$id_product"
+                                "Price : ${CurrencyUtils.formatRupiah(product?.productPrice)}\n" +
+                                "Link : http://ecommerce.com/products/${data_product?.productId}"
 
                         val shareIntent = Intent(Intent.ACTION_SEND)
                         shareIntent.type = "text/plain"
@@ -627,6 +647,13 @@ class DetailProductFragmentCompose : Fragment() {
 
                     FlowRow(Modifier.padding(start = 8.dp)) {
                         product.productVariant.forEach { variant ->
+//                            if(data_product!=null){
+//                                if(data_product?.variantName != "RAM 16GB"){
+//                                    selectedVariantName = data_product?.variantName!!
+//                                }else{
+//                                    selectedVariantName = variant.variantName
+//                                }
+//                            }
                             val isSelected = selectedVariantName == variant.variantName
 
                             InputChip(

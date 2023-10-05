@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ecommerce.R
+import com.example.ecommerce.core.model.CheckoutProduct
+import com.example.ecommerce.core.model.PaymentItem
 import com.example.ecommerce.databinding.ItemCheckoutBinding
-import com.example.ecommerce.model.CheckoutProduct
-import com.example.ecommerce.model.PaymentItem
 import com.example.ecommerce.ui.main.CurrencyUtils
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
 import com.google.android.material.snackbar.Snackbar
@@ -93,7 +93,7 @@ class CheckoutAdapter(private val cartViewModel: CartViewModel) :
                 }
 
                 include.btnIncrease.setOnClickListener {
-                    if (item.stock <= counterQuantity) {
+                    if (item.stock!! <= counterQuantity) {
                         val contextView = binding.root
                         Snackbar.make(
                             contextView,

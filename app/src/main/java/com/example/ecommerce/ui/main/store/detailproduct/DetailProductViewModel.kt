@@ -3,10 +3,11 @@ package com.example.ecommerce.ui.main.store.detailproduct
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.ecommerce.model.GetProductDetailResponse
-import com.example.ecommerce.model.ProductDetailParam
-import com.example.ecommerce.pref.SharedPref
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.model.GetProductDetailResponse
+import com.example.ecommerce.core.model.ProductDetailParam
 import com.example.ecommerce.repos.EcommerceRepository
+import com.example.ecommerce.ui.Result
 
 class DetailProductViewModel(
     private val repository: EcommerceRepository,
@@ -16,8 +17,8 @@ class DetailProductViewModel(
     private var productId: String? = null
 
     private val _productDetail =
-        MutableLiveData<com.example.ecommerce.api.Result<GetProductDetailResponse>>()
-    val productDetail: LiveData<com.example.ecommerce.api.Result<GetProductDetailResponse>> =
+        MutableLiveData<Result<GetProductDetailResponse>>()
+    val productDetail: LiveData<Result<GetProductDetailResponse>> =
         _productDetail
 
     fun setProductId(idProduct: String?) {

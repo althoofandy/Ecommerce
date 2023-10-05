@@ -8,9 +8,9 @@ import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ecommerce.core.model.GetProductsItemResponse
 import com.example.ecommerce.databinding.ItemProductGridBinding
 import com.example.ecommerce.databinding.ItemProductLinearBinding
-import com.example.ecommerce.model.GetProductsItemResponse
 import com.example.ecommerce.ui.main.CurrencyUtils
 
 class AdapterProduct(

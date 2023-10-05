@@ -4,11 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.switchMap
-import com.example.ecommerce.api.Result
-import com.example.ecommerce.model.GetProductReviewResponse
-import com.example.ecommerce.model.ProductReviewParam
-import com.example.ecommerce.pref.SharedPref
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.model.GetProductReviewResponse
+import com.example.ecommerce.core.model.ProductReviewParam
 import com.example.ecommerce.repos.EcommerceRepository
+import com.example.ecommerce.ui.Result
 
 class ProductReviewViewModel(
     private val repository: EcommerceRepository,

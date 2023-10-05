@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.ecommerce.core.model.Notification
 import com.example.ecommerce.databinding.FragmentNotificationBinding
-import com.example.ecommerce.model.Notification
 
 class NotificationFragment : Fragment() {
     private var _binding: FragmentNotificationBinding? = null

@@ -5,15 +5,14 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecommerce.R
+import com.example.ecommerce.core.model.PaymentMethodItemResponse
+import com.example.ecommerce.core.model.PaymentMethodResponse
 import com.example.ecommerce.databinding.FragmentPaymentMethodBinding
-import com.example.ecommerce.model.PaymentMethodItemResponse
-import com.example.ecommerce.model.PaymentMethodResponse
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -36,7 +35,6 @@ class PaymentMethodFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
-        getData()
     }
 
     override fun onCreateView(
@@ -51,6 +49,7 @@ class PaymentMethodFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initEvent()
+        getData()
     }
 
     private fun initEvent() {
@@ -70,12 +69,7 @@ class PaymentMethodFragment : Fragment() {
         remoteConfig.setDefaultsAsync(R.xml.remote_config_defaults)
 
         remoteConfig.fetchAndActivate()
-            .addOnCompleteListener(requireActivity()) { task ->
-                if (task.isSuccessful) {
-                    Toast.makeText(requireContext(),"fetch success",Toast.LENGTH_SHORT).show()
-                }else{
-                    Toast.makeText(requireContext(),"fetch failed",Toast.LENGTH_SHORT).show()
-                }
+            .addOnCompleteListener(requireActivity()) {
                 displayListPayment()
 
             }
@@ -84,10 +78,8 @@ class PaymentMethodFragment : Fragment() {
             override fun onUpdate(configUpdate: ConfigUpdate) {
                 Log.d(TAG, "Updated keys: " + configUpdate.updatedKeys)
                 if (configUpdate.updatedKeys.contains("payment")) {
-                    remoteConfig.activate().addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            displayListPayment()
-                        }
+                    remoteConfig.activate().addOnCompleteListener {
+                        displayListPayment()
                     }
                 }
             }

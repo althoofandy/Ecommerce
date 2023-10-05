@@ -10,15 +10,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
-import com.example.ecommerce.api.Result
-import com.example.ecommerce.api.Retrofit
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.di.Retrofit
+import com.example.ecommerce.core.model.CheckoutProduct
+import com.example.ecommerce.core.model.Payment
+import com.example.ecommerce.core.model.PaymentItem
+import com.example.ecommerce.core.model.PaymentMethodItemResponse
 import com.example.ecommerce.databinding.FragmentCheckoutBinding
-import com.example.ecommerce.model.CheckoutProduct
-import com.example.ecommerce.model.Payment
-import com.example.ecommerce.model.PaymentItem
-import com.example.ecommerce.model.PaymentMethodItemResponse
-import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
+import com.example.ecommerce.ui.Result
 import com.example.ecommerce.ui.main.CurrencyUtils
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -159,11 +159,11 @@ class CheckoutFragment : Fragment() {
                                         )
                                         param(
                                             FirebaseAnalytics.Param.SUCCESS,
-                                            it.data.data.status.toString()
+                                            it.data.data!!.status.toString()
                                         )
                                         param(
                                             FirebaseAnalytics.Param.ITEM_NAME,
-                                            it.data.data.payment
+                                            it.data.data!!.payment
                                         )
                                     }
                                     binding.progressCircular.hide()

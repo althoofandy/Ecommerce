@@ -11,10 +11,10 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
+import com.example.ecommerce.core.model.CheckoutProduct
+import com.example.ecommerce.core.model.ProductLocalDb
+import com.example.ecommerce.core.model.asCheckoutProduct
 import com.example.ecommerce.databinding.FragmentCartBinding
-import com.example.ecommerce.model.CheckoutProduct
-import com.example.ecommerce.model.ProductLocalDb
-import com.example.ecommerce.model.asCheckoutProduct
 import com.example.ecommerce.ui.main.CurrencyUtils
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
@@ -134,8 +134,8 @@ class CartFragment : Fragment() {
                 .filter { it.selected }
                 .map { it.productId }
             adapter.setOnItemClickCallback(object : CartAdapter.OnItemClickCallback {
-                override fun onItemClick(data: String) {
-                    val bundle = bundleOf("id_product" to data)
+                override fun onItemClick(data: ProductLocalDb) {
+                    val bundle = bundleOf("data_product" to data)
                     (requireActivity() as MainActivity).goToDetailProductFromCart(bundle)
                 }
             })

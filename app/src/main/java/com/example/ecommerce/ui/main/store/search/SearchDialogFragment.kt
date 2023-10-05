@@ -1,6 +1,7 @@
 package com.example.ecommerce.ui.main.store.search
 
 import android.app.Dialog
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
@@ -17,9 +19,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.ViewModelFactory
-import com.example.ecommerce.api.Retrofit
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.di.Retrofit
 import com.example.ecommerce.databinding.FragmentSearchDialogBinding
-import com.example.ecommerce.pref.SharedPref
 import com.example.ecommerce.repos.EcommerceRepository
 import com.example.ecommerce.ui.main.store.mainStore.StoreFragment
 import com.example.ecommerce.ui.main.store.mainStore.StoreFragment.Companion.SEARCH
@@ -55,6 +57,7 @@ class SearchDialogFragment : DialogFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         firebaseAnalytics = Firebase.analytics
+
     }
 
     override fun onCreateView(
@@ -77,9 +80,13 @@ class SearchDialogFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         setSearchDialog()
         initEvent()
-    }
 
+    }
     private fun setSearchDialog() {
+        binding.tieSearch.requestFocus()
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+
         adapter = SearchAdapter()
         binding.rvSearch.apply {
             layoutManager = LinearLayoutManager(context)
@@ -149,12 +156,18 @@ class SearchDialogFragment : DialogFragment() {
 
     private fun setData(data: String) {
         val bundle = Bundle().apply {
-            putString(StoreFragment.SEARCH, data)
+            putString(SEARCH, data)
         }
         requireActivity().supportFragmentManager.setFragmentResult(
             StoreFragment.FILTER,
             bundle
         )
+    }
+
+    override fun dismiss() {
+        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(binding.tieSearch.windowToken, 0)
+        super.dismiss()
     }
 
     override fun onDestroy() {
@@ -169,7 +182,7 @@ class SearchDialogFragment : DialogFragment() {
         fun newInstance(
             search: String?,
 
-        ): SearchDialogFragment {
+            ): SearchDialogFragment {
             val myFragment = SearchDialogFragment()
 
             val args = Bundle().apply {

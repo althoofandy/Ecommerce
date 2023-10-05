@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.test.core.app.ApplicationProvider
 import com.example.ecommerce.Utils.MainDispatcherRule
-import com.example.ecommerce.model.Notification
-import com.example.ecommerce.ui.main.db.NotificationDao
+import com.example.ecommerce.core.db.NotificationDao
+import com.example.ecommerce.core.model.Notification
 import com.example.ecommerce.ui.main.menu.notification.NotificationViewModel
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

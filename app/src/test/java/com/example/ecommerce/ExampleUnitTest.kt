@@ -1,7 +1,5 @@
 package com.example.ecommerce
 
-import org.junit.Assert.*
-
 /**
  * Example local unit test, which will execute on the development machine (host).
  *

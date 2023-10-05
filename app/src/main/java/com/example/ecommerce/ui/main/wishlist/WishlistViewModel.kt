@@ -3,8 +3,8 @@ package com.example.ecommerce.ui.main.wishlist
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.example.ecommerce.model.WishlistProduct
-import com.example.ecommerce.ui.main.db.ProductDatabase
+import com.example.ecommerce.core.db.ProductDatabase
+import com.example.ecommerce.core.model.WishlistProduct
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

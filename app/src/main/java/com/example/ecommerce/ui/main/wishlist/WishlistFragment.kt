@@ -12,9 +12,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
+import com.example.ecommerce.core.AppExecutor
+import com.example.ecommerce.core.model.WishlistProduct
 import com.example.ecommerce.databinding.FragmentWishlistBinding
-import com.example.ecommerce.model.WishlistProduct
-import com.example.ecommerce.ui.main.db.AppExecutor
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics

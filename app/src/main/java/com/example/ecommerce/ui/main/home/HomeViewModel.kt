@@ -1,8 +1,8 @@
 package com.example.ecommerce.ui.main.home
 
 import androidx.lifecycle.ViewModel
-import com.example.ecommerce.pref.SharedPref
-import com.example.ecommerce.ui.main.db.ProductDatabase
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.db.ProductDatabase
 
 class HomeViewModel(
     private val productDatabase: ProductDatabase,

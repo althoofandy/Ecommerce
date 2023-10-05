@@ -1,7 +1,7 @@
 package com.example.ecommerce.ui.prelogin.login
 
 import androidx.lifecycle.ViewModel
-import com.example.ecommerce.model.Auth
+import com.example.ecommerce.core.model.Auth
 import com.example.ecommerce.repos.EcommerceRepository
 
 class LoginViewModel(private val repository: EcommerceRepository) : ViewModel() {

@@ -2,13 +2,13 @@ package com.example.ecommerce.viewmodel.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.ecommerce.Utils.MainDispatcherRule
-import com.example.ecommerce.api.ApiService
-import com.example.ecommerce.api.Result
-import com.example.ecommerce.model.PaymentItem
-import com.example.ecommerce.model.TransactionDataResponse
-import com.example.ecommerce.model.TransactionResponse
-import com.example.ecommerce.pref.SharedPref
+import com.example.ecommerce.core.SharedPref
+import com.example.ecommerce.core.di.ApiService
+import com.example.ecommerce.core.model.PaymentItem
+import com.example.ecommerce.core.model.TransactionDataResponse
+import com.example.ecommerce.core.model.TransactionResponse
 import com.example.ecommerce.repos.EcommerceRepository
+import com.example.ecommerce.ui.Result
 import com.example.ecommerce.ui.main.transaction.TransactionViewModel
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals

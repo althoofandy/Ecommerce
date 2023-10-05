@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ecommerce.core.model.TransactionDataResponse
 import com.example.ecommerce.databinding.ItemTransactionBinding
-import com.example.ecommerce.model.TransactionDataResponse
 import com.example.ecommerce.ui.main.CurrencyUtils
 
 class TransactionAdapter(private val dataList: List<TransactionDataResponse>) :
