@@ -92,7 +92,6 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
 import com.example.ecommerce.ViewModelFactory
-import com.example.ecommerce.core.AppExecutor
 import com.example.ecommerce.core.SharedPref
 import com.example.ecommerce.core.di.Retrofit
 import com.example.ecommerce.core.model.GetProductDetailItemResponse
@@ -139,7 +138,6 @@ class DetailProductFragmentCompose : Fragment() {
     private var isChecked: Boolean = false
 
     private var counter = 0
-    private lateinit var appExecutors: AppExecutor
     private var product: GetProductDetailItemResponse? = null
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
@@ -293,9 +291,8 @@ class DetailProductFragmentCompose : Fragment() {
                     }
                     Button(
                         onClick = {
-                            appExecutors = AppExecutor()
                             cartViewModel = CartViewModel(requireContext())
-                            appExecutors.diskIO.execute {
+                            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                                 val productLocalDb =
                                     product?.asProductLocalDb(varianName, varianPrice)
                                 val checkProductExist =
@@ -528,8 +525,7 @@ class DetailProductFragmentCompose : Fragment() {
                     IconButton(
                         onClick = {
                             isChecked = !isChecked
-                            appExecutors = AppExecutor()
-                            appExecutors.diskIO.execute {
+                            viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                                 wishlistViewModel = WishlistViewModel(requireContext())
                                 val wishlistLocalDb =
                                     product.asWishlistProduct(

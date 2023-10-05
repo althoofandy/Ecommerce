@@ -8,11 +8,11 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.content.ContextCompat
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.ecommerce.MainActivity
 import com.example.ecommerce.R
-import com.example.ecommerce.core.AppExecutor
 import com.example.ecommerce.core.model.WishlistProduct
 import com.example.ecommerce.databinding.FragmentWishlistBinding
 import com.example.ecommerce.ui.main.menu.cart.CartViewModel
@@ -20,6 +20,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class WishlistFragment : Fragment() {
     private var _binding: FragmentWishlistBinding? = null
@@ -30,7 +32,6 @@ class WishlistFragment : Fragment() {
 
     private var isList: Boolean = true
     private lateinit var gridLayoutManager: GridLayoutManager
-    private lateinit var appExecutors: AppExecutor
     private var counter = 0
     private lateinit var firebaseAnalytics: FirebaseAnalytics
 
@@ -83,7 +84,6 @@ class WishlistFragment : Fragment() {
     }
 
     private fun getData() {
-        appExecutors = AppExecutor()
         binding.apply {
             wishlistViewModel = WishlistViewModel(requireContext())
             adapter = WishlistAdapter(requireContext(), wishlistViewModel, firebaseAnalytics)
@@ -104,7 +104,7 @@ class WishlistFragment : Fragment() {
                     WishlistAdapter.OnItemClickCallback {
                     override fun onItemClick(wishListProduct: WishlistProduct) {
                         firebaseAnalytics.logEvent("btn_addCart_from_wishlist_clicked", null)
-                        appExecutors.diskIO.execute {
+                        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
                             val checkCartProduct =
                                 cartViewModel.getCartById(wishListProduct.productId)
                             if (checkCartProduct?.productId != null) {

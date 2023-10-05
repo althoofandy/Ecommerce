@@ -7,14 +7,16 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.ecommerce.MainActivity
-import com.example.ecommerce.core.AppExecutor
 import com.example.ecommerce.core.SharedPref
 import com.example.ecommerce.core.db.ProductDatabase
 import com.example.ecommerce.databinding.FragmentHomeBinding
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
@@ -26,7 +28,6 @@ class HomeFragment : Fragment() {
     private val sharedPref by lazy {
         SharedPref(requireContext())
     }
-    private lateinit var appExecutor: AppExecutor
     private lateinit var firebaseAnalytics: FirebaseAnalytics
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,8 +93,7 @@ class HomeFragment : Fragment() {
     }
 
     private fun clearDb() {
-        appExecutor = AppExecutor()
-        appExecutor.diskIO.execute {
+        viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO){
             viewModel = HomeViewModel(productDatabase, sharedPref)
             viewModel.clearDb()
         }
