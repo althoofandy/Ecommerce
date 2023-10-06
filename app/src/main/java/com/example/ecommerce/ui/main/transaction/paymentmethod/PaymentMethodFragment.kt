@@ -24,11 +24,11 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfigException
 import com.google.firebase.remoteconfig.ktx.get
 import com.google.firebase.remoteconfig.ktx.remoteConfig
 import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
-import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 
 class PaymentMethodFragment : Fragment() {
     private var _binding: FragmentPaymentMethodBinding? = null
-    private val binding get() = _binding ?: throw Exception("null")
+    private val binding get() = _binding!!
 
     private lateinit var adapter: PaymentMethodAdapter
     private lateinit var firebaseAnalytics: FirebaseAnalytics
@@ -41,7 +41,7 @@ class PaymentMethodFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         _binding = FragmentPaymentMethodBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -92,14 +92,13 @@ class PaymentMethodFragment : Fragment() {
 
     private fun displayListPayment() {
         val remoteConfig = Firebase.remoteConfig
-        val dataPayment = remoteConfig[PAYMENT_PARAM].asString()
-
-        val gson = Gson()
-        val paymentMethodResponse = gson.fromJson(dataPayment, PaymentMethodResponse::class.java)
-        val paymentMethodCategories = paymentMethodResponse.data
+        val dataPayment = GsonBuilder().create().fromJson(
+            remoteConfig[PAYMENT_PARAM].asString(),
+           PaymentMethodResponse::class.java
+        )
         binding.progressCircular.hide()
 
-        adapter = PaymentMethodAdapter(paymentMethodCategories)
+        adapter = PaymentMethodAdapter(dataPayment.data)
         val linearLayout = LinearLayoutManager(requireContext())
         binding.rvPaymentMethods.layoutManager = linearLayout
         binding.rvPaymentMethods.adapter = adapter

@@ -85,7 +85,7 @@ class SearchDialogFragment : DialogFragment() {
     private fun setSearchDialog() {
         binding.tieSearch.requestFocus()
         val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY)
+        imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
 
         adapter = SearchAdapter()
         binding.rvSearch.apply {
